@@ -49,7 +49,7 @@ const Account = ({ triedToEagerConnect }) => {
       window?.web3;
 
     return (
-      <div className="btn-blue hover:bg-blue-700 no-underline">
+      <div className="btn-blue hover:bg-blue-700 no-underline px-2">
         {hasMetaMaskOrWeb3Available ? (
           <button
             isLoading={connecting}

@@ -19,7 +19,7 @@ export default function useETHBalance(address, suspense = false) {
     getETHBalance(library),
     {
       suspense,
-    }
+    },
   );
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate);
