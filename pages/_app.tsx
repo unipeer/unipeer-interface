@@ -1,3 +1,5 @@
+import type { AppProps /*, AppContext */ } from 'next/app'
+import { Web3Provider } from "@ethersproject/providers";
 import { Web3ReactProvider } from "@web3-react/core";
 import type { AppProps } from "next/app";
 import getLibrary from "../getLibrary";
