@@ -11,9 +11,11 @@ export default function useContract(address, ABI, withSigner = false) {
         ? new Contract(
             address,
             ABI,
-            withSigner ? library.getSigner(account).connectUnchecked() : library
+            withSigner
+              ? library.getSigner(account).connectUnchecked()
+              : library,
           )
         : undefined,
-    [address, ABI, withSigner, library, account]
+    [address, ABI, withSigner, library, account],
   );
 }

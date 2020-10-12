@@ -4,6 +4,7 @@ import Head from "next/head";
 
 import Nav from "../components/Nav";
 import ETHBalance from "../components/ETHBalance";
+import MainWidget from "../components/MainWidget";
 import usePersonalSign, { hexlify } from "../hooks/usePersonalSign";
 
 export default function Home() {
@@ -27,19 +28,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav/>
+      <Nav />
 
       <main className="py-20">
-        <h1 className="text-5xl text-center text-accent-1">
-          Welcome
-        </h1>
-
         {isConnected && (
           <section>
             <ETHBalance />
             <button onClick={handleSign}>Personal Sign</button>
           </section>
         )}
+        <MainWidget />
       </main>
     </div>
   );
