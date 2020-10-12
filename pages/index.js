@@ -4,7 +4,7 @@ import Head from "next/head";
 
 import Nav from "../components/Nav";
 import ETHBalance from "../components/ETHBalance";
-import MainWidget from "../components/MainWidget";
+import Buy from "../components/BuyWidget";
 import usePersonalSign, { hexlify } from "../hooks/usePersonalSign";
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Next Web3 Boilerplate</title>
+        <title>Unipeer</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -37,7 +37,8 @@ export default function Home() {
             <button onClick={handleSign}>Personal Sign</button>
           </section>
         )}
-        <MainWidget />
+
+        <Buy />
       </main>
     </div>
   );
