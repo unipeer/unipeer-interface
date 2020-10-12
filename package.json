@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "format": "prettier --write '**/*.{ts,tsx,js,css,json,md}'",
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'",
     "postinstall": "yarn compile-contract-types"

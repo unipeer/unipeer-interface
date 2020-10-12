@@ -1,9 +1,9 @@
-import { InferGetStaticPropsType, Get } from 'next'
+import { PropTypes } from "react";
 
-export default function Button({ onClick, children }) {
+export default function Button({ onClick, children }: PropTypes) {
   return (
     <button onClick={onClick} className="btn-blue">
-      { children }
+      {children}
     </button>
-  )
+  );
 }
