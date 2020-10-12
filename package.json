@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write '**/*.{ts,js,css,json,md}'"
+    "format": "prettier --write '**/*.{ts,tsx,js,css,json,md}'"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.0.5",

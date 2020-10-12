@@ -1,8 +1,8 @@
-import type { AppProps /*, AppContext */ } from 'next/app'
+import type { AppProps /*, AppContext */ } from "next/app";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3ReactProvider } from "@web3-react/core";
 
-import '../styles/index.css'
+import "../styles/index.css";
 
 function getLibrary(provider) {
   return new Web3Provider(provider);
