@@ -1,16 +1,13 @@
 import { verifyMessage } from "@ethersproject/wallet";
 import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
-import Link from "next/link";
-import Account from "../components/Account";
+
+import Nav from "../components/Nav";
 import ETHBalance from "../components/ETHBalance";
-import useEagerConnect from "../hooks/useEagerConnect";
 import usePersonalSign, { hexlify } from "../hooks/usePersonalSign";
 
 export default function Home() {
   const { account, library } = useWeb3React();
-
-  const triedToEagerConnect = useEagerConnect();
 
   const sign = usePersonalSign();
 
@@ -30,18 +27,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header>
-        <nav>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
+      <Nav/>
 
-          <Account triedToEagerConnect={triedToEagerConnect} />
-        </nav>
-      </header>
-
-      <main>
-        <h1>
+      <main className="py-20">
+        <h1 className="text-5xl text-center text-accent-1">
           Welcome
         </h1>
 
@@ -52,36 +41,6 @@ export default function Home() {
           </section>
         )}
       </main>
-
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 5px;
-          justify-content: space-between;
-        }
-
-        main {
-          text-align: center;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        body {
-          margin: 0;
-        }
-
-        html {
-          font-family: sans-serif, Apple Color Emoji, Segoe UI Emoji,
-            Segoe UI Symbol, Noto Color Emoji;
-          line-height: 1.5;
-        }
-
-        *,
-        *::after,
-        *::before {
-          box-sizing: border-box;
-        }
-      `}</style>
     </div>
   );
 }

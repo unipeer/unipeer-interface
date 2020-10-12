@@ -1,0 +1,28 @@
+@tailwind base;
+
+/* Write your own custom base styles here */
+body {
+  @apply min-h-screen bg-gray-100;
+}
+
+html {
+  @apply text-gray-900 antialiased leading-tight;
+  font-family: sans-serif, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol, Noto Color Emoji;
+  line-height: 1.5;
+}
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Write your own custom component styles here */
+.btn-blue {
+  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+}
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+/* Your own custom utilities */
