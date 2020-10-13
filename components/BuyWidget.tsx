@@ -3,8 +3,9 @@ import { useWeb3React } from "@web3-react/core";
 import Link from "next/link";
 import { parseEther } from "@ethersproject/units";
 
+import Account from "./Account";
 import useContract from "../hooks/useContract";
-import {constants} from "../util";
+import { constants } from "../util";
 
 import Comptroller from "../abi/Comptroller.json";
 
@@ -26,27 +27,33 @@ const formReducer = (state, event) => {
 export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
-  const comptroller = useContract(constants.COMPTROLLER_ADDRESS, Comptroller, true);
+  const comptroller = useContract(
+    constants.COMPTROLLER_ADDRESS,
+    Comptroller,
+    true,
+  );
   const { library, account } = useWeb3React();
-
+  const isConnected = typeof account === "string" && !!library;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
 
-    await comptroller.requestFiatPayment(
-      constants.ESCROW_ADDRESS,
-      account,
-      parseEther(formData.amount),
-      formData.paymentid
-    ).then(res => {
-      console.log(res);
-      setFormData({
-        reset: true,
-      });
-    })
-    .catch(e => console.error(e))
-    .finally(() => setSubmitting(false))
+    await comptroller
+      .requestFiatPayment(
+        constants.ESCROW_ADDRESS,
+        account,
+        parseEther(formData.amount),
+        formData.paymentid,
+      )
+      .then((res) => {
+        console.log(res);
+        setFormData({
+          reset: true,
+        });
+      })
+      .catch((e) => console.error(e))
+      .finally(() => setSubmitting(false));
   };
 
   const handleChange = (event) => {
@@ -95,9 +102,18 @@ export default function Buy() {
         <div className="w-auto inline-block p-2">ETH</div>
       </div>
       <div className="w-full flex pt-4">
-        <button type="submit" disabled={submitting} className="btn-blue m-auto">
-          Pay
-        </button>
+        {isConnected ? (
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn-blue m-auto">
+            Pay
+          </button>
+        ) : (
+          <div className="m-auto">
+            <Account triedToEagerConnect={true}/>
+          </div>
+        )}
       </div>
     </form>
   );
