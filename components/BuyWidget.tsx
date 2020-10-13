@@ -28,6 +28,7 @@ const formReducer = (state, event) => {
 export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
+  const [reverted, setReverted] = useState(false);
   const triedToEagerConnect = useEagerConnect();
   const comptroller = useContract(
     constants.COMPTROLLER_ADDRESS,
@@ -40,6 +41,7 @@ export default function Buy() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
+    setReverted(false);
 
     await comptroller
       .requestFiatPayment(
@@ -54,7 +56,11 @@ export default function Buy() {
           reset: true,
         });
       })
-      .catch((e) => console.error(e))
+      .catch((e) => {
+        if (e.code == -32016)
+          setReverted(true);
+        console.error(e)
+      })
       .finally(() => setSubmitting(false));
   };
 
@@ -103,6 +109,11 @@ export default function Buy() {
         />
         <div className="w-auto inline-block p-2">ETH</div>
       </div>
+        {reverted && (
+          <div className="w-full flex pt-4">
+            Not enough funds in escrow...
+          </div>
+        )}
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button
