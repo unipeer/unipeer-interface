@@ -5,6 +5,7 @@ import { parseEther } from "@ethersproject/units";
 
 import Account from "./Account";
 import useContract from "../hooks/useContract";
+import useEagerConnect from "../hooks/useEagerConnect";
 import { constants } from "../util";
 
 import Comptroller from "../abi/Comptroller.json";
@@ -27,6 +28,7 @@ const formReducer = (state, event) => {
 export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
+  const triedToEagerConnect = useEagerConnect();
   const comptroller = useContract(
     constants.COMPTROLLER_ADDRESS,
     Comptroller,
@@ -111,7 +113,7 @@ export default function Buy() {
           </button>
         ) : (
           <div className="m-auto">
-            <Account triedToEagerConnect={true}/>
+            <Account triedToEagerConnect={triedToEagerConnect}/>
           </div>
         )}
       </div>

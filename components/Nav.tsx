@@ -20,6 +20,8 @@ export default function Nav() {
             </Link>
           </li>
           <li>
+          </li>
+          <li>
             <Account triedToEagerConnect={triedToEagerConnect} />
           </li>
         </ul>
