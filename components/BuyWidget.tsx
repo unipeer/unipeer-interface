@@ -1,7 +1,12 @@
 import React, { useReducer, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import Link from "next/link";
-import Button from "./Button";
+import { parseEther } from "@ethersproject/units";
+
+import useContract from "../hooks/useContract";
+import {constants} from "../util";
+
+import Comptroller from "../abi/Comptroller.json";
 
 const defaultFormData = {
   paymentid: "",
@@ -21,15 +26,27 @@ const formReducer = (state, event) => {
 export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
+  const comptroller = useContract(constants.COMPTROLLER_ADDRESS, Comptroller, true);
+  const { library, account } = useWeb3React();
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
 
-    console.log(formData);
-    setFormData({
-      reset: true,
-    });
+    await comptroller.requestFiatPayment(
+      constants.ESCROW_ADDRESS,
+      account,
+      parseEther(formData.amount),
+      formData.paymentid
+    ).then(res => {
+      console.log(res);
+      setFormData({
+        reset: true,
+      });
+    })
+    .catch(e => console.error(e))
+    .finally(() => setSubmitting(false))
   };
 
   const handleChange = (event) => {
@@ -49,6 +66,7 @@ export default function Buy() {
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="paymentid"
+          disabled={submitting}
           type="text"
           minLength={1}
           maxLength={79}
@@ -63,6 +81,7 @@ export default function Buy() {
         <input
           className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="amount"
+          disabled={submitting}
           inputMode="decimal"
           type="text"
           pattern="^[0-9]*[.,]?[0-9]*$"
@@ -76,7 +95,7 @@ export default function Buy() {
         <div className="w-auto inline-block p-2">ETH</div>
       </div>
       <div className="w-full flex pt-4">
-        <button type="submit" className="btn-blue m-auto">
+        <button type="submit" disabled={submitting} className="btn-blue m-auto">
           Pay
         </button>
       </div>
