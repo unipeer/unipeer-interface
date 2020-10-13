@@ -31,7 +31,7 @@ export default function Home() {
 
       <Nav />
 
-      <main className="py-20">
+      <main className="py-10">
         {isConnected && (
           <section>
             <ETHBalance />

@@ -1,8 +1,8 @@
-import { Contract } from "@ethersproject/contracts";
+import { Contract, ContractInterface } from '@ethersproject/contracts';
 import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 
-export default function useContract(address, ABI, withSigner = false) {
+export default function useContract(address?: string, ABI?: ContractInterface, withSigner = false): Contract | undefined {
   const { library, account } = useWeb3React();
 
   return useMemo(
