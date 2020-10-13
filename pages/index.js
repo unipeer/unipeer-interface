@@ -3,6 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
 
 import Nav from "../components/Nav";
+import Tabs from "../components/Tabs";
 import ETHBalance from "../components/ETHBalance";
 import Buy from "../components/BuyWidget";
 import usePersonalSign, { hexlify } from "../hooks/usePersonalSign";
@@ -38,7 +39,16 @@ export default function Home() {
           </section>
         )}
 
-        <Buy />
+        <div className="w-full max-w-sm m-auto">
+          <Tabs>
+            <div label="Buy">
+              <Buy />
+            </div>
+            <div label="Sell">
+              After 'while, <em>Crocodile</em>!
+            </div>
+          </Tabs>
+        </div>
       </main>
     </div>
   );
