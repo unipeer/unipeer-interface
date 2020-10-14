@@ -11,11 +11,7 @@ import { constants } from "../util";
 
 import Comptroller from "../abi/Comptroller.json";
 
-interface IProps {
-  price: number;
-}
-
-const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 const defaultFormData = {
   paymentid: "",
   amount: "",
@@ -32,7 +28,7 @@ const formReducer = (state, event) => {
   };
 };
 
-export default function Buy(props: IProps) {
+export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
@@ -44,7 +40,7 @@ export default function Buy(props: IProps) {
   );
   const { library, account } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
-  const { data, error } = useSWR('https://api.wazirx.com/api/v2/tickers', fetcher);
+  const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 1000 });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -78,9 +74,10 @@ export default function Buy(props: IProps) {
     });
   };
 
-  const calFiatAmount = () => {
-    console.log(props.price);
-    return <div>You will be paying {formData.amount * props.price} INR</div>;
+  const calFiatAmount = (amount, res) => {
+    if (!res) return;
+    const price = res.ethinr.last;
+    return <div>You will be paying {amount * price} INR</div>;
   }
 
   return (
@@ -126,7 +123,8 @@ export default function Buy(props: IProps) {
             Not enough funds in escrow...
           </div>
         )}
-        {formData.amount != "" && calFiatAmount()}
+
+        {formData.amount != "" && calFiatAmount(formData.amount, data)}
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button
