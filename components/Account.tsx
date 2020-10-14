@@ -17,7 +17,7 @@ const Account = ({ triedToEagerConnect }) => {
   } = useWeb3React();
 
   // initialize metamask onboarding
-  const onboarding = useRef();
+  const onboarding = useRef<MetaMaskOnboarding>();
 
   useLayoutEffect(() => {
     onboarding.current = new MetaMaskOnboarding();
@@ -43,16 +43,16 @@ const Account = ({ triedToEagerConnect }) => {
   }
 
   if (typeof account !== "string") {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const hasMetaMaskOrWeb3Available =
       MetaMaskOnboarding.isMetaMaskInstalled() ||
-      window?.ethereum ||
-      window?.web3;
+      (window as any)?.ethereum ||
+      (window as any)?.web3;
 
     return (
       <div className="btn-blue hover:bg-blue-700 no-underline px-2">
         {hasMetaMaskOrWeb3Available ? (
           <button
-            isLoading={connecting}
             onClick={() => {
               setConnecting(true);
 

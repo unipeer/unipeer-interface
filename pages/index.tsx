@@ -1,11 +1,28 @@
 import Head from "next/head";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useWeb3React } from "@web3-react/core";
+import useSWR from "swr";
 
 import Nav from "../components/Nav";
 import Tabs from "../components/Tabs";
+import Div from "../components/Div";
 import Buy from "../components/BuyWidget";
 
-export default function Home() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await fetch('https://api.wazirx.com/api/v2/tickers');
+  const json = await res.json()
+  const data = json.ethinr.last;
+
+  return {
+    props: {
+      data,
+    }
+  }
+}
+
+export default function Home({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { active, chainId } = useWeb3React();
 
   return (
@@ -37,12 +54,12 @@ export default function Home() {
       <main className="py-5">
         <div className="w-full max-w-sm m-auto">
           <Tabs>
-            <div label="Buy">
-              <Buy />
-            </div>
-            <div label="Sell">
+            <Div label="Buy">
+              <Buy price={data}/>
+            </Div>
+            <Div label="Sell">
               After 'while, <em>Crocodile</em>!
-            </div>
+            </Div>
           </Tabs>
         </div>
       </main>

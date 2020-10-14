@@ -1,6 +1,7 @@
 import React, { useReducer, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
 import Link from "next/link";
+import useSWR from "swr";
+import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
 
 import Account from "./Account";
@@ -10,10 +11,16 @@ import { constants } from "../util";
 
 import Comptroller from "../abi/Comptroller.json";
 
+interface IProps {
+  price: number;
+}
+
+const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
 const defaultFormData = {
   paymentid: "",
   amount: "",
 };
+
 const formReducer = (state, event) => {
   if (event.reset) {
     return defaultFormData;
@@ -25,7 +32,7 @@ const formReducer = (state, event) => {
   };
 };
 
-export default function Buy() {
+export default function Buy(props: IProps) {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
@@ -37,6 +44,7 @@ export default function Buy() {
   );
   const { library, account } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
+  const { data, error } = useSWR('https://api.wazirx.com/api/v2/tickers', fetcher);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,7 +59,6 @@ export default function Buy() {
         formData.paymentid,
       )
       .then((res) => {
-        console.log(res);
         setFormData({
           reset: true,
         });
@@ -70,6 +77,11 @@ export default function Buy() {
       value: event.target.value,
     });
   };
+
+  const calFiatAmount = () => {
+    console.log(props.price);
+    return <div>You will be paying {formData.amount * props.price} INR</div>;
+  }
 
   return (
     <form
@@ -114,6 +126,7 @@ export default function Buy() {
             Not enough funds in escrow...
           </div>
         )}
+        {formData.amount != "" && calFiatAmount()}
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button

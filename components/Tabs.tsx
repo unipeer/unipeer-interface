@@ -2,11 +2,11 @@ import { useReducer, useState } from "react";
 
 import Tab from "./Tab";
 
-interface IProps {
-  children: any[];
+type Props = {
+  children: JSX.Element[];
 }
 
-export default function Tabs(props: IProps) {
+export default function Tabs(props: Props) {
   const [activeTab, setActiveTab] = useState(props.children[0].props.label);
 
   const onClickTabItem = (tab) => {
@@ -15,7 +15,7 @@ export default function Tabs(props: IProps) {
 
   return (
     <div className="tabs">
-      <ol className="flex border-b">
+      <ol className="tab-list">
         {props.children.map((child) => {
           const { label } = child.props;
 
