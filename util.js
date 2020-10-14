@@ -1,8 +1,8 @@
 import { formatUnits, parseEther } from "@ethersproject/units";
 
 export const constants = {
-  COMPTROLLER_ADDRESS: "0xa4E66A77b08f344227CDC088C3ee06De3A2B3fC7",
-  ESCROW_ADDRESS: "0x74dD749d4C03F81c08ebe85467635989709962B6",
+  COMPTROLLER_ADDRESS: "0x381A4B7fe35C2f8b1e97D4BCcb1052Ed566393C3",
+  ESCROW_ADDRESS: "0xb18B8EcC7b91B95cc7231003E193e8DF32787956",
 }
 
 export function shortenHex(hex, length = 4) {
