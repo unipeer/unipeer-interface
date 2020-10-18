@@ -40,7 +40,7 @@ export default function Buy() {
   );
   const { library, account } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
-  const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 1000 });
+  const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 5000 });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
