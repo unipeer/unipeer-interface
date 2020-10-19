@@ -19,6 +19,22 @@ const ETHERSCAN_PREFIXES = {
   42: "kovan.",
 };
 
+export const INFURA_PREFIXES: { [key: number]: string } = {
+  1: 'mainnet',
+  3: 'ropsten',
+  4: 'rinkeby',
+  5: 'goerli',
+  42: 'kovan',
+}
+
+export const POKT_PREFIXES: { [key: number]: string } = {
+  1: 'eth-mainnet',
+  3: 'eth-ropsten',
+  4: 'eth-rinkeby',
+  5: 'eth-goerli',
+  42: 'poa-kovan',
+}
+
 /**
  *
  * @param {("Account"|"Transaction")} type
