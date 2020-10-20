@@ -3,7 +3,7 @@ import { formatUnits, parseEther } from "@ethersproject/units";
 export const constants = {
   COMPTROLLER_ADDRESS: "0x3E5A1dec88f22b0beb8BdDf5a6460360C2DcAd1B",
   ESCROW_ADDRESS: "0xAE25fa6b162D1eA31ccb4Da7276fB932D36F6C87",
-  ESCROW_FACTORY_ADDRESS: "0x44F9F3a8d85609a78dBE07F35613f04E906B300B",
+  ESCROW_FACTORY_ADDRESS: "0x2aF149a52314eF434501DDD752A22de824202FD0",
 }
 
 export function shortenHex(hex, length = 4) {

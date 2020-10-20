@@ -1,6 +1,5 @@
 import React, { useReducer, useState } from "react";
 import Link from "next/link";
-import useSWR from "swr";
 import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
 
@@ -9,9 +8,8 @@ import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { constants } from "../util";
 
-import Comptroller from "../abi/Comptroller.json";
+import EscrowFactory from "../abi/EscrowContractFactory.json";
 
-const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
 const defaultFormData = {
   paymentid: "",
   amount: "",
@@ -28,31 +26,28 @@ const formReducer = (state, event) => {
   };
 };
 
-export default function Buy() {
+export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
   const triedToEagerConnect = useEagerConnect();
-  const comptroller = useContract(
-    constants.COMPTROLLER_ADDRESS,
-    Comptroller,
+  const escrowFactory = useContract(
+    constants.ESCROW_FACTORY_ADDRESS,
+    EscrowFactory,
     true,
   );
   const { library, account } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
-  const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 5000 });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
     setReverted(false);
 
-    await comptroller
-      .requestFiatPayment(
-        constants.ESCROW_ADDRESS,
-        account,
-        parseEther(formData.amount),
+    await escrowFactory
+      .newEscrow(
         formData.paymentid,
+        { value: parseEther(formData.amount) }
       )
       .then((res) => {
         setFormData({
@@ -74,19 +69,13 @@ export default function Buy() {
     });
   };
 
-  const calFiatAmount = (amount, res) => {
-    if (!res) return;
-    const price = res.ethinr.last;
-    return <div>You will be paying {amount * price} INR</div>;
-  }
-
   return (
     <form
       className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
       onSubmit={handleSubmit}
     >
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">UPI ID</label>
+        <label className="block text-gray-700 text-xs mb-2">Receive Payments at ID:</label>
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="paymentid"
@@ -101,7 +90,7 @@ export default function Buy() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Amount</label>
+        <label className="block text-gray-700 text-xs mb-2">Amount to Sell</label>
         <input
           className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="amount"
@@ -126,14 +115,13 @@ export default function Buy() {
           </div>
         )}
 
-        {formData.amount != "" && calFiatAmount(formData.amount, data)}
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button
             type="submit"
             disabled={submitting}
             className="btn-blue m-auto">
-            Pay
+            Create Escrow
           </button>
         ) : (
           <div className="m-auto">
