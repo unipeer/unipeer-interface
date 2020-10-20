@@ -78,6 +78,7 @@ export default function Buy() {
 
   const calFiatAmount = (res) => {
     if (!res) return;
+    if (!formData.amount) return "";
     const price = res.ethinr.last;
     return (formData.amount * price).toString();
   }
@@ -113,7 +114,7 @@ export default function Buy() {
         <input
           className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="fiat"
-          disabled={true}
+          disabled={submitting}
           inputMode="decimal"
           type="text"
           pattern="^[0-9]*[.,]?[0-9]*$"
