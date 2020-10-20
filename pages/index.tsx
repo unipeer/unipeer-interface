@@ -5,6 +5,7 @@ import Nav from "../components/Nav";
 import Tabs from "../components/Tabs";
 import Div from "../components/Div";
 import Buy from "../components/BuyWidget";
+import Sell from "../components/SellWidget";
 
 export default function Home() {
   const { active, chainId } = useWeb3React();
@@ -42,7 +43,7 @@ export default function Home() {
               <Buy/>
             </Div>
             <Div label="Sell">
-              After 'while, <em>Crocodile</em>!
+              <Sell/>
             </Div>
           </Tabs>
         </div>
