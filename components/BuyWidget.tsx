@@ -15,6 +15,8 @@ const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
 const defaultFormData = {
   paymentid: "",
   amount: "",
+  fiat: "",
+  escrow: "",
 };
 
 const formReducer = (state, event) => {
@@ -49,7 +51,7 @@ export default function Buy() {
 
     await comptroller
       .requestFiatPayment(
-        constants.ESCROW_ADDRESS,
+        formData.escrow || constants.ESCROW_ADDRESS,
         account,
         parseEther(formData.amount),
         formData.paymentid,
@@ -74,10 +76,10 @@ export default function Buy() {
     });
   };
 
-  const calFiatAmount = (amount, res) => {
+  const calFiatAmount = (res) => {
     if (!res) return;
     const price = res.ethinr.last;
-    return <div>You will be paying {amount * price} INR</div>;
+    return (formData.amount * price).toString();
   }
 
   return (
@@ -86,22 +88,7 @@ export default function Buy() {
       onSubmit={handleSubmit}
     >
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">UPI ID</label>
-        <input
-          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-          name="paymentid"
-          disabled={submitting}
-          type="text"
-          minLength={1}
-          maxLength={79}
-          placeholder="name@upi"
-          onChange={handleChange}
-          value={formData.paymentid}
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Amount</label>
+        <label className="block text-gray-700 text-xs mb-2">Buy</label>
         <input
           className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="amount"
@@ -120,13 +107,65 @@ export default function Buy() {
         />
         <div className="w-auto inline-block p-2">ETH</div>
       </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">For (estimated)</label>
+        <input
+          className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+          name="fiat"
+          disabled={true}
+          inputMode="decimal"
+          type="text"
+          pattern="^[0-9]*[.,]?[0-9]*$"
+          autoComplete="off"
+          autoCorrect="off"
+          minLength={1}
+          maxLength={79}
+          spellCheck="false"
+          placeholder="0.0"
+          onChange={handleChange}
+          value={calFiatAmount(data)}
+        />
+        <div className="w-auto inline-block p-2">INR</div>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">UPI ID</label>
+        <input
+          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+          name="paymentid"
+          disabled={submitting}
+          type="text"
+          minLength={1}
+          maxLength={79}
+          placeholder="name@upi"
+          onChange={handleChange}
+          value={formData.paymentid}
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">Escrow address (optional)</label>
+        <input
+          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+          name="escrow"
+          disabled={submitting}
+          type="text"
+          minLength={1}
+          maxLength={79}
+          placeholder={constants.ESCROW_ADDRESS}
+          onChange={handleChange}
+          value={formData.escrow}
+        />
+      </div>
+
         {reverted && (
+          // or link
           <div className="w-full flex pt-4">
             Not enough funds in escrow...
           </div>
         )}
 
-        {formData.amount != "" && calFiatAmount(formData.amount, data)}
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button
