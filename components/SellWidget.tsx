@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
@@ -44,7 +44,13 @@ export default function Sell() {
   const isConnected = typeof account === "string" && !!library;
 
   const triedToEagerConnect = useEagerConnect();
-  const EscrowInstance = new EscrowFactory(library.getSigner(account));
+  const EscrowInstance = useMemo(
+    () =>
+      !!account && !!library
+        ? new EscrowFactory(library.getSigner(account).connectUnchecked())
+        : undefined,
+    [library, account],
+  );
   const escrowFactory = useContract(
     constants.ESCROW_FACTORY_ADDRESS,
     EscrowContractFactory,
@@ -78,6 +84,7 @@ export default function Sell() {
 
   const getBalance = async () => {
     if (!selected) return;
+    if (!EscrowInstance) return;
     let escrow: Escrow = await EscrowInstance.attach(selected);
     let bal = await escrow.getUnlockedBalance();
     setBalance(formatEther(bal));
@@ -110,10 +117,10 @@ export default function Sell() {
   };
 
   useEffect(() => {
-    if (active || error) {
+    if (isConnected) {
       fetchEscrows();
     }
-  }, [active, error]);
+  }, [isConnected]);
 
   useEffect(() => {
     getBalance();
@@ -168,9 +175,9 @@ export default function Sell() {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
               />
             </svg>
