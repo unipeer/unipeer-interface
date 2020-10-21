@@ -1,6 +1,7 @@
 import React, { useReducer, useState, useEffect } from "react";
 import Link from "next/link";
 import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
 
@@ -37,7 +38,9 @@ export default function Sell() {
   const [selected, setSelected] = useState("");
   const [balance, setBalance] = useState("...");
 
-  const { library, account, active, error, chainId } = useWeb3React();
+  const { library, account, active, error, chainId } = useWeb3React<
+    Web3Provider
+  >();
   const isConnected = typeof account === "string" && !!library;
 
   const triedToEagerConnect = useEagerConnect();
@@ -78,6 +81,21 @@ export default function Sell() {
     let escrow: Escrow = await EscrowInstance.attach(selected);
     let bal = await escrow.getUnlockedBalance();
     setBalance(formatEther(bal));
+  };
+
+  const withdraw = async () => {
+    if (!selected) return;
+    let escrow: Escrow = await EscrowInstance.attach(selected);
+    let bal = await escrow.getUnlockedBalance();
+    await escrow.withdraw(bal, account);
+  };
+
+  const deposit = async () => {
+    if (!selected) return;
+    await library.getSigner(account).sendTransaction({
+      to: selected,
+      value: parseEther("0.1"),
+    });
   };
 
   const handleChange = (event) => {
@@ -160,14 +178,21 @@ export default function Sell() {
         </div>
 
         <div className="text-sm my-2">Balance: {balance} ETH</div>
+        <div className="flex pt-1">
+          <button onClick={withdraw} className="btn-blue m-auto p-2 text-sm">
+            Withdraw
+          </button>
+
+          <button onClick={deposit} className="btn-blue m-auto p-2 text-sm">
+            Deposit
+          </button>
+        </div>
       </div>
 
       <hr />
       <br />
 
-      <form
-        onSubmit={handleSubmit}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-xs mb-2">
             Receive Payments at ID
