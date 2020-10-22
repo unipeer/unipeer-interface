@@ -7,6 +7,7 @@ import { formatEther } from "@ethersproject/units";
 
 import Account from "./Account";
 import useContract from "../hooks/useContract";
+import useEtherContract from "../hooks/useEtherContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { constants, formatEtherscanLink } from "../util";
 
@@ -44,13 +45,7 @@ export default function Sell() {
   const isConnected = typeof account === "string" && !!library;
 
   const triedToEagerConnect = useEagerConnect();
-  const EscrowInstance = useMemo(
-    () =>
-      !!account && !!library
-        ? new EscrowFactory(library.getSigner(account).connectUnchecked())
-        : undefined,
-    [library, account],
-  );
+  const EscrowInstance = useEtherContract(EscrowFactory);
   const escrowFactory = useContract(
     constants.ESCROW_FACTORY_ADDRESS,
     EscrowContractFactory,

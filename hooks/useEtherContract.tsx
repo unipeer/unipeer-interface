@@ -2,8 +2,9 @@ import {Contract, ContractFactory} from "@ethersproject/contracts";
 import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 
-// TOOD: get contract class
-export default function useContract(Factory: any): Contract | undefined {
+type Constructor<T> = new(...args: any[]) => T;
+
+export default function useContract<T>(Factory: Constructor<T>): T | undefined {
   const { library, account } = useWeb3React();
 
   return useMemo(
