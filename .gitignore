@@ -30,3 +30,5 @@ yarn-error.log*
 .env.production.local
 
 .vercel
+out_publish
+out_functions
