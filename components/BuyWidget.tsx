@@ -3,8 +3,10 @@ import Link from "next/link";
 import useSWR from "swr";
 import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
+import tailwind from "tailwind-rn";
 
-import Account from "./Account";
+import { ScrollView, View, Text, TextInput, Button } from "react-native";
+
 import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { constants } from "../util";
@@ -84,14 +86,14 @@ export default function Buy() {
   }
 
   return (
-    <form
-      className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
+    <View
+      style={tailwind("bg-white shadow-md rounded-lg p-6 mb-4")}
       onSubmit={handleSubmit}
     >
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Buy</label>
-        <input
-          className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+      <ScrollView style={tailwind("mb-4")}>
+        <Text style={tailwind("block text-gray-700 text-xs mb-2")}>Buy</Text>
+        <TextInput
+          style={tailwind("w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500")}
           name="amount"
           disabled={submitting}
           inputMode="decimal"
@@ -106,13 +108,13 @@ export default function Buy() {
           onChange={handleChange}
           value={formData.amount}
         />
-        <div className="w-auto inline-block p-2">ETH</div>
-      </div>
+        <View style={tailwind("w-auto inline-block p-2")}>ETH</View>
+      </ScrollView>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">For (estimated)</label>
-        <input
-          className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+      <View style={tailwind("mb-4")}>
+        <Text style={tailwind("block text-gray-700 text-xs mb-2")}>For (estimated)</Text>
+        <TextInput
+          style={tailwind("w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500")}
           name="fiat"
           disabled={submitting}
           inputMode="decimal"
@@ -127,13 +129,13 @@ export default function Buy() {
           onChange={handleChange}
           value={calFiatAmount(data)}
         />
-        <div className="w-auto inline-block p-2">INR</div>
-      </div>
+        <View style={tailwind("w-auto inline-block p-2")}>INR</View>
+      </View>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">UPI ID</label>
-        <input
-          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+      <View style={tailwind("mb-4")}>
+        <Text style={tailwind("block text-gray-700 text-xs mb-2")}>UPI ID</Text>
+        <TextInput
+          style={tailwind("appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500")}
           name="paymentid"
           disabled={submitting}
           type="text"
@@ -143,12 +145,14 @@ export default function Buy() {
           onChange={handleChange}
           value={formData.paymentid}
         />
-      </div>
+      </View>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Escrow address (optional)</label>
-        <input
-          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+      <View style={tailwind("mb-4")}>
+        <Text style={tailwind("block text-gray-700 text-xs mb-2")}>
+         Escrow address (optional)
+        </Text>
+        <TextInput
+          style={tailwind("appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500")}
           name="escrow"
           disabled={submitting}
           type="text"
@@ -156,31 +160,23 @@ export default function Buy() {
           maxLength={79}
           placeholder={constants.ESCROW_ADDRESS}
           onChange={handleChange}
-          value={formData.escrow}
-        />
-      </div>
+          value={formData.escrow} />
+      </View>
 
         {reverted && (
           // or link
-          <div className="w-full flex pt-4">
+          <View style={tailwind("w-full flex pt-4")}>
             Not enough funds in escrow...
-          </div>
+          </View>
         )}
 
-      <div className="w-full flex pt-4">
-        {isConnected ? (
-          <button
+      <View style={tailwind("w-full flex pt-4")}>
+          <Button
+            title="Pay"
             type="submit"
             disabled={submitting}
-            className="btn-blue m-auto">
-            Pay
-          </button>
-        ) : (
-          <div className="m-auto">
-            <Account triedToEagerConnect={triedToEagerConnect}/>
-          </div>
-        )}
-      </div>
-    </form>
+            style={tailwind("btn-blue m-auto")}/>
+      </View>
+    </View>
   );
 }

@@ -1,6 +1,8 @@
 import React from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View, Text, Button } from "react-native";
 import tailwind from "tailwind-rn";
+
+import Buy from "../components/BuyWidget";
 
 export default function Home() {
   return (
@@ -11,6 +13,8 @@ export default function Home() {
             Hello Tailwind
           </Text>
         </View>
+        <Button title="Read Contract Name" style={tailwind("")}/>
+        <Buy/>
       </View>
     </SafeAreaView>
   );
