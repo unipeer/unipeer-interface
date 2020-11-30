@@ -1,6 +1,7 @@
 import React, { useReducer, useState } from "react";
 import Link from "next/link";
 import tailwind from "tailwind-rn";
+import useSWR from 'swr';
 
 import { ScrollView, View, Text, TextInput, Button } from "react-native";
 
@@ -15,22 +16,11 @@ const defaultFormData = {
   escrow: "",
 };
 
-const formReducer = (state, event) => {
-  if (event.reset) {
-    return defaultFormData;
-  }
-
-  return {
-    ...state,
-    [event.name]: event.value,
-  };
-};
-
 export default function Buy() {
-  const [formData, setFormData] = useReducer(formReducer, defaultFormData);
+  const [formData, setFormData] = useState(defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
-  //const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 5000 });
+  const { data, error } = useSWR('https://demo.unipeer.exchange/api/prices', fetcher, { refreshInterval: 5000 });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,18 +29,19 @@ export default function Buy() {
 
   };
 
-  const handleChange = (event) => {
+  const handleChange = (name, text) => {
     setFormData({
-      name: event.target.name,
-      value: event.target.value,
+      ...formData,
+      [name]: text
     });
   };
 
   const calFiatAmount = (res) => {
     if (!res) return;
     if (!formData.amount) return "";
+    const amount = Number(formData.amount);
     const price = res.ethinr.last;
-    return (formData.amount * price).toString();
+    return (amount * price).toString();
   }
 
   return (
@@ -62,7 +53,6 @@ export default function Buy() {
         <Text style={tailwind("text-gray-700 text-xs mb-2")}>Buy</Text>
         <TextInput
           style={tailwind("border-2 border-gray-200 rounded py-2 px-4 text-gray-700")}
-          name="amount"
           disabled={submitting}
           inputMode="decimal"
           type="text"
@@ -72,7 +62,7 @@ export default function Buy() {
           maxLength={79}
           spellCheck="false"
           placeholder="0.0"
-          onChange={handleChange}
+          onChangeText={text => handleChange("amount", text)}
           value={formData.amount}
         />
         <Text style={tailwind("p-2")}>ETH</Text>
@@ -94,7 +84,7 @@ export default function Buy() {
           spellCheck="false"
           placeholder="0.0"
           onChange={handleChange}
-          value={calFiatAmount("")}
+          value={calFiatAmount(data)}
         />
         <Text style={tailwind("p-2")}>INR</Text>
       </View>
@@ -103,13 +93,12 @@ export default function Buy() {
         <Text style={tailwind("text-gray-700 text-xs mb-2")}>UPI ID</Text>
         <TextInput
           style={tailwind("border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700")}
-          name="paymentid"
           disabled={submitting}
           type="text"
           minLength={1}
           maxLength={79}
           placeholder="name@upi"
-          onChange={handleChange}
+          onChangeText={text => handleChange("paymentid", text)}
           value={formData.paymentid}
         />
       </View>
@@ -120,13 +109,12 @@ export default function Buy() {
         </Text>
         <TextInput
           style={tailwind("border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700")}
-          name="escrow"
           disabled={submitting}
           type="text"
           minLength={1}
           maxLength={79}
           placeholder={constants.ESCROW_ADDRESS}
-          onChange={handleChange}
+          onChangeText={text => handleChange("escrow", text)}
           value={formData.escrow} />
       </View>
 
