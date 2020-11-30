@@ -16,28 +16,43 @@ const defaultFormData = {
   escrow: "",
 };
 
+const formReducer = (state, event) => {
+  if (event.reset) {
+    return defaultFormData;
+  }
+
+  return {
+    ...state,
+    [event.name]: event.value,
+  };
+};
+
 export default function Buy() {
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
   const { data, error } = useSWR('https://demo.unipeer.exchange/api/prices', fetcher, { refreshInterval: 5000 });
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     event.preventDefault();
     setSubmitting(true);
     setReverted(false);
 
+    console.log(formData);
+    setFormData({
+      reset: true,
+    });
   };
 
   const handleChange = (name, text) => {
     setFormData({
-      ...formData,
-      [name]: text
+      name: name,
+      value: text
     });
   };
 
   const calFiatAmount = (res) => {
-    if (!res) return;
+    if (!res) return "";
     if (!formData.amount) return "";
     const amount = Number(formData.amount);
     const price = res.ethinr.last;
@@ -54,7 +69,7 @@ export default function Buy() {
         <TextInput
           style={tailwind("border-2 border-gray-200 rounded py-2 px-4 text-gray-700")}
           disabled={submitting}
-          inputMode="decimal"
+          keyboardType="numeric"
           type="text"
           pattern="^[0-9]*[.,]?[0-9]*$"
           autoComplete="off"
@@ -72,9 +87,8 @@ export default function Buy() {
         <Text style={tailwind("text-gray-700 text-xs mb-2")}>For (estimated)</Text>
         <TextInput
           style={tailwind("border-2 border-gray-200 rounded py-2 px-4 text-gray-700")}
-          name="fiat"
           disabled={submitting}
-          inputMode="decimal"
+          keyboardType="numeric"
           type="text"
           pattern="^[0-9]*[.,]?[0-9]*$"
           autoComplete="off"
@@ -83,7 +97,7 @@ export default function Buy() {
           maxLength={79}
           spellCheck="false"
           placeholder="0.0"
-          onChange={handleChange}
+          onChangeText={text => handleChange("fiat", text)}
           value={calFiatAmount(data)}
         />
         <Text style={tailwind("p-2")}>INR</Text>
@@ -128,9 +142,10 @@ export default function Buy() {
       <View style={tailwind("w-full flex pt-4")}>
           <Button
             title="Pay"
-            type="submit"
             disabled={submitting}
-            style={tailwind("")}/>
+            style={tailwind("")}
+            onPress={handleSubmit}
+        />
       </View>
     </ScrollView>
   );
