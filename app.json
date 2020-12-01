@@ -25,7 +25,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "exchange.unipeer.app.celo",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "exchange.unipeer.app.celo",
+      "versionCode": 1
     },
     "description": "This is a demo app for interacting with Unipeer contracts on Celo",
     "githubUrl": "https://github.com/unipeer/unipeer-interface/tree/celo"
