@@ -2,10 +2,21 @@ import React, { useReducer, useState } from "react";
 import Link from "next/link";
 import tailwind from "tailwind-rn";
 import useSWR from 'swr';
+import { parseEther } from "@ethersproject/units";
+import {
+  requestTxSig,
+  waitForSignedTxs,
+  requestAccountAddress,
+  waitForAccountAuth,
+} from '@celo/dappkit';
+import { Linking } from 'expo';
 
 import { ScrollView, View, Text, TextInput, Button } from "react-native";
 
 import { constants } from "../util";
+import useContract from "../hooks/useContract";
+import { web3, kit } from '../root'
+
 import Comptroller from "../abi/Comptroller.json";
 
 const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
@@ -31,17 +42,70 @@ export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
+  const [account, setAccount] = useState("");
+  const comptroller = new web3.eth.Contract(
+    Comptroller,
+    constants.COMPTROLLER_ADDRESS,
+  );
   const { data, error } = useSWR('https://demo.unipeer.exchange/api/prices', fetcher, { refreshInterval: 5000 });
+  const dappName = 'Unipeer';
+  const callback = Linking.makeUrl('/my/path');
+
+  const login = async () => {
+    const requestId = "login";
+
+    // Ask the Celo Alfajores Wallet for user info
+    requestAccountAddress({
+      requestId,
+      dappName,
+      callback,
+    })
+
+    const dappkitResponse = await waitForAccountAuth(requestId)
+    setAccount(dappkitResponse.address);
+  }
 
   const handleSubmit = async () => {
-    event.preventDefault();
-    setSubmitting(true);
+    //setSubmitting(true);
     setReverted(false);
+    const requestId = "buy";
 
-    console.log(formData);
-    setFormData({
-      reset: true,
-    });
+    const txObject = await comptroller.methods.requestFiatPayment(
+        formData.escrow || constants.ESCROW_ADDRESS,
+        account,
+        parseEther(formData.amount),
+        formData.paymentid,
+      );
+
+    requestTxSig(
+      kit,
+      [
+        {
+          from: account,
+          to: comptroller.options.address,
+          tx: txObject,
+        }
+      ],
+      { requestId, dappName, callback }
+    );
+
+    // Get the response from the Celo wallet
+    const dappkitResponse = await waitForSignedTxs(requestId)
+    const tx = dappkitResponse.rawTxs[0]
+
+    await kit.web3.eth.sendTransaction(tx)
+      .then((result) => {
+        console.log(`Hello World contract update transaction receipt: `, result)
+        setFormData({
+          reset: true,
+        });
+      })
+      .catch((e) => {
+        if (e.code == -32016)
+          setReverted(true);
+        console.error(e)
+      })
+      .finally(() => setSubmitting(false));
   };
 
   const handleChange = (name, text) => {
@@ -60,10 +124,7 @@ export default function Buy() {
   }
 
   return (
-    <ScrollView
-      style={tailwind("bg-white rounded-lg p-6 mb-4")}
-      onSubmit={handleSubmit}
-    >
+    <ScrollView style={tailwind("bg-white rounded-lg py-4 mb-4")}>
       <View style={tailwind("mb-4")}>
         <Text style={tailwind("text-gray-700 text-xs mb-2")}>Buy</Text>
         <TextInput
@@ -75,7 +136,7 @@ export default function Buy() {
           autoComplete="off"
           minLength={1}
           maxLength={79}
-          spellCheck="false"
+          spellCheck={false}
           placeholder="0.0"
           onChangeText={text => handleChange("amount", text)}
           value={formData.amount}
@@ -95,7 +156,7 @@ export default function Buy() {
           autoCorrect={false}
           minLength={1}
           maxLength={79}
-          spellCheck="false"
+          spellCheck={false}
           placeholder="0.0"
           onChangeText={text => handleChange("fiat", text)}
           value={calFiatAmount(data)}
@@ -140,6 +201,11 @@ export default function Buy() {
         )}
 
       <View style={tailwind("w-full flex pt-4")}>
+          <Button
+            title="Login"
+            disabled={submitting}
+            onPress={login}
+        />
           <Button
             title="Pay"
             disabled={submitting}

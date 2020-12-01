@@ -15,6 +15,8 @@
     "postbuild": "next-on-netlify"
   },
   "dependencies": {
+    "@celo/contractkit": "^1.0.0-beta3",
+    "@celo/dappkit": "^1.0.0-beta3",
     "@metamask/onboarding": "^1.0.0",
     "@web3-react/core": "^6.1.1",
     "@web3-react/injected-connector": "^6.0.7",
@@ -22,15 +24,18 @@
     "@web3-react/walletconnect-connector": "^6.1.5",
     "ethers": "^5.0.18",
     "expo": "^39.0.4",
+    "moment": "^2.29.1",
     "next": "~10.0.3",
     "next-on-netlify": "^2.6.3",
+    "node-libs-react-native": "^1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
     "react-native-tcp": "^4.0.0",
     "react-native-web": "^0.14.8",
     "swr": "^0.2.3",
-    "tailwind-rn": "^2.0.1"
+    "tailwind-rn": "^2.0.1",
+    "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
     "@expo/next-adapter": "^2.1.45",
