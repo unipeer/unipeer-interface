@@ -94,7 +94,6 @@ export default function Buy() {
     )
       .then(waitForSignedTxs(requestId))
       .then(async (res) => {
-        console.log("REACHED!!!!");
         setFormData({
           reset: true,
         });
@@ -103,6 +102,7 @@ export default function Buy() {
       })
       .catch((e) => {
         if (e.code == -32016) setReverted(true);
+        console.log(e);
         console.error(e);
       })
       .finally(() => setSubmitting(false));

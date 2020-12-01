@@ -8589,6 +8589,11 @@ expo-location@~9.0.0:
   resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-9.0.1.tgz#adf93b8adf5e9dcf9570cba1d66c8e3831329156"
   integrity sha512-yl4V2IelxrjG1h3nshkyILwghysNJvvEuR4Of0U7oYAsBrT0cq8NxFuaDemRvqt9Yb19wVFNMoVtYFNpthcqpQ==
 
+expo-optimize@^0.1.66:
+  version "0.1.66"
+  resolved "https://registry.yarnpkg.com/expo-optimize/-/expo-optimize-0.1.66.tgz#4a45841eb8706d5db7609c9c121fa5a371666b0e"
+  integrity sha512-wNi82v3CqIRSrWVt10r/nIW3WnTujmV5C1Auy17Yh2he4AC5SBTRl4CDfhEJoRmRpinIIEviu0FJXukmfg0taw==
+
 expo-permissions@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.0.0.tgz#5a45e8451dd7ff37c9e6ce5e2447818372547813"
