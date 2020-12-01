@@ -53,3 +53,4 @@ out_functions
 /.pnp
 .pnp.js
 # @end @expo/next-adapter
+.expo-shared
