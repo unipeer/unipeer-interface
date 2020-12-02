@@ -15,8 +15,8 @@
     "postbuild": "next-on-netlify"
   },
   "dependencies": {
-    "@celo/contractkit": "^1.0.0-beta3",
-    "@celo/dappkit": "^1.0.0-beta3",
+    "@celo/contractkit": "^0.4.18",
+    "@celo/dappkit": "^0.10.0",
     "@metamask/onboarding": "^1.0.0",
     "@web3-react/core": "^6.1.1",
     "@web3-react/injected-connector": "^6.0.7",
