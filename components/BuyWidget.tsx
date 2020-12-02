@@ -81,31 +81,39 @@ export default function Buy() {
       formData.paymentid,
     );
 
-    await requestTxSig(
-      kit,
-      [
-        {
-          from: account,
-          to: comptroller.options.address,
-          tx: txObject,
-        },
-      ],
-      { requestId, dappName, callback },
-    )
-      .then(waitForSignedTxs(requestId))
-      .then(async (res) => {
-        setFormData({
-          reset: true,
-        });
-        const tx = res.rawTxs[0];
-        let hash = await kit.sendTransaction(tx);
-      })
-      .catch((e) => {
-        if (e.code == -32016) setReverted(true);
-        console.log(e);
-        console.error(e);
-      })
-      .finally(() => setSubmitting(false));
+    try {
+      await requestTxSig(
+        kit,
+        [
+          {
+            from: account,
+            to: comptroller.options.address,
+            tx: txObject,
+            estimatedGas: 800000000,
+          },
+        ],
+        { requestId, dappName, callback },
+      );
+      console.log("REACHED 1111");
+
+      // Get the response from the Celo wallet
+      const res = await waitForSignedTxs(requestId);
+      console.log("REACHED 2222");
+
+      setFormData({
+        reset: true,
+      });
+
+      const tx = res.rawTxs[0];
+      //let hash = await kit.sendTransaction(tx);
+      let result = await kit.web3.eth.sendSignedTransaction(tx);
+    } catch (e) {
+      if (e.code == -32016) setReverted(true);
+      console.log(e);
+      console.error(e);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (name, text) => {
