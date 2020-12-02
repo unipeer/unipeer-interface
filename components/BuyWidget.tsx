@@ -9,7 +9,7 @@ import {
   requestAccountAddress,
   waitForAccountAuth,
 } from "@celo/dappkit";
-import { Linking } from "expo";
+import * as Linking from "expo-linking";
 
 import { ScrollView, View, Text, TextInput, Button } from "react-native";
 
@@ -53,9 +53,9 @@ export default function Buy() {
     { refreshInterval: 5000 },
   );
   const dappName = "Unipeer";
-  const callback = Linking.makeUrl("/my/path");
 
   const login = async () => {
+    const callback = Linking.makeUrl("/my/path");
     const requestId = "login";
 
     // Ask the Celo Alfajores Wallet for user info
@@ -72,7 +72,8 @@ export default function Buy() {
   const handleSubmit = async () => {
     setSubmitting(true);
     setReverted(false);
-    const requestId = "buy";
+    const callback = Linking.makeUrl("/my/path2");
+    const requestId = "buy_celo";
 
     const txObject = await comptroller.methods.requestFiatPayment(
       formData.escrow || constants.ESCROW_ADDRESS,

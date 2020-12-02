@@ -24,6 +24,7 @@
     "@web3-react/walletconnect-connector": "^6.1.5",
     "ethers": "^5.0.18",
     "expo": "^39.0.4",
+    "expo-linking": "^1.0.5",
     "moment": "^2.29.1",
     "next": "~10.0.3",
     "next-on-netlify": "^2.6.3",
