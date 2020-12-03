@@ -45,7 +45,7 @@ export default function Buy() {
   const [account, setAccount] = useState("");
   const comptroller = new web3.eth.Contract(
     Comptroller,
-    constants.COMPTROLLER_ADDRESS,
+    constants.COMPTROLLER_ADDRESS
   );
   const { data, error } = useSWR(
     "https://demo.unipeer.exchange/api/prices",
@@ -66,13 +66,17 @@ export default function Buy() {
     });
 
     const dappkitResponse = await waitForAccountAuth(requestId);
+
+    // Set the default account to the account returned from the wallet
+    kit.defaultAccount = dappkitResponse.address
+
     setAccount(dappkitResponse.address);
   };
 
   const handleSubmit = async () => {
     setSubmitting(true);
     setReverted(false);
-    const callback = Linking.makeUrl("/my/path2");
+    const callback = Linking.makeUrl("/my/path");
     const requestId = "buy_celo";
 
     const txObject = await comptroller.methods.requestFiatPayment(
@@ -83,7 +87,7 @@ export default function Buy() {
     );
 
     try {
-      await requestTxSig(
+      requestTxSig(
         kit,
         [
           {
