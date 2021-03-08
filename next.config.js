@@ -6,6 +6,6 @@ module.exports = withExpo({
   target: "serverless",
   env: {
     IPFS: process.env.IPFS === "true" ? "true" : "false",
-    POKT_PROJECT_ID: "5f8c0233b90218002e9cea39",
+    POKT_PROJECT_ID: "",
   },
 });
