@@ -4,8 +4,8 @@
  * @type {import('next').NextConfig}
  **/
 module.exports = {
-  reactStrictMode: false,
-  swcMinify: false,
+  reactStrictMode: true,
+  swcMinify: true,
   env: {
     IPFS: process.env.IPFS === "true" ? "true" : "false",
     COMMIT_SHA:

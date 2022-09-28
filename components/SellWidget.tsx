@@ -49,7 +49,6 @@ export default function Sell() {
   const escrowFactory = useContract(
     constants.ESCROW_FACTORY_ADDRESS,
     EscrowContractFactory,
-    true,
   );
 
   const handleSubmit = async (event) => {

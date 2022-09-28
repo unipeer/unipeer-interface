@@ -10,6 +10,7 @@ import useEagerConnect from "../hooks/useEagerConnect";
 import { constants } from "../util";
 
 import Comptroller from "../abi/Comptroller.json";
+import type { Unipeer__factory, Unipeer } from "../contracts/types";
 
 const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
 const defaultFormData = {
@@ -38,7 +39,6 @@ export default function Buy() {
   const comptroller = useContract(
     constants.COMPTROLLER_ADDRESS,
     Comptroller,
-    true,
   );
   const { library, account } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
