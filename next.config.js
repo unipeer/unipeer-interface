@@ -4,10 +4,8 @@
  * @type {import('next').NextConfig}
  **/
 module.exports = {
-  // Target must be serverless
-  target: "serverless",
-  reactStrictMode: true,
-  swcMinify: true,
+  reactStrictMode: false,
+  swcMinify: false,
   env: {
     IPFS: process.env.IPFS === "true" ? "true" : "false",
     COMMIT_SHA:
