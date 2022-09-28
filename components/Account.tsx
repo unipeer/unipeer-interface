@@ -41,10 +41,6 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
   }
 
   if (typeof account !== "string") {
-    const hasMetaMaskOrWeb3Available =
-      MetaMaskOnboarding.isMetaMaskInstalled() ||
-      window?.ethereum ||
-      window?.web3;
 
     return (
       <div>
