@@ -12,28 +12,16 @@ export function shortenHex(hex, length = 4) {
   )}`;
 }
 
-const ETHERSCAN_PREFIXES = {
-  1: "",
-  3: "ropsten.",
-  4: "rinkeby.",
-  5: "goerli.",
-  42: "kovan.",
+const ETHERSCAN_URL= {
+  1: "https://etherscan.io",
+  100: "https://gnosisscan.io",
+  100100: "https://blockscout-chiado.gnosistestnet.com.",
 };
 
-export const INFURA_PREFIXES: { [key: number]: string } = {
-  1: 'mainnet',
-  3: 'ropsten',
-  4: 'rinkeby',
-  5: 'goerli',
-  42: 'kovan',
-}
-
-export const POKT_PREFIXES: { [key: number]: string } = {
-  1: 'eth-mainnet',
-  3: 'eth-ropsten',
-  4: 'eth-rinkeby',
-  5: 'eth-goerli',
-  42: 'poa-kovan',
+export const RPC_URL: { [key: number]: string } = {
+  1: "mainnet",
+  100: "https://rpc.gnosischain.com.",
+  100100: "https://rpc-chiado.gnosistestnet.com",
 }
 
 /**
@@ -45,11 +33,11 @@ export function formatEtherscanLink(type, data) {
   switch (type) {
     case "Account": {
       const [chainId, address] = data;
-      return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/address/${address}`;
+      return `https://${ETHERSCAN_URL[chainId]}/address/${address}`;
     }
     case "Transaction": {
       const [chainId, hash] = data;
-      return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${hash}`;
+      return `https://${ETHERSCAN_URL[chainId]}/tx/${hash}`;
     }
   }
 }

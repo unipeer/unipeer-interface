@@ -2,14 +2,14 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-import { POKT_PREFIXES } from './util';
+import { RPC_URL } from './util';
 
-export function getNetwork(defaultChainId = 1): NetworkConnector {
+export function getNetwork(defaultChainId = 100100): NetworkConnector {
   return new NetworkConnector({
-    urls: [1, 3, 4, 5, 42].reduce(
+    urls: [1, 100, 100100].reduce(
       (urls, chainId) =>
         Object.assign(urls, {
-          [chainId]: `https://${POKT_PREFIXES[chainId]}.gateway.pokt.network/v1/${process.env.POKT_PROJECT_ID}`,
+          [chainId]: RPC_URL[chainId],
         }),
       {}
     ),
@@ -18,12 +18,12 @@ export function getNetwork(defaultChainId = 1): NetworkConnector {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: [1, 100, 100100],
 });
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    1: `https://${POKT_PREFIXES[1]}.gateway.pokt.network/v1/${process.env.POKT_PROJECT_ID}`,
+    1: RPC_URL[1],
   },
   bridge: 'https://bridge.walletconnect.org',
 })

@@ -5,19 +5,16 @@ import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
 
 import Account from "./Account";
-import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { constants } from "../util";
 
-import Comptroller from "../abi/Comptroller.json";
-import type { Unipeer__factory, Unipeer } from "../contracts/types";
+import { Unipeer__factory, Unipeer } from "../contracts/types";
 
-const fetcher = (...args) => fetch(args[0], args[1]).then(res => res.json());
 const defaultFormData = {
   paymentid: "",
+  seller: "",
+  token: "",
   amount: "",
-  fiat: "",
-  escrow: "",
 };
 
 const formReducer = (state, event) => {
@@ -36,27 +33,22 @@ export default function Buy() {
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
   const triedToEagerConnect = useEagerConnect();
-  const comptroller = useContract(
-    constants.COMPTROLLER_ADDRESS,
-    Comptroller,
-  );
   const { library, account } = useWeb3React();
+
+  const Unipeer = new Unipeer__factory().attach("");
   const isConnected = typeof account === "string" && !!library;
-  const { data, error } = useSWR('/api/prices', fetcher, { refreshInterval: 5000 });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
     setReverted(false);
 
-    await comptroller
-      .requestFiatPayment(
-        formData.escrow || constants.ESCROW_ADDRESS,
-        account,
-        parseEther(formData.amount),
+    await Unipeer.buyOrder(
         formData.paymentid,
-      )
-      .then((res) => {
+        formData.seller,
+        formData.token,
+        parseEther(formData.amount),
+    ).then((res) => {
         setFormData({
           reset: true,
         });
@@ -75,13 +67,6 @@ export default function Buy() {
       value: event.target.value,
     });
   };
-
-  const calFiatAmount = (res) => {
-    if (!res) return;
-    if (!formData.amount) return "";
-    const price = res.ethinr.last;
-    return (formData.amount * price).toString();
-  }
 
   return (
     <form
@@ -107,27 +92,6 @@ export default function Buy() {
           value={formData.amount}
         />
         <div className="w-auto inline-block p-2">ETH</div>
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">For (estimated)</label>
-        <input
-          className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-          name="fiat"
-          disabled={submitting}
-          inputMode="decimal"
-          type="text"
-          pattern="^[0-9]*[.,]?[0-9]*$"
-          autoComplete="off"
-          autoCorrect="off"
-          minLength={1}
-          maxLength={79}
-          spellCheck="false"
-          placeholder="0.0"
-          onChange={handleChange}
-          value={calFiatAmount(data)}
-        />
-        <div className="w-auto inline-block p-2">INR</div>
       </div>
 
       <div className="mb-4">
