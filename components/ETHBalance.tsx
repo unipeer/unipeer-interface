@@ -5,9 +5,13 @@ import { parseBalance } from "../util";
 
 const ETHBalance = () => {
   const { account } = useWeb3React<Web3Provider>();
-  const { data } = useETHBalance(account);
+  
+  if (!account) {
+    return <p>Balance: Ξ{parseBalance(0)}</p>;
+  }
 
-  return <p>Balance: Ξ{parseBalance(data ?? 0)}</p>;
+  const { data } = useETHBalance(account);
+  return <p>Balance: Ξ{parseBalance(data)}</p>;
 };
 
 export default ETHBalance;

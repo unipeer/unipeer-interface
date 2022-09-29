@@ -1,5 +1,11 @@
 import { formatUnits, parseEther } from "@ethersproject/units";
 
+export const addresses = {
+  UNIPEER_ADDRESS: {
+    100: "",
+    100100: "0xCF5F227De666AF96Cf671Cd5727247A427b28b7A"
+  }
+}
 export const constants = {
   COMPTROLLER_ADDRESS: "0xcE589FC23EE7AB377e07c513e6b32e93ab57CF1B",
   ESCROW_ADDRESS: "0x8eeC1CDc04feBceaF80543ab6887E2a7fdEB88CE",

@@ -6,7 +6,7 @@ import { parseEther } from "@ethersproject/units";
 
 import Account from "./Account";
 import useEagerConnect from "../hooks/useEagerConnect";
-import { constants } from "../util";
+import { addresses, constants } from "../util";
 
 import { Unipeer__factory, Unipeer } from "../contracts/types";
 
@@ -35,7 +35,7 @@ export default function Buy() {
   const triedToEagerConnect = useEagerConnect();
   const { library, account } = useWeb3React();
 
-  const Unipeer = new Unipeer__factory().attach("");
+  const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[100100]);
   const isConnected = typeof account === "string" && !!library;
 
   const handleSubmit = async (event) => {
