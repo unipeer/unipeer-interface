@@ -19,7 +19,7 @@ export default function Home() {
 
       <Nav />
 
-      {active && chainId != 100100 && (
+      {active && chainId != 10200 && (
         <div
           className="w-2/4 mx-auto mb-3 bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 p-1 shadow-md"
           role="alert"

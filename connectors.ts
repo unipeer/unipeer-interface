@@ -6,7 +6,7 @@ import { RPC_URL } from './util';
 
 export function getNetwork(defaultChainId = 100100): NetworkConnector {
   return new NetworkConnector({
-    urls: [1, 100, 100100].reduce(
+    urls: [1, 100, 10200].reduce(
       (urls, chainId) =>
         Object.assign(urls, {
           [chainId]: RPC_URL[chainId],
@@ -18,7 +18,7 @@ export function getNetwork(defaultChainId = 100100): NetworkConnector {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 100, 100100],
+  supportedChainIds: [1, 100, 10200],
 });
 
 export const walletconnect = new WalletConnectConnector({

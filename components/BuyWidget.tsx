@@ -44,7 +44,7 @@ export default function Buy() {
     setReverted(false);
 
     await Unipeer.buyOrder(
-        formData.paymentid,
+        formData.paymentid || "1",
         formData.seller,
         formData.token,
         parseEther(formData.amount),
@@ -74,6 +74,21 @@ export default function Buy() {
       onSubmit={handleSubmit}
     >
       <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">Payment Method ID (Optional)</label>
+        <input
+          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+          name="paymentid"
+          disabled={submitting}
+          type="text"
+          minLength={1}
+          maxLength={79}
+          placeholder="1"
+          onChange={handleChange}
+          value={formData.paymentid}
+        />
+      </div>
+
+      <div className="mb-4">
         <label className="block text-gray-700 text-xs mb-2">Buy</label>
         <input
           className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
@@ -91,43 +106,28 @@ export default function Buy() {
           onChange={handleChange}
           value={formData.amount}
         />
-        <div className="w-auto inline-block p-2">ETH</div>
+        <div className="w-auto inline-block p-2">DAI</div>
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">UPI ID</label>
+        <label className="block text-gray-700 text-xs mb-2">Seller address</label>
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-          name="paymentid"
+          name="seller"
           disabled={submitting}
           type="text"
           minLength={1}
           maxLength={79}
-          placeholder="name@upi"
+          placeholder="0x00"
           onChange={handleChange}
-          value={formData.paymentid}
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Escrow address (optional)</label>
-        <input
-          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-          name="escrow"
-          disabled={submitting}
-          type="text"
-          minLength={1}
-          maxLength={79}
-          placeholder={constants.ESCROW_ADDRESS}
-          onChange={handleChange}
-          value={formData.escrow}
+          value={formData.seller}
         />
       </div>
 
         {reverted && (
           // or link
           <div className="w-full flex pt-4">
-            Not enough funds in escrow...
+            Not enough funds ...
           </div>
         )}
 
