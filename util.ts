@@ -3,7 +3,7 @@ import { formatUnits, parseEther } from "@ethersproject/units";
 export const addresses = {
   UNIPEER_ADDRESS: {
     100: "",
-    10200: "0xCF5F227De666AF96Cf671Cd5727247A427b28b7A"
+    10200: "0xEF2689DB6A7b3AB383Fb14Ff7d9C2254C248103f"
   }
 }
 export const constants = {
