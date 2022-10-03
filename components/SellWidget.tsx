@@ -34,8 +34,8 @@ export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
-  const [payMethods, setPayMethods] = useState([BigNumber.from("0"), ""]);
-  const [selected, setSelected] = useState("");
+  const [payMethods, setPayMethods] = useState([ { paymentID: "", paymentName: "", tokens: [""] } ]);
+  const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
   const triedToEagerConnect = useEagerConnect();
   const { library, account, active, error, chainId } = useWeb3React<
@@ -67,9 +67,16 @@ export default function Sell() {
   };
 
   const fetchPaymentMethods = async () => {
-    let data = await Unipeer.paymentMethods(0);
-    setPayMethods(data);
-    setSelected(data[0].toString());
+    // Read list of payment method IDs, name and list of enabled tokens
+    // const events = useEventListener(Unipeer, "Unipeer", "PaymentMethodUpdate", library, 100);
+    // let pm = await Unipeer.paymentMethods(0);
+    let data = {
+      paymentID: "0",
+      paymentName: "PayPal",
+      tokens: ["0x000"]
+    };
+    setPayMethods([data]);
+    setSelected(0);
   };
 
   const getBalance = async () => {
@@ -101,7 +108,7 @@ export default function Sell() {
   };
 
   const handleSelect = async (event) => {
-    setSelected(event.target.value);
+    setSelected(event.target.index);
   };
 
   useEffect(() => {
@@ -119,7 +126,7 @@ export default function Sell() {
     payMethods.map((item, i) => {
       return (
         <option key={i} value={item.toString()}>
-          {item.toString()}
+          {item.paymentID.toString()}: {item.paymentName}
         </option>
       );
     }, this);
