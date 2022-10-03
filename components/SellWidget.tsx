@@ -129,7 +129,7 @@ export default function Sell() {
           {item.paymentID.toString()}: {item.paymentName}
         </option>
       );
-    }, this);
+    });
 
   return (
     <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
@@ -160,6 +160,7 @@ export default function Sell() {
           <a
             href={formatEtherscanLink("Account", [chainId, selected])}
             target="_blank"
+            rel="noreferrer"
             className="py-2 px-1"
           >
             <svg

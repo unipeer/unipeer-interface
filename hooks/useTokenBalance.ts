@@ -25,7 +25,7 @@ export default function useTokenBalance(
 
   const result = useSWR(
     shouldFetch ? ["TokenBalance", address, tokenAddress] : null,
-    getTokenBalance(contract),
+    getTokenBalance(contract!),
     {
       suspense,
     }

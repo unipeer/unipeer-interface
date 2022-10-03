@@ -12,7 +12,7 @@ export default function useBlockNumber() {
   const { library } = useWeb3React<Web3Provider>();
   const shouldFetch = !!library;
 
-  return useSWR(shouldFetch ? ["BlockNumber"] : null, getBlockNumber(library), {
+  return useSWR(shouldFetch ? ["BlockNumber"] : null, getBlockNumber(library!), {
     refreshInterval: 10 * 1000,
   });
 }
