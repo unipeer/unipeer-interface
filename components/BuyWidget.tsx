@@ -35,8 +35,9 @@ export default function Buy() {
   const triedToEagerConnect = useEagerConnect();
   const { library, account } = useWeb3React();
 
-  const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
   const isConnected = typeof account === "string" && !!library;
+
+  const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

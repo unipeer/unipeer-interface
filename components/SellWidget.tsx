@@ -4,19 +4,18 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
+import { BigNumber } from "@ethersproject/bignumber";
 
 import Account from "./Account";
-import useContract from "../hooks/useContract";
-import useEtherContract from "../hooks/useEtherContract";
 import useEagerConnect from "../hooks/useEagerConnect";
-import { constants, formatEtherscanLink } from "../util";
+import { addresses, constants, formatEtherscanLink } from "../util";
 
-import { Escrow } from "../abi/Escrow";
-import { EscrowFactory } from "../abi/EscrowFactory";
-import EscrowContractFactory from "../abi/EscrowContractFactory.json";
+import { Unipeer__factory, Unipeer } from "../contracts/types";
 
 const defaultFormData = {
-  paymentid: "",
+  paymentId: "",
+  paymentAddress: "",
+  feeRate: "",
   amount: "",
 };
 
@@ -35,30 +34,27 @@ export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
-  const [escrows, setEscrows] = useState([]);
+  const [payMethods, setPayMethods] = useState([BigNumber.from("0"), ""]);
   const [selected, setSelected] = useState("");
   const [balance, setBalance] = useState("...");
-
+  const triedToEagerConnect = useEagerConnect();
   const { library, account, active, error, chainId } = useWeb3React<
     Web3Provider
   >();
   const isConnected = typeof account === "string" && !!library;
 
-  const triedToEagerConnect = useEagerConnect();
-  const EscrowInstance = useEtherContract(EscrowFactory);
-  const escrowFactory = useContract(
-    constants.ESCROW_FACTORY_ADDRESS,
-    EscrowContractFactory,
-  );
+  const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
     setReverted(false);
 
-    await escrowFactory
-      .newEscrow(formData.paymentid, { value: parseEther(formData.amount) })
-      .then((res) => {
+    await Unipeer.updateSellerPaymentMethod(
+        formData.paymentId || "1",
+        formData.paymentAddress,
+        formData.feeRate,
+    ).then((res) => {
         setFormData({
           reset: true,
         });
@@ -70,33 +66,31 @@ export default function Sell() {
       .finally(() => setSubmitting(false));
   };
 
-  const fetchEscrows = async () => {
-    let data = await escrowFactory.getEscrows(account);
-    setEscrows(data);
-    setSelected(data[0]);
+  const fetchPaymentMethods = async () => {
+    let data = await Unipeer.paymentMethods(0);
+    setPayMethods(data);
+    setSelected(data[0].toString());
   };
 
   const getBalance = async () => {
     if (!selected) return;
-    if (!EscrowInstance) return;
-    let escrow: Escrow = await EscrowInstance.attach(selected);
-    let bal = await escrow.getUnlockedBalance();
+    if (!Unipeer) return;
+    let bal = await Unipeer.tokenBalance(account!!, "token");
     setBalance(formatEther(bal));
   };
 
   const withdraw = async () => {
     if (!selected) return;
-    let escrow: Escrow = await EscrowInstance.attach(selected);
-    let bal = await escrow.getUnlockedBalance();
-    await escrow.withdraw(bal, account);
+    if (!Unipeer) return;
+    let bal = await Unipeer.tokenBalance(account!!, "token");
+    await Unipeer.withdrawTokens("token", bal);
   };
 
   const deposit = async () => {
     if (!selected) return;
-    await library.getSigner(account).sendTransaction({
-      to: selected,
-      value: parseEther("0.1"),
-    });
+    if (!Unipeer) return;
+    let bal = parseEther("1000");
+    await Unipeer.depositTokens("payid", "token", bal);
   };
 
   const handleChange = (event) => {
@@ -112,7 +106,7 @@ export default function Sell() {
 
   useEffect(() => {
     if (isConnected) {
-      fetchEscrows();
+      fetchPaymentMethods();
     }
   }, [isConnected]);
 
@@ -120,12 +114,12 @@ export default function Sell() {
     getBalance();
   }, [selected]);
 
-  const escrowsList =
-    escrows.length > 0 &&
-    escrows.map((item, i) => {
+  const methodsList =
+    payMethods.length > 0 &&
+    payMethods.map((item, i) => {
       return (
-        <option key={i} value={item}>
-          {item}
+        <option key={i} value={item.toString()}>
+          {item.toString()}
         </option>
       );
     }, this);
@@ -134,7 +128,7 @@ export default function Sell() {
     <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
         <label className="block text-gray-700 text-xs mb-2">
-          Deployed Escrows
+          Accepted Payment Methods
         </label>
         <div className="flex">
           <div className="relative w-full">
@@ -143,7 +137,7 @@ export default function Sell() {
               onChange={handleSelect}
               value={selected}
             >
-              {escrowsList}
+              {methodsList}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -193,31 +187,46 @@ export default function Sell() {
       <hr />
       <br />
 
+      <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">Payment Method ID</label>
+        <input
+          className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
+          name="paymentId"
+          disabled={submitting}
+          type="text"
+          minLength={1}
+          maxLength={79}
+          placeholder="1"
+          onChange={handleChange}
+          value={formData.paymentId}
+        />
+      </div>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-xs mb-2">
-            Receive Payments at ID
+            Receive Payments at Address:
           </label>
           <input
             className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-            name="paymentid"
+            name="paymentAddress"
             disabled={submitting}
             type="text"
             minLength={1}
             maxLength={79}
             placeholder="name@upi"
             onChange={handleChange}
-            value={formData.paymentid}
+            value={formData.paymentAddress}
           />
         </div>
 
         <div className="mb-4">
           <label className="block text-gray-700 text-xs mb-2">
-            Amount to Sell
+            Fee Rate
           </label>
           <input
             className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
-            name="amount"
+            name="feeRate"
             disabled={submitting}
             inputMode="decimal"
             type="text"
@@ -229,9 +238,9 @@ export default function Sell() {
             spellCheck="false"
             placeholder="0.0"
             onChange={handleChange}
-            value={formData.amount}
+            value={formData.feeRate}
           />
-          <div className="w-auto inline-block p-2">ETH</div>
+          <div className="w-auto inline-block p-2">%</div>
         </div>
         {reverted && (
           <div className="w-full flex pt-4">Not enough funds in escrow...</div>
@@ -244,7 +253,7 @@ export default function Sell() {
               disabled={submitting}
               className="btn-blue m-auto"
             >
-              Create Escrow
+              Create or update Payment Method
             </button>
           ) : (
             <div className="m-auto">
