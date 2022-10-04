@@ -8,9 +8,6 @@ export const addresses = {
 }
 export const constants = {
   DAI_ADDRESS: "",
-  COMPTROLLER_ADDRESS: "0xcE589FC23EE7AB377e07c513e6b32e93ab57CF1B",
-  ESCROW_ADDRESS: "0x8eeC1CDc04feBceaF80543ab6887E2a7fdEB88CE",
-  ESCROW_FACTORY_ADDRESS: "0x8f83522DECe212fCcc0a124A14b59C1EaA07882F",
 }
 
 export function shortenHex(hex, length = 4) {
@@ -22,13 +19,13 @@ export function shortenHex(hex, length = 4) {
 const ETHERSCAN_URL= {
   1: "https://etherscan.io",
   100: "https://gnosisscan.io",
-  10200: "https://rpc.chiadochain.net",
+  10200: "https://blockscout.chiadochain.net",
 };
 
 export const RPC_URL: { [key: number]: string } = {
   1: "mainnet",
   100: "https://rpc.gnosischain.com.",
-  10200: "https://blockscout.chiadochain.net",
+  10200: "https://rpc.chiadochain.net",
 }
 
 /**

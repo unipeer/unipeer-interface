@@ -1,15 +1,14 @@
 import React, { useReducer, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+
 import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
 
-import Account from "./Account";
-import useEagerConnect from "../hooks/useEagerConnect";
-import { addresses, constants, formatEtherscanLink } from "../util";
+import { useAccount } from 'wagmi';
+import { ConnectKitButton } from "connectkit";
 
+import { addresses, constants, formatEtherscanLink } from "../util";
 import { Unipeer__factory, Unipeer } from "../contracts/types";
 
 const defaultFormData = {
@@ -34,14 +33,10 @@ export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
-  const [payMethods, setPayMethods] = useState([ { paymentID: "", paymentName: "", tokens: [""] } ]);
+  const [payMethods, setPayMethods] = useState<[{ paymentID: string; paymentName: string; tokens: string[] }?]>([]);
   const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
-  const triedToEagerConnect = useEagerConnect();
-  const { library, account, active, error, chainId } = useWeb3React<
-    Web3Provider
-  >();
-  const isConnected = typeof account === "string" && !!library;
+  const { address, connector, isConnected } = useAccount()
 
   const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
 
@@ -82,14 +77,14 @@ export default function Sell() {
   const getBalance = async () => {
     if (!selected) return;
     if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(account!!, "token");
+    let bal = await Unipeer.tokenBalance(address!, "token");
     setBalance(formatEther(bal));
   };
 
   const withdraw = async () => {
     if (!selected) return;
     if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(account!!, "token");
+    let bal = await Unipeer.tokenBalance(address!, "token");
     await Unipeer.withdrawTokens("token", bal);
   };
 
@@ -125,8 +120,8 @@ export default function Sell() {
     payMethods.length > 0 &&
     payMethods.map((item, i) => {
       return (
-        <option key={i} value={item.toString()}>
-          {item.paymentID.toString()}: {item.paymentName}
+        <option key={i} value={item!.toString()}>
+          {item!.paymentID.toString()}: {item!.paymentName}
         </option>
       );
     });
@@ -158,7 +153,7 @@ export default function Sell() {
           </div>
 
           <a
-            href={formatEtherscanLink("Account", [chainId, selected])}
+            href=""
             target="_blank"
             rel="noreferrer"
             className="py-2 px-1"
@@ -265,7 +260,7 @@ export default function Sell() {
             </button>
           ) : (
             <div className="m-auto">
-              <Account triedToEagerConnect={triedToEagerConnect} />
+                <ConnectKitButton />
             </div>
           )}
         </div>

@@ -1,13 +1,7 @@
-import { verifyMessage } from "@ethersproject/wallet";
-import { useWeb3React } from "@web3-react/core";
 import Link from "next/link";
-
-import Account from "./Account";
-import useEagerConnect from "../hooks/useEagerConnect";
+import { ConnectKitButton } from "connectkit";
 
 export default function Nav() {
-  const triedToEagerConnect = useEagerConnect();
-
   return (
     <header>
       <nav>
@@ -22,7 +16,7 @@ export default function Nav() {
           <li>
           </li>
           <li>
-            <Account triedToEagerConnect={triedToEagerConnect} />
+            <ConnectKitButton />
           </li>
         </ul>
       </nav>

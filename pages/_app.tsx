@@ -1,14 +1,78 @@
-import { Web3ReactProvider } from "@web3-react/core";
 import type { AppProps } from "next/app";
-
-import getLibrary from "../getLibrary";
 import "../styles/index.css";
+
+import {
+  chain,
+  Chain,
+  WagmiConfig,
+  createClient,
+  configureChains,
+} from 'wagmi'
+
+import { publicProvider } from 'wagmi/providers/public'
+
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+
+import { ConnectKitProvider, } from "connectkit";
+
+const chiadoExplorer = {
+  name: "blockscout",
+  url: "https://blockscout.chiadochain.net"
+};
+
+const chiado: Chain = {
+  id: 10200,
+  name: "Chiado",
+  network: "chaido",
+  rpcUrls: {
+    public: "https://rpc.chiadochain.net",
+    default: "public"
+  },
+  blockExplorers: {
+    "blockscout": chiadoExplorer,
+    default: chiadoExplorer
+  },
+  testnet: true,
+};
+
+// Configure chains & providers with the Alchemy provider.
+// Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
+const { chains, provider, webSocketProvider } = configureChains([chiado], [
+  publicProvider(),
+])
+
+// Set up client
+const client = createClient({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Injected',
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+})
 
 function NextWeb3App({ Component, pageProps }: AppProps) {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Component {...pageProps} />
-    </Web3ReactProvider>
+    <WagmiConfig client={client}>
+      <ConnectKitProvider>
+        <Component {...pageProps} />
+      </ConnectKitProvider>
+    </WagmiConfig>
   );
 }
 
