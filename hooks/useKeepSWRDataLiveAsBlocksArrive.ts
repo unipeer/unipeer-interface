@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import useBlockNumber from "./useBlockNumber";
+import {useBlockNumber} from "wagmi";
 
 export default function useKeepSWRDataLiveAsBlocksArrive(
   mutate: () => Promise<any>

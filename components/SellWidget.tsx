@@ -5,7 +5,7 @@ import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
 
-import { useAccount } from 'wagmi';
+import { useAccount, useContractEvent } from 'wagmi';
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
@@ -60,6 +60,13 @@ export default function Sell() {
       })
       .finally(() => setSubmitting(false));
   };
+
+  useContractEvent({
+    addressOrName: Unipeer.address,
+    contractInterface: Unipeer__factory.abi,
+    eventName: "PaymentMethodUpdate",
+    listener: (event) => console.log(event),
+  })
 
   const fetchPaymentMethods = async () => {
     // Read list of payment method IDs, name and list of enabled tokens
