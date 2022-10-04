@@ -22,6 +22,11 @@ const chiadoExplorer = {
   url: "https://blockscout.chiadochain.net"
 };
 
+const gnosisExplorer = {
+  name: "etherscan",
+  url: "https://gnosisscan.io"
+};
+
 const chiado: Chain = {
   id: 10200,
   name: "Chiado",
@@ -37,9 +42,24 @@ const chiado: Chain = {
   testnet: true,
 };
 
+const gnosis: Chain = {
+  id: 100,
+  name: "Gnosis Chain",
+  network: "gnosis",
+  rpcUrls: {
+    public: "https://rpc.gnosischain.com",
+    default: "public"
+  },
+  blockExplorers: {
+    etherscan: gnosisExplorer,
+    default: gnosisExplorer
+  },
+  testnet: true,
+};
+
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
-const { chains, provider, webSocketProvider } = configureChains([chiado], [
+const { chains, provider, webSocketProvider } = configureChains([chiado, gnosis], [
   publicProvider(),
 ])
 

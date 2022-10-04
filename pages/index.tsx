@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useWeb3React } from "@web3-react/core";
 
 import Nav from "../components/Nav";
 import Tabs from "../components/Tabs";
