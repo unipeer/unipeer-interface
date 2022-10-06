@@ -10,6 +10,7 @@ import {
 } from 'wagmi'
 
 import { publicProvider } from 'wagmi/providers/public'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
@@ -33,7 +34,7 @@ const chiado: Chain = {
   network: "chaido",
   rpcUrls: {
     public: "https://rpc.chiadochain.net",
-    default: "public"
+    default: "https://rpc.chiadochain.net",
   },
   blockExplorers: {
     "blockscout": chiadoExplorer,
@@ -48,7 +49,7 @@ const gnosis: Chain = {
   network: "gnosis",
   rpcUrls: {
     public: "https://rpc.gnosischain.com",
-    default: "public"
+    default: "https://rpc.gnosischain.com",
   },
   blockExplorers: {
     etherscan: gnosisExplorer,
@@ -61,6 +62,11 @@ const gnosis: Chain = {
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 const { chains, provider, webSocketProvider } = configureChains([chiado, gnosis], [
   publicProvider(),
+  jsonRpcProvider({
+      rpc: (chain) => {
+        return { http: chain.rpcUrls.default }
+      },
+    }),
 ])
 
 // Set up client

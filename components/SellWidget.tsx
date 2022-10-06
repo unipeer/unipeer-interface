@@ -1,15 +1,14 @@
-import React, { useReducer, useState, useEffect, useMemo } from "react";
-import Link from "next/link";
+import React, { useReducer, useState, useEffect } from "react";
 
 import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
-import { BigNumber } from "@ethersproject/bignumber";
 
-import { useAccount, useContractEvent } from 'wagmi';
+import { useAccount, useContractEvent, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import { Unipeer__factory, Unipeer } from "../contracts/types";
+import { Unipeer__factory } from "../contracts/types";
+import useDebounce from '../hooks/useDebounce';
 
 const defaultFormData = {
   paymentId: "",
@@ -31,34 +30,33 @@ const formReducer = (state, event) => {
 
 export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
-  const [submitting, setSubmitting] = useState(false);
-  const [reverted, setReverted] = useState(false);
   const [payMethods, setPayMethods] = useState<[{ paymentID: string; paymentName: string; tokens: string[] }?]>([]);
   const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
   const { address, connector, isConnected } = useAccount()
+  const debouncedFormData = useDebounce(formData, 500);
 
   const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
+    addressOrName: Unipeer.address,
+    contractInterface: Unipeer__factory.abi,
+    functionName: "updateSellerPaymentMethod",
+    args: [debouncedFormData.paymentId || "1", debouncedFormData.paymentAddress, debouncedFormData.feeRate * 10000 /* MULTIPLE_DIVISOR */],
+    enabled: Boolean(debouncedFormData.paymentAddress),
+  });
+  const { data, error, isError, write } = useContractWrite(config)
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  })
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitting(true);
-    setReverted(false);
-
-    await Unipeer.updateSellerPaymentMethod(
-        formData.paymentId || "1",
-        formData.paymentAddress,
-        formData.feeRate,
-    ).then((res) => {
-        setFormData({
-          reset: true,
-        });
-      })
-      .catch((e) => {
-        if (e.code == -32016) setReverted(true);
-        console.error(e);
-      })
-      .finally(() => setSubmitting(false));
+    write?.()
   };
 
   useContractEvent({
@@ -202,8 +200,8 @@ export default function Sell() {
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="paymentId"
-          disabled={submitting}
-          type="text"
+          disabled={isLoading}
+          type="number"
           minLength={1}
           maxLength={79}
           placeholder="1"
@@ -212,7 +210,11 @@ export default function Sell() {
         />
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => {
+          e.preventDefault()
+          write?.()
+        }}
+      >
         <div className="mb-4">
           <label className="block text-gray-700 text-xs mb-2">
             Receive Payments at Address:
@@ -220,7 +222,7 @@ export default function Sell() {
           <input
             className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
             name="paymentAddress"
-            disabled={submitting}
+            disabled={isLoading}
             type="text"
             minLength={1}
             maxLength={79}
@@ -237,14 +239,16 @@ export default function Sell() {
           <input
             className="w-auto appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
             name="feeRate"
-            disabled={submitting}
+            disabled={isLoading}
             inputMode="decimal"
-            type="text"
+            type="number"
             pattern="^[0-9]*[.,]?[0-9]*$"
             autoComplete="off"
             autoCorrect="off"
             minLength={1}
             maxLength={79}
+            min="0.01"
+            max="100"
             spellCheck="false"
             placeholder="0.0"
             onChange={handleChange}
@@ -252,18 +256,21 @@ export default function Sell() {
           />
           <div className="w-auto inline-block p-2">%</div>
         </div>
-        {reverted && (
-          <div className="w-full flex pt-4">Not enough funds in escrow...</div>
+        {(isPrepareError || isError) && (
+          <div>Error: {(prepareError || error)?.message}</div>
         )}
 
         <div className="w-full flex pt-4">
           {isConnected ? (
             <button
               type="submit"
-              disabled={submitting}
+              disabled={!write}
               className="btn-blue m-auto"
             >
-              Create or update Payment Method
+              {isLoading ?
+                'Sending Tx...' :
+                'Create or update Payment Method'
+              }
             </button>
           ) : (
             <div className="m-auto">
@@ -271,6 +278,14 @@ export default function Sell() {
             </div>
           )}
         </div>
+        {isSuccess && (
+        <div>
+          Successfully Updated Payment Method!
+          <div>
+            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+          </div>
+        </div>
+      )}
       </form>
     </div>
   );
