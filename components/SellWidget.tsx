@@ -109,14 +109,14 @@ export default function Sell() {
     if (selected == -1) return;
     if (!Unipeer) return;
     let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
-    await Unipeer.withdrawTokens(payMethods[selected].tokens[token], bal);
+    await Unipeer.connect(provider).withdrawTokens(payMethods[selected].tokens[token], bal);
   };
 
   const deposit = async () => {
     if (selected == -1) return;
     if (!Unipeer) return;
     let bal = parseEther("1000");
-    await Unipeer.depositTokens(selected, payMethods[selected].tokens[token], bal);
+    await Unipeer.connect(provider).depositTokens(selected, payMethods[selected].tokens[token], bal);
   };
 
   const handleChange = (event) => {
@@ -215,10 +215,29 @@ export default function Sell() {
                 </svg>
               </div>
             </div>
+
+            <a href={formatEtherscanLink("Account", [chain?.id, payMethods[selected]?.tokens[token]])}
+              target="_blank" rel="noreferrer" className="py-2 px-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
           </div>
         </div>
 
-        <div className="text-sm my-2">Balance: {balance} ETH</div>
+        <div className="text-sm my-2">Balance: {balance} WXDAI</div>
         <div className="flex pt-1">
           <button onClick={withdraw} className="btn-blue m-auto p-2 text-sm">
             Withdraw
@@ -314,7 +333,7 @@ export default function Sell() {
           <div>
             Successfully Updated Payment Method!
             <div>
-              <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+              <a href={formatEtherscanLink("Transaction", data?.hash)}>Etherscan</a>
             </div>
           </div>
         )}

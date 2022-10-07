@@ -45,11 +45,11 @@ export function formatEtherscanLink(type, data) {
   switch (type) {
     case "Account": {
       const [chainId, address] = data;
-      return `https://${ETHERSCAN_URL[chainId]}/address/${address}`;
+      return `${ETHERSCAN_URL[chainId]}/address/${address}`;
     }
     case "Transaction": {
       const [chainId, hash] = data;
-      return `https://${ETHERSCAN_URL[chainId]}/tx/${hash}`;
+      return `${ETHERSCAN_URL[chainId]}/tx/${hash}`;
     }
   }
 }
