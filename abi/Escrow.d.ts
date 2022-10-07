@@ -16,9 +16,9 @@ import {
   Overrides,
   CallOverrides,
 } from "@ethersproject/contracts";
-import {BytesLike} from "@ethersproject/bytes";
-import {Listener, Provider} from "@ethersproject/providers";
-import {FunctionFragment, EventFragment, Result} from "@ethersproject/abi";
+import { BytesLike } from "@ethersproject/bytes";
+import { Listener, Provider } from "@ethersproject/providers";
+import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface EscrowInterface extends ethers.utils.Interface {
   functions: {
@@ -37,68 +37,68 @@ interface EscrowInterface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "comptroller",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "expectResponseFor",
-    values: [string, BytesLike, string, BigNumberish]
+    values: [string, BytesLike, string, BigNumberish],
   ): string;
   encodeFunctionData(
     functionFragment: "feeThousandthsPercent",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "fulfillFiatPayment",
-    values: [BytesLike, boolean]
+    values: [BytesLike, boolean],
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "getUnlockedBalance",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, string]
+    values: [string, string, string],
   ): string;
   encodeFunctionData(
     functionFragment: "minFeeAmount",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "paymentid", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
-    values: [BigNumberish, string]
+    values: [BigNumberish, string],
   ): string;
 
   decodeFunctionResult(
     functionFragment: "comptroller",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "expectResponseFor",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "feeThousandthsPercent",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "fulfillFiatPayment",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getUnlockedBalance",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "minFeeAmount",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paymentid", data: BytesLike): Result;
@@ -133,15 +133,11 @@ export class Escrow extends Contract {
   interface: EscrowInterface;
 
   functions: {
-    comptroller(
-      overrides?: CallOverrides
-    ): Promise<{
+    comptroller(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
-    "comptroller()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "comptroller()"(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
@@ -150,7 +146,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
     "expectResponseFor(address,bytes32,address,uint256)"(
@@ -158,56 +154,44 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
-    feeThousandthsPercent(
-      overrides?: CallOverrides
-    ): Promise<{
+    feeThousandthsPercent(overrides?: CallOverrides): Promise<{
       0: number;
     }>;
 
-    "feeThousandthsPercent()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "feeThousandthsPercent()"(overrides?: CallOverrides): Promise<{
       0: number;
     }>;
 
     fulfillFiatPayment(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
     "fulfillFiatPayment(bytes32,bool)"(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
-    getBalance(
-      overrides?: CallOverrides
-    ): Promise<{
+    getBalance(overrides?: CallOverrides): Promise<{
       amount: BigNumber;
       0: BigNumber;
     }>;
 
-    "getBalance()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "getBalance()"(overrides?: CallOverrides): Promise<{
       amount: BigNumber;
       0: BigNumber;
     }>;
 
-    getUnlockedBalance(
-      overrides?: CallOverrides
-    ): Promise<{
+    getUnlockedBalance(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
-    "getUnlockedBalance()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "getUnlockedBalance()"(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
@@ -215,61 +199,49 @@ export class Escrow extends Contract {
       _owner: string,
       _comptroller: string,
       _paymentid: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
     "initialize(uint16,uint256)"(
       _feeThousandthsPercent: BigNumberish,
       _minFeeAmount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
-    minFeeAmount(
-      overrides?: CallOverrides
-    ): Promise<{
+    minFeeAmount(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
-    "minFeeAmount()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "minFeeAmount()"(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
-    owner(
-      overrides?: CallOverrides
-    ): Promise<{
+    owner(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
-    "owner()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "owner()"(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
-    paymentid(
-      overrides?: CallOverrides
-    ): Promise<{
+    paymentid(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
-    "paymentid()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "paymentid()"(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
     withdraw(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
 
     "withdraw(uint256,address)"(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<ContractTransaction>;
   };
 
@@ -282,7 +254,7 @@ export class Escrow extends Contract {
     _requestId: BytesLike,
     _buyer: string,
     _amount: BigNumberish,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   "expectResponseFor(address,bytes32,address,uint256)"(
@@ -290,7 +262,7 @@ export class Escrow extends Contract {
     _requestId: BytesLike,
     _buyer: string,
     _amount: BigNumberish,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   feeThousandthsPercent(overrides?: CallOverrides): Promise<number>;
@@ -300,13 +272,13 @@ export class Escrow extends Contract {
   fulfillFiatPayment(
     _requestId: BytesLike,
     successful: boolean,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   "fulfillFiatPayment(bytes32,bool)"(
     _requestId: BytesLike,
     successful: boolean,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -321,13 +293,13 @@ export class Escrow extends Contract {
     _owner: string,
     _comptroller: string,
     _paymentid: string,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   "initialize(uint16,uint256)"(
     _feeThousandthsPercent: BigNumberish,
     _minFeeAmount: BigNumberish,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   minFeeAmount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -345,13 +317,13 @@ export class Escrow extends Contract {
   withdraw(
     _amount: BigNumberish,
     _to: string,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   "withdraw(uint256,address)"(
     _amount: BigNumberish,
     _to: string,
-    overrides?: Overrides
+    overrides?: Overrides,
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -364,7 +336,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     "expectResponseFor(address,bytes32,address,uint256)"(
@@ -372,7 +344,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     feeThousandthsPercent(overrides?: CallOverrides): Promise<number>;
@@ -382,13 +354,13 @@ export class Escrow extends Contract {
     fulfillFiatPayment(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     "fulfillFiatPayment(bytes32,bool)"(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -403,13 +375,13 @@ export class Escrow extends Contract {
       _owner: string,
       _comptroller: string,
       _paymentid: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     "initialize(uint16,uint256)"(
       _feeThousandthsPercent: BigNumberish,
       _minFeeAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     minFeeAmount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -427,13 +399,13 @@ export class Escrow extends Contract {
     withdraw(
       _amount: BigNumberish,
       _to: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     "withdraw(uint256,address)"(
       _amount: BigNumberish,
       _to: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
@@ -459,7 +431,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     "expectResponseFor(address,bytes32,address,uint256)"(
@@ -467,7 +439,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     feeThousandthsPercent(overrides?: CallOverrides): Promise<BigNumber>;
@@ -477,13 +449,13 @@ export class Escrow extends Contract {
     fulfillFiatPayment(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     "fulfillFiatPayment(bytes32,bool)"(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -498,13 +470,13 @@ export class Escrow extends Contract {
       _owner: string,
       _comptroller: string,
       _paymentid: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     "initialize(uint16,uint256)"(
       _feeThousandthsPercent: BigNumberish,
       _minFeeAmount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     minFeeAmount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -522,13 +494,13 @@ export class Escrow extends Contract {
     withdraw(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
 
     "withdraw(uint256,address)"(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<BigNumber>;
   };
 
@@ -542,7 +514,7 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     "expectResponseFor(address,bytes32,address,uint256)"(
@@ -550,27 +522,27 @@ export class Escrow extends Contract {
       _requestId: BytesLike,
       _buyer: string,
       _amount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     feeThousandthsPercent(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     "feeThousandthsPercent()"(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     fulfillFiatPayment(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     "fulfillFiatPayment(bytes32,bool)"(
       _requestId: BytesLike,
       successful: boolean,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -578,24 +550,24 @@ export class Escrow extends Contract {
     "getBalance()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getUnlockedBalance(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     "getUnlockedBalance()"(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     "initialize(address,address,string)"(
       _owner: string,
       _comptroller: string,
       _paymentid: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     "initialize(uint16,uint256)"(
       _feeThousandthsPercent: BigNumberish,
       _minFeeAmount: BigNumberish,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     minFeeAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -613,13 +585,13 @@ export class Escrow extends Contract {
     withdraw(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
 
     "withdraw(uint256,address)"(
       _amount: BigNumberish,
       _to: string,
-      overrides?: Overrides
+      overrides?: Overrides,
     ): Promise<PopulatedTransaction>;
   };
 }

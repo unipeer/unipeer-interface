@@ -4,7 +4,7 @@ import Tab from "./Tab";
 
 type Props = {
   children: JSX.Element[];
-}
+};
 
 export default function Tabs(props: Props) {
   const [activeTab, setActiveTab] = useState(props.children[0].props.label);

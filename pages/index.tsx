@@ -19,10 +19,10 @@ export default function Home() {
         <div className="w-full max-w-sm m-auto">
           <Tabs>
             <Div label="Buy">
-              <Buy/>
+              <Buy />
             </Div>
             <Div label="Sell">
-              <Sell/>
+              <Sell />
             </Div>
           </Tabs>
         </div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import useSWR from "swr";
 
 import { parseEther } from "@ethersproject/units";
-import { useAccount } from 'wagmi';
+import { useAccount } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants } from "../util";
@@ -31,9 +31,11 @@ export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [submitting, setSubmitting] = useState(false);
   const [reverted, setReverted] = useState(false);
-  const { address, connector, isConnected } = useAccount()
+  const { address, connector, isConnected } = useAccount();
 
-  const Unipeer = new Unipeer__factory().attach(addresses.UNIPEER_ADDRESS[10200]);
+  const Unipeer = new Unipeer__factory().attach(
+    addresses.UNIPEER_ADDRESS[10200],
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,19 +43,19 @@ export default function Buy() {
     setReverted(false);
 
     await Unipeer.buyOrder(
-        formData.paymentid || "1",
-        formData.seller,
-        formData.token,
-        parseEther(formData.amount || "0"),
-    ).then((res) => {
+      formData.paymentid || "1",
+      formData.seller,
+      formData.token,
+      parseEther(formData.amount || "0"),
+    )
+      .then((res) => {
         setFormData({
           reset: true,
         });
       })
       .catch((e) => {
-        if (e.code == -32016)
-          setReverted(true);
-        console.error(e)
+        if (e.code == -32016) setReverted(true);
+        console.error(e);
       })
       .finally(() => setSubmitting(false));
   };
@@ -71,7 +73,9 @@ export default function Buy() {
       onSubmit={handleSubmit}
     >
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Payment Method ID (Optional)</label>
+        <label className="block text-gray-700 text-xs mb-2">
+          Payment Method ID (Optional)
+        </label>
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="paymentid"
@@ -107,7 +111,9 @@ export default function Buy() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 text-xs mb-2">Seller address</label>
+        <label className="block text-gray-700 text-xs mb-2">
+          Seller address
+        </label>
         <input
           className="appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500"
           name="seller"
@@ -121,24 +127,23 @@ export default function Buy() {
         />
       </div>
 
-        {reverted && (
-          // or link
-          <div className="w-full flex pt-4">
-            Not enough funds ...
-          </div>
-        )}
+      {reverted && (
+        // or link
+        <div className="w-full flex pt-4">Not enough funds ...</div>
+      )}
 
       <div className="w-full flex pt-4">
         {isConnected ? (
           <button
             type="submit"
             disabled={submitting}
-            className="btn-blue m-auto">
+            className="btn-blue m-auto"
+          >
             Pay
           </button>
         ) : (
           <div className="m-auto">
-              <ConnectKitButton />
+            <ConnectKitButton />
           </div>
         )}
       </div>

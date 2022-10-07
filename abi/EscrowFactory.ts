@@ -2,11 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import {Signer} from "ethers";
-import {Provider, TransactionRequest} from "@ethersproject/providers";
-import {Contract, ContractFactory, Overrides} from "@ethersproject/contracts";
+import { Signer } from "ethers";
+import { Provider, TransactionRequest } from "@ethersproject/providers";
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
 
-import type {Escrow} from "./Escrow";
+import type { Escrow } from "./Escrow";
 
 export class EscrowFactory extends ContractFactory {
   constructor(signer?: Signer) {

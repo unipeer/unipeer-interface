@@ -1,12 +1,8 @@
 type Props = {
   children: React.ReactNode;
-  label: string
-}
+  label: string;
+};
 
 export default function Div({ children }: Props) {
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

@@ -13,8 +13,7 @@ export default function Nav() {
               </a>
             </Link>
           </li>
-          <li>
-          </li>
+          <li></li>
           <li>
             <ConnectKitButton />
           </li>

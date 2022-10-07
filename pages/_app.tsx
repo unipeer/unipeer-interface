@@ -7,25 +7,25 @@ import {
   WagmiConfig,
   createClient,
   configureChains,
-} from 'wagmi'
+} from "wagmi";
 
-import { publicProvider } from 'wagmi/providers/public'
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { publicProvider } from "wagmi/providers/public";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 
-import { ConnectKitProvider, } from "connectkit";
+import { ConnectKitProvider } from "connectkit";
 
 const chiadoExplorer = {
   name: "blockscout",
-  url: "https://blockscout.chiadochain.net"
+  url: "https://blockscout.chiadochain.net",
 };
 
 const gnosisExplorer = {
   name: "etherscan",
-  url: "https://gnosisscan.io"
+  url: "https://gnosisscan.io",
 };
 
 const chiado: Chain = {
@@ -37,8 +37,8 @@ const chiado: Chain = {
     default: "https://rpc.chiadochain.net",
   },
   blockExplorers: {
-    "blockscout": chiadoExplorer,
-    default: chiadoExplorer
+    blockscout: chiadoExplorer,
+    default: chiadoExplorer,
   },
   testnet: true,
 };
@@ -53,21 +53,24 @@ const gnosis: Chain = {
   },
   blockExplorers: {
     etherscan: gnosisExplorer,
-    default: gnosisExplorer
+    default: gnosisExplorer,
   },
   testnet: true,
 };
 
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
-const { chains, provider, webSocketProvider } = configureChains([chiado, gnosis], [
-  publicProvider(),
-  jsonRpcProvider({
+const { chains, provider, webSocketProvider } = configureChains(
+  [chiado, gnosis],
+  [
+    publicProvider(),
+    jsonRpcProvider({
       rpc: (chain) => {
-        return { http: chain.rpcUrls.default }
+        return { http: chain.rpcUrls.default };
       },
     }),
-])
+  ],
+);
 
 // Set up client
 const client = createClient({
@@ -83,14 +86,14 @@ const client = createClient({
     new InjectedConnector({
       chains,
       options: {
-        name: 'Injected',
+        name: "Injected",
         shimDisconnect: true,
       },
     }),
   ],
   provider,
   webSocketProvider,
-})
+});
 
 function NextWeb3App({ Component, pageProps }: AppProps) {
   return (

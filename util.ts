@@ -3,12 +3,12 @@ import { formatUnits, parseEther } from "@ethersproject/units";
 export const addresses = {
   UNIPEER_ADDRESS: {
     100: "",
-    10200: "0xEF2689DB6A7b3AB383Fb14Ff7d9C2254C248103f"
-  }
-}
+    10200: "0xEF2689DB6A7b3AB383Fb14Ff7d9C2254C248103f",
+  },
+};
 export const constants = {
   DAI_ADDRESS: "",
-}
+};
 
 export function shortenHex(hex, length = 4) {
   return `${hex.substring(0, length + 2)}…${hex.substring(
@@ -16,7 +16,7 @@ export function shortenHex(hex, length = 4) {
   )}`;
 }
 
-const ETHERSCAN_URL= {
+const ETHERSCAN_URL = {
   1: "https://etherscan.io",
   100: "https://gnosisscan.io",
   10200: "https://blockscout.chiadochain.net",
@@ -26,7 +26,7 @@ export const RPC_URL: { [key: number]: string } = {
   1: "mainnet",
   100: "https://rpc.gnosischain.com.",
   10200: "https://rpc.chiadochain.net",
-}
+};
 
 /**
  *
