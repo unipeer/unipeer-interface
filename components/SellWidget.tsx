@@ -42,12 +42,14 @@ export default function Sell() {
   >([]);
   const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
-  const { address, connector, isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork()
   const debouncedFormData = useDebounce(formData, 500);
 
   const Unipeer = new Unipeer__factory().attach(
-    addresses.UNIPEER_ADDRESS[10200],
+    addresses.UNIPEER_ADDRESS[chain?.id || 10200 ],
   );
+
   const {
     config,
     error: prepareError,
@@ -68,11 +70,6 @@ export default function Sell() {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    write?.();
-  };
 
   useContractEvent({
     addressOrName: Unipeer.address,
@@ -273,7 +270,7 @@ export default function Sell() {
 
         <div className="w-full flex pt-4">
           {isConnected ? (
-            <button type="submit" disabled={!write} className="btn-blue m-auto">
+            <button type="submit" disabled={!write || isError} className="btn-blue m-auto">
               {isLoading ? "Sending Tx..." : "Create or update Payment Method"}
             </button>
           ) : (
