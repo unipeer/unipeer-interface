@@ -40,7 +40,7 @@ const formReducer = (state, event) => {
 export default function Sell() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const [payMethods, setPayMethods] = useState<
-    { paymentID: string; paymentName: string; tokens: string[] }[]
+    { paymentName: string; tokens: string[] }[]
   >([]);
   const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
@@ -83,8 +83,13 @@ export default function Sell() {
     const filter = Unipeer.filters.PaymentMethodUpdate();
     const result = await Unipeer.queryFilter(filter, 222028);
 
-    const events = result.flatMap(log => ({ tokens: [""], paymentID: log.args[0].toString(), paymentName: log.args[1] }));
-    setPayMethods(events)
+    const event = new Map();
+    result.forEach(log => {
+      event.set(log.args[0], { tokens: [""], paymentName: log.args[1] });
+    });
+    // We assume that the PaymentMethodUpdate will
+    // have contiguous Payment IDs
+    setPayMethods(Array.from(event.values()))
     setSelected(0);
   };
 
@@ -134,8 +139,8 @@ export default function Sell() {
     payMethods.length > 0 &&
     payMethods.map((item, i) => {
       return (
-        <option key={i} value={item!.toString()}>
-          {item!.paymentID.toString()}: {item!.paymentName}
+        <option key={i} value={i}>
+          {i}: {item!.paymentName}
         </option>
       );
     });
