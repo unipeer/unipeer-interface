@@ -15,7 +15,7 @@ import {
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import {type Unipeer } from "../contracts/types";
+import {type Unipeer, ERC20 } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import useDebounce from "../hooks/useDebounce";
 
@@ -42,15 +42,18 @@ export default function Sell() {
   const [payMethods, setPayMethods] = useState<
     { paymentName: string; tokens: string[] }[]
   >([]);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(-1);
+  const [token, setToken] = useState(-1);
   const [balance, setBalance] = useState("...");
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
+  const Dai = addresses.DAI[chain?.id || 10200];
+
 
   const Unipeer: Unipeer = useContract({
-    addressOrName: addresses.UNIPEER_ADDRESS[chain?.id || 10200 ],
+    addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
   })
@@ -85,33 +88,35 @@ export default function Sell() {
 
     const event = new Map();
     result.forEach(log => {
-      event.set(log.args[0], { tokens: [""], paymentName: log.args[1] });
+    // TODO: remove hard coded token value and fetch from event
+      event.set(log.args[0], { tokens: [Dai], paymentName: log.args[1] });
     });
     // We assume that the PaymentMethodUpdate will
     // have contiguous Payment IDs
     setPayMethods(Array.from(event.values()))
     setSelected(0);
+    setToken(0);
   };
 
   const getBalance = async () => {
-    if (!selected) return;
+    if (selected == -1) return;
     if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(address!, "token");
+    let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
     setBalance(formatEther(bal));
   };
 
   const withdraw = async () => {
-    if (!selected) return;
+    if (selected == -1) return;
     if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(address!, "token");
-    await Unipeer.withdrawTokens("token", bal);
+    let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
+    await Unipeer.withdrawTokens(payMethods[selected].tokens[token], bal);
   };
 
   const deposit = async () => {
-    if (!selected) return;
+    if (selected == -1) return;
     if (!Unipeer) return;
     let bal = parseEther("1000");
-    await Unipeer.depositTokens("payid", "token", bal);
+    await Unipeer.depositTokens(selected, payMethods[selected].tokens[token], bal);
   };
 
   const handleChange = (event) => {
@@ -123,6 +128,11 @@ export default function Sell() {
 
   const handleSelect = async (event) => {
     setSelected(event.target.index);
+  };
+
+  const handleToken = async (event) => {
+    console.log(event.target);
+    setToken(event.target.index);
   };
 
   useEffect(() => {
@@ -141,6 +151,16 @@ export default function Sell() {
       return (
         <option key={i} value={i}>
           {i}: {item!.paymentName}
+        </option>
+      );
+    });
+
+  const tokenList =
+    selected != -1 &&
+    payMethods[selected].tokens.map((item, i) => {
+      return (
+        <option key={i} value={i}>
+          {item!}
         </option>
       );
     });
@@ -170,23 +190,32 @@ export default function Sell() {
               </svg>
             </div>
           </div>
+        </div>
 
-          <a href="" target="_blank" rel="noreferrer" className="py-2 px-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-          </a>
+        <div className="my-4">
+          <label className="block text-gray-700 text-xs mb-2">
+            Tokens:
+          </label>
+          <div className="flex">
+            <div className="relative w-full">
+              <select
+                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                onChange={handleToken}
+                value={token}
+              >
+                {tokenList}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="text-sm my-2">Balance: {balance} ETH</div>

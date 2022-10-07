@@ -1,13 +1,21 @@
 import { formatUnits, parseEther } from "@ethersproject/units";
 
 export const addresses = {
-  UNIPEER_ADDRESS: {
+  UNIPEER: {
     100: "",
     10200: "0xEF2689DB6A7b3AB383Fb14Ff7d9C2254C248103f",
   },
+  DAI: {
+    100: "",
+    10200: "0x18c8a7ec7897177E4529065a7E7B0878358B3BfF"
+  },
 };
+
 export const constants = {
-  DAI_ADDRESS: "",
+  block: {
+    100: 222028,
+    10200: 222028,
+  }
 };
 
 export function shortenHex(hex, length = 4) {

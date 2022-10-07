@@ -3,7 +3,8 @@ import React, { useReducer, useState } from "react";
 import { parseEther } from "@ethersproject/units";
 import {
   useAccount,
-  useContractEvent,
+  useContract,
+  useProvider,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
@@ -11,8 +12,9 @@ import {
 } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 
-import { addresses, constants } from "../util";
-import { Unipeer__factory, Unipeer } from "../contracts/types";
+import { addresses } from "../util";
+import {type Unipeer } from "../contracts/types";
+import UNIPEER_ABI from "../contracts/Unipeer.json";
 import useDebounce from "../hooks/useDebounce";
 
 const defaultFormData = {
@@ -37,11 +39,14 @@ export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
+  const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
 
-  const Unipeer = new Unipeer__factory().attach(
-    addresses.UNIPEER_ADDRESS[chain?.id || 10200 ],
-  );
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chain?.id || 10200 ],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  })
 
   const {
     config,
@@ -49,7 +54,7 @@ export default function Buy() {
     isError: isPrepareError,
   } = usePrepareContractWrite({
     addressOrName: Unipeer.address,
-    contractInterface: Unipeer__factory.abi,
+    contractInterface: UNIPEER_ABI.abi,
     functionName: "buyOrder",
     args: [
       debouncedFormData.paymentId || "0",
