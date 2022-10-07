@@ -52,7 +52,7 @@ export default function Buy() {
     contractInterface: Unipeer__factory.abi,
     functionName: "buyOrder",
     args: [
-      debouncedFormData.paymentId || "1",
+      debouncedFormData.paymentId || "0",
       debouncedFormData.seller,
       debouncedFormData.token,
       parseEther(debouncedFormData.amount || "0"),
@@ -91,7 +91,7 @@ export default function Buy() {
           type="text"
           minLength={1}
           maxLength={79}
-          placeholder="1"
+          placeholder="0"
           onChange={handleChange}
           value={formData.paymentid}
         />

@@ -5,16 +5,18 @@ import { formatEther } from "@ethersproject/units";
 
 import {
   useAccount,
-  useContractEvent,
+  useContract,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
   useNetwork,
+  useProvider,
 } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import { Unipeer__factory } from "../contracts/types";
+import {type Unipeer } from "../contracts/types";
+import UNIPEER_ABI from "../contracts/Unipeer.json";
 import useDebounce from "../hooks/useDebounce";
 
 const defaultFormData = {
@@ -43,12 +45,15 @@ export default function Sell() {
   const [selected, setSelected] = useState(0);
   const [balance, setBalance] = useState("...");
   const { address, isConnected } = useAccount();
-  const { chain } = useNetwork()
+  const { chain } = useNetwork();
+  const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
 
-  const Unipeer = new Unipeer__factory().attach(
-    addresses.UNIPEER_ADDRESS[chain?.id || 10200 ],
-  );
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER_ADDRESS[chain?.id || 10200 ],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  })
 
   const {
     config,
@@ -56,10 +61,10 @@ export default function Sell() {
     isError: isPrepareError,
   } = usePrepareContractWrite({
     addressOrName: Unipeer.address,
-    contractInterface: Unipeer__factory.abi,
+    contractInterface: UNIPEER_ABI.abi,
     functionName: "updateSellerPaymentMethod",
     args: [
-      debouncedFormData.paymentId || "1",
+      debouncedFormData.paymentId || "0",
       debouncedFormData.paymentAddress,
       debouncedFormData.feeRate * 10000 /* MULTIPLE_DIVISOR */,
     ],
@@ -71,24 +76,27 @@ export default function Sell() {
     hash: data?.hash,
   });
 
-  useContractEvent({
-    addressOrName: Unipeer.address,
-    contractInterface: Unipeer__factory.abi,
-    eventName: "PaymentMethodUpdate",
-    listener: (event) => console.log(event),
-  });
-
   const fetchPaymentMethods = async () => {
     // Read list of payment method IDs, name and list of enabled tokens
     // const events = useEventListener(Unipeer, "Unipeer", "PaymentMethodUpdate", library, 100);
     // let pm = await Unipeer.paymentMethods(0);
-    let data = {
-      paymentID: "0",
-      paymentName: "PayPal",
-      tokens: ["0x000"],
-    };
-    setPayMethods([data]);
-    setSelected(0);
+    const filter = Unipeer.filters.PaymentMethodUpdate();
+    const result = await Unipeer.queryFilter(filter, 222028);
+
+    result.forEach(log => {
+      payMethods.push({tokens: [], paymentID: log.args[0].toString(), paymentName: log.args[1]});
+      console.log(payMethods);
+    });
+      setPayMethods(payMethods)
+      setSelected(0);
+
+    // let data = {
+    //   paymentID: "0",
+    //   paymentName: "PayPal",
+    //   tokens: ["0x000"],
+    // };
+    // setPayMethods([data]);
+    // setSelected(0);
   };
 
   const getBalance = async () => {
@@ -213,7 +221,7 @@ export default function Sell() {
           type="number"
           minLength={1}
           maxLength={79}
-          placeholder="1"
+          placeholder="0"
           onChange={handleChange}
           value={formData.paymentId}
         />
