@@ -299,7 +299,7 @@ export default function Sell() {
             autoCorrect="off"
             minLength={1}
             maxLength={79}
-            min="0.01"
+            min="0.0001"
             max="100"
             step={0.01}
             spellCheck="false"

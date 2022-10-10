@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import {BigNumber} from "@ethersproject/bignumber";
+import { formatEther } from "@ethersproject/units";
 
 import {
   useAccount,
@@ -17,8 +19,9 @@ export default function SellerList() {
   const { chain } = useNetwork();
   const provider = useProvider();
   const [sellers, setSellers] = useState<
-    { sender: string; paymentId: number; paymentAddress: string; feeRate: BigNumber}[]
+    { sender: string; paymentId: number; paymentAddress: string; feeRate: BigNumber, amount: BigNumber}[]
   >([]);
+  const Dai = addresses.DAI[chain?.id || 10200];
 
   const Unipeer: Unipeer = useContract({
     addressOrName: addresses.UNIPEER[chain?.id || 10200 ],
@@ -31,9 +34,10 @@ export default function SellerList() {
     const result = await Unipeer.queryFilter(filter, 222028);
     console.log("seller", result);
 
-    const events = result.map(log =>
-      ({ sender: log.args[0], paymentId: log.args[1], paymentAddress: log.args[2], feeRate: log.args[3] })
-    );
+    const events = await Promise.all(result.map(async log => {
+      const bal = await Unipeer.tokenBalance(log.args[0], Dai);
+      return { sender: log.args[0], paymentId: log.args[1], paymentAddress: log.args[2], feeRate: log.args[3], amount: bal }
+    }));
 
     setSellers(events)
   };
@@ -59,6 +63,9 @@ export default function SellerList() {
             {item!.paymentAddress}
           </td>
           <td className="tb-border">
+            {formatEther(item!.amount)} WXDAI
+          </td>
+          <td className="tb-border">
             {item!.feeRate.toNumber() / 10000}%
           </td>
         </tr>
@@ -71,6 +78,7 @@ export default function SellerList() {
         <th className="tb-border">Payment Id</th>
         <th className="tb-border">Seller</th>
         <th className="tb-border">Payment Address</th>
+        <th className="tb-border">Available Balance</th>
         <th className="tb-border">Fee Rate</th>
       </tr>
       {sellersList}
