@@ -73,7 +73,7 @@ export default function Sell() {
     args: [
       debouncedFormData.paymentId || "0",
       debouncedFormData.paymentAddress,
-      debouncedFormData.feeRate * 10000 /* MULTIPLE_DIVISOR */,
+      debouncedFormData.feeRate * 100 /* percentage / 100 * MULTIPLE_DIVISOR */,
     ],
     enabled: Boolean(debouncedFormData.paymentAddress),
   });
@@ -299,7 +299,7 @@ export default function Sell() {
             autoCorrect="off"
             minLength={1}
             maxLength={79}
-            min="0.0001"
+            min="0.01"
             max="100"
             step={0.01}
             spellCheck="false"
