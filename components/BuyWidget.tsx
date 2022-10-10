@@ -148,7 +148,7 @@ export default function Buy() {
         {isConnected ? (
           <button
             type="submit"
-            disabled={!write}
+            disabled={!write || isLoading || isError}
             className="btn-blue m-auto"
           >
             {isLoading ? "Sending Tx..." : "Pay"}

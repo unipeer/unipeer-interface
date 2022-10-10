@@ -301,6 +301,7 @@ export default function Sell() {
             maxLength={79}
             min="0.01"
             max="100"
+            step={0.01}
             spellCheck="false"
             placeholder="0.0"
             onChange={handleChange}
@@ -314,7 +315,7 @@ export default function Sell() {
 
         <div className="w-full flex pt-4">
           {isConnected ? (
-            <button type="submit" disabled={!write || isError} className="btn-blue m-auto">
+            <button type="submit" disabled={!write || isLoading || isError} className="btn-blue m-auto">
               {isLoading ? "Sending Tx..." : "Accept Payment Method"}
             </button>
           ) : (

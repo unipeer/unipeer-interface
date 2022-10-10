@@ -46,7 +46,7 @@ export default function DepositTokens({ paymentId, token}: Props) {
       <button
         className="btn-blue p-2 text-sm"
         onClick={() => write?.()}
-        disabled={!write || isError}
+        disabled={!write || isLoading || isError}
       >
           {isLoading ? "Sending Tx..." : "Deposit"}
       </button>

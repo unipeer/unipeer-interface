@@ -5,6 +5,7 @@ import Tabs from "../components/Tabs";
 import Div from "../components/Div";
 import Buy from "../components/BuyWidget";
 import Sell from "../components/SellWidget";
+import SellerList from "../components/SellerList";
 
 export default function Home() {
   return (
@@ -25,6 +26,9 @@ export default function Home() {
               <Sell />
             </Div>
           </Tabs>
+        </div>
+        <div className="w-full max-w-xl m-auto">
+          <SellerList />
         </div>
       </main>
     </div>
