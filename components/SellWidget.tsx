@@ -5,6 +5,7 @@ import { formatEther } from "@ethersproject/units";
 import {
   useAccount,
   useContract,
+  useContractRead,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
@@ -51,6 +52,8 @@ export default function Sell() {
   const { chain } = useNetwork();
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
+
+  const UnipeerAddr = addresses.UNIPEER[chain?.id || 10200];
   const Dai = addresses.DAI[chain?.id || 10200];
 
   const Unipeer: Unipeer = useContract({
@@ -64,7 +67,7 @@ export default function Sell() {
     error: prepareError,
     isError: isPrepareError,
   } = usePrepareContractWrite({
-    addressOrName: Unipeer.address,
+    addressOrName: UnipeerAddr,
     contractInterface: UNIPEER_ABI.abi,
     functionName: "updateSellerPaymentMethod",
     args: [
@@ -99,18 +102,19 @@ export default function Sell() {
     setToken(0);
   };
 
+  const { data: bal, } = useContractRead({
+    addressOrName: UnipeerAddr,
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: 'tokenBalance',
+    args: [
+      address!,
+      payMethods[selected]?.tokens[token],
+    ]
+  })
+
   const getBalance = async () => {
     if (selected == -1) return;
-    if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
-    setBalance(formatEther(bal));
-  };
-
-  const withdraw = async () => {
-    if (selected == -1) return;
-    if (!Unipeer) return;
-    let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
-    await Unipeer.connect(provider).withdrawTokens(payMethods[selected].tokens[token], bal);
+    setBalance(formatEther(bal!));
   };
 
   const handleChange = (event) => {

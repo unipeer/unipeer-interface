@@ -39,8 +39,6 @@ export default function DepositTokens({ paymentId, token}: Props) {
     hash: data?.hash,
   });
 
-  console.log("args:", write?.arguments)
-
   return <div className="m-auto flex-col">
       <button
         className="btn-blue p-2 text-sm"

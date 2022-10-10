@@ -1,9 +1,11 @@
 import { parseEther } from "@ethersproject/units";
 
 import {
+  useContractRead,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  useAccount,
   useNetwork,
 } from "wagmi";
 
@@ -17,8 +19,20 @@ type Props = {
 
 export default function WithdrawTokens({ token}: Props) {
   const { chain } = useNetwork();
+  const { address } = useAccount();
 
-  const bal = parseEther("0.1");
+  const UnipeerAddr = addresses.UNIPEER[chain?.id || 10200];
+
+  const { data: bal, } = useContractRead({
+    addressOrName: UnipeerAddr,
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: 'tokenBalance',
+    args: [
+      address!,
+      token,
+    ]
+  })
+
   const {
     config,
   } = usePrepareContractWrite({
@@ -36,8 +50,6 @@ export default function WithdrawTokens({ token}: Props) {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
-
-  console.log("args:", write?.arguments)
 
   return <div className="m-auto flex-col">
       <button
