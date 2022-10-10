@@ -1,6 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
 
-import { parseEther } from "@ethersproject/units";
 import { formatEther } from "@ethersproject/units";
 
 import {
@@ -18,6 +17,9 @@ import { addresses, constants, formatEtherscanLink } from "../util";
 import {type Unipeer, ERC20 } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import useDebounce from "../hooks/useDebounce";
+
+import WithdrawTokens from "./WithdrawTokens";
+import DepositTokens from "./DepositTokens";
 
 const defaultFormData = {
   paymentId: "",
@@ -50,7 +52,6 @@ export default function Sell() {
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
   const Dai = addresses.DAI[chain?.id || 10200];
-
 
   const Unipeer: Unipeer = useContract({
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
@@ -110,13 +111,6 @@ export default function Sell() {
     if (!Unipeer) return;
     let bal = await Unipeer.tokenBalance(address!, payMethods[selected].tokens[token]);
     await Unipeer.connect(provider).withdrawTokens(payMethods[selected].tokens[token], bal);
-  };
-
-  const deposit = async () => {
-    if (selected == -1) return;
-    if (!Unipeer) return;
-    let bal = parseEther("1000");
-    await Unipeer.connect(provider).depositTokens(selected, payMethods[selected].tokens[token], bal);
   };
 
   const handleChange = (event) => {
@@ -239,13 +233,9 @@ export default function Sell() {
 
         <div className="text-sm my-2">Balance: {balance} WXDAI</div>
         <div className="flex pt-1">
-          <button onClick={withdraw} className="btn-blue m-auto p-2 text-sm">
-            Withdraw
-          </button>
+            <WithdrawTokens token={payMethods[selected]?.tokens[token]}/>
 
-          <button onClick={deposit} className="btn-blue m-auto p-2 text-sm">
-            Deposit
-          </button>
+            <DepositTokens paymentId={selected} token={payMethods[selected]?.tokens[token]}/>
         </div>
       </div>
 
@@ -321,7 +311,7 @@ export default function Sell() {
         <div className="w-full flex pt-4">
           {isConnected ? (
             <button type="submit" disabled={!write || isError} className="btn-blue m-auto">
-              {isLoading ? "Sending Tx..." : "Create or update Payment Method"}
+              {isLoading ? "Sending Tx..." : "Accept Payment Method"}
             </button>
           ) : (
             <div className="m-auto">

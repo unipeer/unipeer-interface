@@ -2,7 +2,6 @@ import type { AppProps } from "next/app";
 import "../styles/index.css";
 
 import {
-  chain,
   Chain,
   WagmiConfig,
   createClient,
