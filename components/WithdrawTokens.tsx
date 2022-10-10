@@ -35,6 +35,8 @@ export default function WithdrawTokens({ token}: Props) {
 
   const {
     config,
+    error: prepareError,
+    isError: isPrepareError,
   } = usePrepareContractWrite({
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
@@ -59,11 +61,14 @@ export default function WithdrawTokens({ token}: Props) {
       >
           {isLoading ? "Sending Tx..." : "Withdraw"}
       </button>
+      {(isPrepareError || isError) && (
+        <div>Error: {(prepareError || error)?.message}</div>
+      )}
       {isSuccess && (
         <div>
           Successfully Withdrew Tokens!
           <div>
-            <a href={formatEtherscanLink("Transaction", data?.hash)}>Etherscan</a>
+            <a href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}>Etherscan</a>
           </div>
         </div>
       )}

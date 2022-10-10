@@ -1,4 +1,5 @@
 import { parseEther } from "@ethersproject/units";
+import { toUtf8String } from "@ethersproject/strings";
 
 import {
   usePrepareContractWrite,
@@ -22,6 +23,8 @@ export default function DepositTokens({ paymentId, token}: Props) {
   const bal = parseEther("0.1");
   const {
     config,
+    error: prepareError,
+    isError: isPrepareError,
   } = usePrepareContractWrite({
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
@@ -51,7 +54,7 @@ export default function DepositTokens({ paymentId, token}: Props) {
         <div>
           Successfully Deposited Tokens!
           <div>
-            <a href={formatEtherscanLink("Transaction", data?.hash)}>Etherscan</a>
+            <a href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}>Etherscan</a>
           </div>
         </div>
       )}
