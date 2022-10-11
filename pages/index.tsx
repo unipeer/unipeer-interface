@@ -27,7 +27,7 @@ export default function Home() {
             </Div>
           </Tabs>
         </div>
-        <div className="p-5">
+        <div className="py-5">
           <SellerList />
         </div>
       </main>
