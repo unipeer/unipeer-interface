@@ -1,12 +1,15 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 
-import { parseEther } from "@ethersproject/units";
+import { parseEther, formatEther } from "@ethersproject/units";
+import { BigNumber } from "@ethersproject/bignumber";
+
 import {
   useAccount,
   useContract,
   useProvider,
   usePrepareContractWrite,
   useContractWrite,
+  useContractRead,
   useWaitForTransaction,
   useNetwork,
 } from "wagmi";
@@ -15,6 +18,7 @@ import { ConnectKitButton } from "connectkit";
 import { addresses } from "../util";
 import {type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
+import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import useDebounce from "../hooks/useDebounce";
 
 const defaultFormData = {
@@ -37,15 +41,37 @@ const formReducer = (state, event) => {
 
 export default function Buy() {
   const [formData, setFormData] = useReducer(formReducer, defaultFormData);
+  const [arbitrator, setArbitrator] = useState("");
+  const [extraData, setExtraData] = useState("");
+
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
 
+  const Dai = addresses.DAI[chain?.id || 10200];
   const Unipeer: Unipeer = useContract({
     addressOrName: addresses.UNIPEER[chain?.id || 10200 ],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
+  })
+
+  useEffect(() => {
+    const fetch = async() => {
+        setArbitrator(await Unipeer.arbitrator());
+        setExtraData(await Unipeer.arbitratorExtraData())
+    }
+    fetch();
+  }, [isConnected]);
+
+
+  const { data: arbCost, error: readError } = useContractRead({
+    addressOrName: arbitrator,
+    contractInterface: IARBITRATOR_ABI.abi,
+    functionName: 'arbitrationCost',
+    args: [
+      extraData
+    ]
   })
 
   const {
@@ -59,10 +85,13 @@ export default function Buy() {
     args: [
       debouncedFormData.paymentId || "0",
       debouncedFormData.seller,
-      debouncedFormData.token,
+      debouncedFormData.token || Dai,
       parseEther(debouncedFormData.amount || "0"),
     ],
-    enabled: Boolean(debouncedFormData.paymentAddress),
+    enabled: Boolean(debouncedFormData.seller),
+    overrides: {
+      value: arbCost!
+    },
   });
   const { data, error, isError, write } = useContractWrite(config);
 
@@ -138,6 +167,12 @@ export default function Buy() {
           onChange={handleChange}
           value={formData.seller}
         />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-xs mb-2">
+          Deposit required: { arbCost ? formatEther(BigNumber.from(arbCost)) : "0"} XDAI
+        </label>
       </div>
 
       {(isPrepareError || isError) && (

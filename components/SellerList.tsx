@@ -32,7 +32,6 @@ export default function SellerList() {
   const fetchSellerList = async () => {
     const filter = Unipeer.filters.SellerPaymentMethod();
     const result = await Unipeer.queryFilter(filter, 222028);
-    console.log("seller", result);
 
     const events = await Promise.all(result.map(async log => {
       const bal = await Unipeer.tokenBalance(log.args[0], Dai);
@@ -43,9 +42,7 @@ export default function SellerList() {
   };
 
   useEffect(() => {
-    if (isConnected) {
-      fetchSellerList();
-    }
+    fetchSellerList();
   }, [isConnected]);
 
   const sellersList =

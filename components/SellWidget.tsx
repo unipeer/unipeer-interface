@@ -113,6 +113,7 @@ export default function Sell() {
   })
 
   const getBalance = async () => {
+    if (!isConnected) return;
     if (selected == -1) return;
     setBalance(formatEther(bal!));
   };
@@ -134,9 +135,7 @@ export default function Sell() {
   };
 
   useEffect(() => {
-    if (isConnected) {
-      fetchPaymentMethods();
-    }
+    fetchPaymentMethods();
   }, [isConnected]);
 
   useEffect(() => {
