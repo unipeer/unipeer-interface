@@ -213,7 +213,7 @@ export default function Sell() {
               </div>
             </div>
 
-            <a href={formatEtherscanLink("Account", [chain?.id, payMethods[selected]?.tokens[token]])}
+            <a href={formatEtherscanLink("Account", [chain?.id || 10200 , payMethods[selected]?.tokens[token]])}
               target="_blank" rel="noreferrer" className="py-2 px-1"
             >
               <svg
