@@ -133,11 +133,11 @@ export default function Sell() {
 
   useEffect(() => {
     fetchPaymentMethods();
-  }, [isConnected]);
+  });
 
   useEffect(() => {
     getBalance();
-  }, [selected]);
+  });
 
   const methodsList =
     payMethods.length > 0 &&

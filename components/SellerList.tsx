@@ -52,7 +52,7 @@ export default function SellerList() {
 
   useEffect(() => {
     fetchSellerList();
-  }, [isConnected]);
+  });
 
   const sellersList =
     sellers.length > 0 &&

@@ -62,7 +62,7 @@ export default function Buy() {
       setExtraData(await Unipeer.arbitratorExtraData());
     };
     fetch();
-  }, [isConnected]);
+  });
 
   const { data: arbCost, error: readError } = useContractRead({
     addressOrName: arbitrator,
