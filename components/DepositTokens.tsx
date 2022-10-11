@@ -17,7 +17,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function DepositTokens({ paymentId, token}: Props) {
+export default function DepositTokens({ paymentId, token }: Props) {
   const { chain } = useNetwork();
 
   const bal = parseEther("0.1");
@@ -29,11 +29,7 @@ export default function DepositTokens({ paymentId, token}: Props) {
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
     functionName: "depositTokens",
-    args: [
-      paymentId || "0",
-      token,
-      bal,
-    ],
+    args: [paymentId || "0", token, bal],
     enabled: Boolean(paymentId != -1),
   });
   const { data, error, isError, write } = useContractWrite(config);
@@ -42,21 +38,27 @@ export default function DepositTokens({ paymentId, token}: Props) {
     hash: data?.hash,
   });
 
-  return <div className="m-auto flex-col">
+  return (
+    <div className="m-auto flex-col">
       <button
         className="btn-blue p-2 text-sm"
         onClick={() => write?.()}
         disabled={!write || isLoading || isError}
       >
-          {isLoading ? "Sending Tx..." : "Deposit"}
+        {isLoading ? "Sending Tx..." : "Deposit"}
       </button>
       {isSuccess && (
         <div>
           Successfully Deposited Tokens!
           <div>
-            <a href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}>Etherscan</a>
+            <a
+              href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}
+            >
+              Etherscan
+            </a>
           </div>
         </div>
       )}
-  </div>
+    </div>
+  );
 }

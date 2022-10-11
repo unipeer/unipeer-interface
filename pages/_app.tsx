@@ -1,12 +1,7 @@
 import type { AppProps } from "next/app";
 import "../styles/index.css";
 
-import {
-  Chain,
-  WagmiConfig,
-  createClient,
-  configureChains,
-} from "wagmi";
+import { Chain, WagmiConfig, createClient, configureChains } from "wagmi";
 
 import { publicProvider } from "wagmi/providers/public";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";

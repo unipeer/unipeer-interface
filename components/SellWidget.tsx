@@ -15,7 +15,7 @@ import {
 import { ConnectKitButton } from "connectkit";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import {type Unipeer, ERC20 } from "../contracts/types";
+import { type Unipeer, ERC20 } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import useDebounce from "../hooks/useDebounce";
 
@@ -60,7 +60,7 @@ export default function Sell() {
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
-  })
+  });
 
   const {
     config,
@@ -91,26 +91,23 @@ export default function Sell() {
     const result = await Unipeer.queryFilter(filter, 222028);
 
     const event = new Map();
-    result.forEach(log => {
-    // TODO: remove hard coded token value and fetch from event
+    result.forEach((log) => {
+      // TODO: remove hard coded token value and fetch from event
       event.set(log.args[0], { tokens: [Dai], paymentName: log.args[1] });
     });
     // We assume that the PaymentMethodUpdate will
     // have contiguous Payment IDs
-    setPayMethods(Array.from(event.values()))
+    setPayMethods(Array.from(event.values()));
     setSelected(0);
     setToken(0);
   };
 
-  const { data: bal, } = useContractRead({
+  const { data: bal } = useContractRead({
     addressOrName: UnipeerAddr,
     contractInterface: UNIPEER_ABI.abi,
-    functionName: 'tokenBalance',
-    args: [
-      address!,
-      payMethods[selected]?.tokens[token],
-    ]
-  })
+    functionName: "tokenBalance",
+    args: [address!, payMethods[selected]?.tokens[token]],
+  });
 
   const getBalance = async () => {
     if (!isConnected) return;
@@ -190,9 +187,7 @@ export default function Sell() {
         </div>
 
         <div className="my-4">
-          <label className="block text-gray-700 text-xs mb-2">
-            Tokens:
-          </label>
+          <label className="block text-gray-700 text-xs mb-2">Tokens:</label>
           <div className="flex">
             <div className="relative w-full">
               <select
@@ -213,8 +208,14 @@ export default function Sell() {
               </div>
             </div>
 
-            <a href={formatEtherscanLink("Account", [chain?.id || 10200 , payMethods[selected]?.tokens[token]])}
-              target="_blank" rel="noreferrer" className="py-2 px-1"
+            <a
+              href={formatEtherscanLink("Account", [
+                chain?.id || 10200,
+                payMethods[selected]?.tokens[token],
+              ])}
+              target="_blank"
+              rel="noreferrer"
+              className="py-2 px-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -236,9 +237,12 @@ export default function Sell() {
 
         <div className="text-sm my-2">Balance: {balance} WXDAI</div>
         <div className="flex pt-1">
-            <WithdrawTokens token={payMethods[selected]?.tokens[token]}/>
+          <WithdrawTokens token={payMethods[selected]?.tokens[token]} />
 
-            <DepositTokens paymentId={selected} token={payMethods[selected]?.tokens[token]}/>
+          <DepositTokens
+            paymentId={selected}
+            token={payMethods[selected]?.tokens[token]}
+          />
         </div>
       </div>
 
@@ -314,7 +318,11 @@ export default function Sell() {
 
         <div className="w-full flex pt-4">
           {isConnected ? (
-            <button type="submit" disabled={!write || isLoading || isError} className="btn-blue m-auto">
+            <button
+              type="submit"
+              disabled={!write || isLoading || isError}
+              className="btn-blue m-auto"
+            >
               {isLoading ? "Sending Tx..." : "Accept Payment Method"}
             </button>
           ) : (
@@ -327,7 +335,9 @@ export default function Sell() {
           <div>
             Successfully Updated Payment Method!
             <div>
-              <a href={formatEtherscanLink("Transaction", data?.hash)}>Etherscan</a>
+              <a href={formatEtherscanLink("Transaction", data?.hash)}>
+                Etherscan
+              </a>
             </div>
           </div>
         )}

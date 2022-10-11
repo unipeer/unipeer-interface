@@ -557,12 +557,8 @@
     "absolutePath": "lib/kleros/contracts/IArbitrator.sol",
     "id": 23315,
     "exportedSymbols": {
-      "IArbitrable": [
-        23218
-      ],
-      "IArbitrator": [
-        23314
-      ]
+      "IArbitrable": [23218],
+      "IArbitrator": [23314]
     },
     "nodeType": "SourceUnit",
     "src": "161:4240:8",
@@ -571,12 +567,7 @@
         "id": 23220,
         "nodeType": "PragmaDirective",
         "src": "161:23:8",
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ]
+        "literals": ["solidity", "^", "0.8", ".0"]
       },
       {
         "id": 23221,
@@ -694,9 +685,7 @@
                     "pathNode": {
                       "id": 23230,
                       "name": "IArbitrable",
-                      "nameLocations": [
-                        "1030:11:8"
-                      ],
+                      "nameLocations": ["1030:11:8"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23218,
                       "src": "1030:11:8"
@@ -782,9 +771,7 @@
                     "pathNode": {
                       "id": 23238,
                       "name": "IArbitrable",
-                      "nameLocations": [
-                        "1302:11:8"
-                      ],
+                      "nameLocations": ["1302:11:8"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23218,
                       "src": "1302:11:8"
@@ -870,9 +857,7 @@
                     "pathNode": {
                       "id": 23246,
                       "name": "IArbitrable",
-                      "nameLocations": [
-                        "1579:11:8"
-                      ],
+                      "nameLocations": ["1579:11:8"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23218,
                       "src": "1579:11:8"
@@ -1490,9 +1475,7 @@
                     "pathNode": {
                       "id": 23301,
                       "name": "DisputeStatus",
-                      "nameLocations": [
-                        "4010:13:8"
-                      ],
+                      "nameLocations": ["4010:13:8"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23226,
                       "src": "4010:13:8"
@@ -1616,9 +1599,7 @@
           "text": " @title Arbitrator\n Arbitrator abstract contract.\n When developing arbitrator contracts we need to:\n - Define the functions for dispute creation (createDispute) and appeal (appeal). Don't forget to store the arbitrated contract and the disputeID (which should be unique, may nbDisputes).\n - Define the functions for cost display (arbitrationCost and appealCost).\n - Allow giving rulings. For this a function must call arbitrable.rule(disputeID, ruling)."
         },
         "fullyImplemented": false,
-        "linearizedBaseContracts": [
-          23314
-        ],
+        "linearizedBaseContracts": [23314],
         "name": "IArbitrator",
         "nameLocation": "699:11:8",
         "scope": 23315,

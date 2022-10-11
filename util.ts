@@ -7,7 +7,7 @@ export const addresses = {
   },
   DAI: {
     100: "",
-    10200: "0x18c8a7ec7897177E4529065a7E7B0878358B3BfF"
+    10200: "0x18c8a7ec7897177E4529065a7E7B0878358B3BfF",
   },
 };
 
@@ -15,7 +15,7 @@ export const constants = {
   block: {
     100: 222028,
     10200: 222028,
-  }
+  },
 };
 
 export function shortenHex(hex, length = 4) {

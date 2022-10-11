@@ -22,8 +22,12 @@ html {
   @apply bg-blue-500 text-white font-bold py-2 px-4 rounded disabled:opacity-25;
 }
 
-.tb-border {
-  @apply border border-slate-300;
+.th {
+ @apply text-sm font-medium text-gray-900 px-6 py-4 text-left
+}
+
+.td {
+  @apply text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap;
 }
 
 /* Start purging... */

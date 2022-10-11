@@ -17,21 +17,18 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function WithdrawTokens({ token}: Props) {
+export default function WithdrawTokens({ token }: Props) {
   const { chain } = useNetwork();
   const { address } = useAccount();
 
   const UnipeerAddr = addresses.UNIPEER[chain?.id || 10200];
 
-  const { data: bal, } = useContractRead({
+  const { data: bal } = useContractRead({
     addressOrName: UnipeerAddr,
     contractInterface: UNIPEER_ABI.abi,
-    functionName: 'tokenBalance',
-    args: [
-      address!,
-      token,
-    ]
-  })
+    functionName: "tokenBalance",
+    args: [address!, token],
+  });
 
   const {
     config,
@@ -41,10 +38,7 @@ export default function WithdrawTokens({ token}: Props) {
     addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
     functionName: "withdrawTokens",
-    args: [
-      token,
-      bal,
-    ],
+    args: [token, bal],
     enabled: Boolean(token),
   });
   const { data, error, isError, write } = useContractWrite(config);
@@ -53,13 +47,14 @@ export default function WithdrawTokens({ token}: Props) {
     hash: data?.hash,
   });
 
-  return <div className="m-auto flex-col">
+  return (
+    <div className="m-auto flex-col">
       <button
         className="btn-blue p-2 text-sm"
         onClick={() => write?.()}
         disabled={!write || isLoading || isError}
       >
-          {isLoading ? "Sending Tx..." : "Withdraw"}
+        {isLoading ? "Sending Tx..." : "Withdraw"}
       </button>
       {(isPrepareError || isError) && (
         <div>Error: {(prepareError || error)?.message}</div>
@@ -68,9 +63,14 @@ export default function WithdrawTokens({ token}: Props) {
         <div>
           Successfully Withdrew Tokens!
           <div>
-            <a href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}>Etherscan</a>
+            <a
+              href={formatEtherscanLink("Transaction", [chain?.id, data?.hash])}
+            >
+              Etherscan
+            </a>
           </div>
         </div>
       )}
-  </div>
+    </div>
+  );
 }

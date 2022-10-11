@@ -16,7 +16,7 @@ import {
 import { ConnectKitButton } from "connectkit";
 
 import { addresses } from "../util";
-import {type Unipeer } from "../contracts/types";
+import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import useDebounce from "../hooks/useDebounce";
@@ -51,28 +51,25 @@ export default function Buy() {
 
   const Dai = addresses.DAI[chain?.id || 10200];
   const Unipeer: Unipeer = useContract({
-    addressOrName: addresses.UNIPEER[chain?.id || 10200 ],
+    addressOrName: addresses.UNIPEER[chain?.id || 10200],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
-  })
+  });
 
   useEffect(() => {
-    const fetch = async() => {
-        setArbitrator(await Unipeer.arbitrator());
-        setExtraData(await Unipeer.arbitratorExtraData())
-    }
+    const fetch = async () => {
+      setArbitrator(await Unipeer.arbitrator());
+      setExtraData(await Unipeer.arbitratorExtraData());
+    };
     fetch();
   }, [isConnected]);
-
 
   const { data: arbCost, error: readError } = useContractRead({
     addressOrName: arbitrator,
     contractInterface: IARBITRATOR_ABI.abi,
-    functionName: 'arbitrationCost',
-    args: [
-      extraData
-    ]
-  })
+    functionName: "arbitrationCost",
+    args: [extraData],
+  });
 
   const {
     config,
@@ -90,7 +87,7 @@ export default function Buy() {
     ],
     enabled: Boolean(debouncedFormData.seller),
     overrides: {
-      value: arbCost!
+      value: arbCost!,
     },
   });
   const { data, error, isError, write } = useContractWrite(config);
@@ -109,10 +106,10 @@ export default function Buy() {
   return (
     <form
       className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          write?.();
-        }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        write?.();
+      }}
     >
       <div className="mb-4">
         <label className="block text-gray-700 text-xs mb-2">
@@ -171,7 +168,8 @@ export default function Buy() {
 
       <div className="mb-4">
         <label className="block text-gray-700 text-xs mb-2">
-          Deposit required: { arbCost ? formatEther(BigNumber.from(arbCost)) : "0"} XDAI
+          Deposit required:{" "}
+          {arbCost ? formatEther(BigNumber.from(arbCost)) : "0"} XDAI
         </label>
       </div>
 

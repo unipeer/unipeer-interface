@@ -27,7 +27,7 @@ export default function Home() {
             </Div>
           </Tabs>
         </div>
-        <div className="w-full max-w-xl m-auto">
+        <div className="p-5">
           <SellerList />
         </div>
       </main>
