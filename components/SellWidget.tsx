@@ -74,7 +74,8 @@ export default function Sell() {
     args: [
       debouncedFormData.paymentId || "0",
       debouncedFormData.paymentAddress,
-      debouncedFormData.feeRate / 100 /* Convert from percentage to basis point of MULTIPLE_DIVISOR(10000) */,
+      debouncedFormData.feeRate /
+        100 /* Convert from percentage to basis point of MULTIPLE_DIVISOR(10000) */,
     ],
     enabled: Boolean(debouncedFormData.paymentAddress),
   });

@@ -197,11 +197,8 @@ export default function Buy() {
         <div>
           Successfully created Buy Order!
           <div>
-            <a 
-              href={formatEtherscanLink("Transaction", [
-                chainId,
-                data?.hash,
-              ])}
+            <a
+              href={formatEtherscanLink("Transaction", [chainId, data?.hash])}
               target="_blank"
               rel="noreferrer"
               className="py-2 px-1"

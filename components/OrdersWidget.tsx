@@ -36,24 +36,22 @@ export default function Orders() {
   });
 
   const fetchOrderBuyEvents = async () => {
-    const filter = Unipeer.filters.BuyOrder();
+    const filter = Unipeer.filters.OrderBuy(null, address);
     const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
     const events = result.map(async (log) => ({
-          sender: log.args[0],
-          paymentId: log.args[1],
-          paymentAddress: log.args[2],
-          feeRate: log.args[3],
-        })
-      );
+      sender: log.args[0],
+      paymentId: log.args[1],
+      paymentAddress: log.args[2],
+      feeRate: log.args[3],
+    }));
 
     setSellers(events);
   };
 
   useEffect(() => {
-    if (isConnected)
-      fetchOrderBuyEvents();
-  }, [isConnected])
+    if (isConnected) fetchOrderBuyEvents();
+  }, [isConnected]);
 
   const { data: arbCost } = useContractRead({
     addressOrName: arbitrator,
@@ -70,8 +68,7 @@ export default function Orders() {
     addressOrName: Unipeer.address,
     contractInterface: UNIPEER_ABI.abi,
     functionName: "buyOrder",
-    args: [
-    ],
+    args: [],
     enabled: Boolean(false),
     overrides: {
       value: arbCost!,
@@ -83,8 +80,5 @@ export default function Orders() {
     hash: data?.hash,
   });
 
-  return (
-    <div>
-    </div>
-  );
+  return <div></div>;
 }

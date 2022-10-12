@@ -77,11 +77,21 @@ export default function SellerList() {
             <table className="min-w-full">
               <thead className="bg-white border-b">
                 <tr>
-                  <th scope="col" className="th">Payment Id</th>
-                  <th scope="col" className="th">Seller</th>
-                  <th scope="col" className="th">Payment Address</th>
-                  <th scope="col" className="th">Available Balance</th>
-                  <th scope="col" className="th">Fee Rate</th>
+                  <th scope="col" className="th">
+                    Payment Id
+                  </th>
+                  <th scope="col" className="th">
+                    Seller
+                  </th>
+                  <th scope="col" className="th">
+                    Payment Address
+                  </th>
+                  <th scope="col" className="th">
+                    Available Balance
+                  </th>
+                  <th scope="col" className="th">
+                    Fee Rate
+                  </th>
                 </tr>
               </thead>
               <tbody>{sellersList}</tbody>
