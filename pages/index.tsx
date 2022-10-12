@@ -6,6 +6,7 @@ import Div from "../components/Div";
 import Buy from "../components/BuyWidget";
 import Sell from "../components/SellWidget";
 import SellerList from "../components/SellerList";
+import OrdersList from "../components/OrdersWidget";
 
 import { useNetwork, useSwitchNetwork } from "wagmi";
 
@@ -40,6 +41,9 @@ export default function Home() {
                 </Div>
                 <Div label="Sell">
                   <Sell />
+                </Div>
+                <Div label="My Orders">
+                  <OrdersList />
                 </Div>
               </Tabs>
             </div>

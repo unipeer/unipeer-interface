@@ -20,8 +20,17 @@ import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 
 export default function Orders() {
-  const [arbitrator, setArbitrator] = useState("");
-  const [extraData, setExtraData] = useState("");
+  const [orders, setOrders] = useState<{
+    orderID: number;
+    buyer: string;
+    seller: string;
+    paymentID: number;
+    token: string;
+    amount: BigNumber;
+    feeAmount: BigNumber;
+    sellerFeeAmount: BigNumber;
+  }[]
+  >([]);
 
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -39,26 +48,23 @@ export default function Orders() {
     const filter = Unipeer.filters.OrderBuy(null, address);
     const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
-    const events = result.map(async (log) => ({
-      sender: log.args[0],
-      paymentId: log.args[1],
-      paymentAddress: log.args[2],
-      feeRate: log.args[3],
+    const events = result.map((log) => ({
+      orderID: log.args[0].toNumber(),
+      buyer: log.args[1],
+      seller: log.args[2],
+      paymentID: log.args[3],
+      token: log.args[4],
+      amount: log.args[5],
+      feeAmount: log.args[6],
+      sellerFeeAmount: log.args[7],
     }));
 
-    setSellers(events);
+    setOrders(events);
   };
 
   useEffect(() => {
     if (isConnected) fetchOrderBuyEvents();
   }, [isConnected]);
-
-  const { data: arbCost } = useContractRead({
-    addressOrName: arbitrator,
-    contractInterface: IARBITRATOR_ABI.abi,
-    functionName: "arbitrationCost",
-    args: [extraData],
-  });
 
   const {
     config,
@@ -70,9 +76,6 @@ export default function Orders() {
     functionName: "buyOrder",
     args: [],
     enabled: Boolean(false),
-    overrides: {
-      value: arbCost!,
-    },
   });
   const { data, error, isError, write } = useContractWrite(config);
 
@@ -80,5 +83,21 @@ export default function Orders() {
     hash: data?.hash,
   });
 
-  return <div></div>;
+  const ordersList =
+    orders.length > 0 &&
+    orders.map((item, i) => {
+      return (
+        <div key={i}>
+          Seller: {item!.seller} <br/>
+          XDai: {formatEther(item!.amount.toNumber())}
+        </div>
+      );
+    });
+
+  return (
+    <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+      <div className="mb-4">
+        {ordersList}
+      </div>
+  </div>);
 }
