@@ -15,7 +15,7 @@ import {
 } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 
-import { addresses } from "../util";
+import { addresses, constants, formatEtherscanLink } from "../util";
 import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
@@ -44,14 +44,15 @@ export default function Buy() {
   const [arbitrator, setArbitrator] = useState("");
   const [extraData, setExtraData] = useState("");
 
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
+  const chainId = chain?.id || constants.defaultChainId;
 
-  const Dai = addresses.DAI[chain?.id || 10200];
+  const Dai = addresses.DAI[chainId];
   const Unipeer: Unipeer = useContract({
-    addressOrName: addresses.UNIPEER[chain?.id || 10200],
+    addressOrName: addresses.UNIPEER[chainId],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
   });
@@ -64,7 +65,7 @@ export default function Buy() {
     fetch();
   });
 
-  const { data: arbCost, error: readError } = useContractRead({
+  const { data: arbCost } = useContractRead({
     addressOrName: arbitrator,
     contractInterface: IARBITRATOR_ABI.abi,
     functionName: "arbitrationCost",
@@ -196,7 +197,17 @@ export default function Buy() {
         <div>
           Successfully created Buy Order!
           <div>
-            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+            <a 
+              href={formatEtherscanLink("Transaction", [
+                chainId,
+                data?.hash,
+              ])}
+              target="_blank"
+              rel="noreferrer"
+              className="py-2 px-1"
+            >
+              View on blockexplorer
+            </a>
           </div>
         </div>
       )}

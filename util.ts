@@ -3,7 +3,7 @@ import { formatUnits, parseEther } from "@ethersproject/units";
 export const addresses = {
   UNIPEER: {
     100: "",
-    10200: "0xEF2689DB6A7b3AB383Fb14Ff7d9C2254C248103f",
+    10200: "0x4Ad052B87573d183fBD173B56E0a1A4dbbc5529a",
   },
   DAI: {
     100: "",
@@ -12,9 +12,10 @@ export const addresses = {
 };
 
 export const constants = {
+  defaultChainId: 10200,
   block: {
     100: 222028,
-    10200: 222028,
+    10200: 299989,
   },
 };
 

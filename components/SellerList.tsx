@@ -5,7 +5,7 @@ import { formatEther } from "@ethersproject/units";
 
 import { useAccount, useContract, useProvider, useNetwork } from "wagmi";
 
-import { addresses } from "../util";
+import { addresses, constants } from "../util";
 import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 
@@ -22,17 +22,18 @@ export default function SellerList() {
       amount: BigNumber;
     }[]
   >([]);
-  const Dai = addresses.DAI[chain?.id || 10200];
+  const chainId = chain?.id || constants.defaultChainId;
+  const Dai = addresses.DAI[chainId];
 
   const Unipeer: Unipeer = useContract({
-    addressOrName: addresses.UNIPEER[chain?.id || 10200],
+    addressOrName: addresses.UNIPEER[chainId],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
   });
 
   const fetchSellerList = async () => {
     const filter = Unipeer.filters.SellerPaymentMethod();
-    const result = await Unipeer.queryFilter(filter, 222028);
+    const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
     const events = await Promise.all(
       result.map(async (log) => {
@@ -63,7 +64,7 @@ export default function SellerList() {
           <td className="td">{item!.sender}</td>
           <td className="td">{item!.paymentAddress}</td>
           <td className="td">{formatEther(item!.amount)} WXDAI</td>
-          <td className="td">{item!.feeRate.toNumber() / 10000}%</td>
+          <td className="td">{item!.feeRate.toNumber() / 100}%</td>
         </tr>
       );
     });

@@ -52,12 +52,13 @@ export default function Sell() {
   const { chain } = useNetwork();
   const provider = useProvider();
   const debouncedFormData = useDebounce(formData, 500);
+  const chainId = chain?.id || constants.defaultChainId;
 
-  const UnipeerAddr = addresses.UNIPEER[chain?.id || 10200];
-  const Dai = addresses.DAI[chain?.id || 10200];
+  const UnipeerAddr = addresses.UNIPEER[chainId];
+  const Dai = addresses.DAI[chainId];
 
   const Unipeer: Unipeer = useContract({
-    addressOrName: addresses.UNIPEER[chain?.id || 10200],
+    addressOrName: addresses.UNIPEER[chainId],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
   });
@@ -73,7 +74,7 @@ export default function Sell() {
     args: [
       debouncedFormData.paymentId || "0",
       debouncedFormData.paymentAddress,
-      debouncedFormData.feeRate * 100 /* percentage / 100 * MULTIPLE_DIVISOR */,
+      debouncedFormData.feeRate / 100 /* Convert from percentage to basis point of MULTIPLE_DIVISOR(10000) */,
     ],
     enabled: Boolean(debouncedFormData.paymentAddress),
   });
@@ -88,7 +89,7 @@ export default function Sell() {
     // const events = useEventListener(Unipeer, "Unipeer", "PaymentMethodUpdate", library, 100);
     // let pm = await Unipeer.paymentMethods(0);
     const filter = Unipeer.filters.PaymentMethodUpdate();
-    const result = await Unipeer.queryFilter(filter, 222028);
+    const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
     const event = new Map();
     result.forEach((log) => {
@@ -210,7 +211,7 @@ export default function Sell() {
 
             <a
               href={formatEtherscanLink("Account", [
-                chain?.id || 10200,
+                chainId,
                 payMethods[selected]?.tokens[token],
               ])}
               target="_blank"
