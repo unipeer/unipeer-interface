@@ -16,13 +16,13 @@ import {
 } from "wagmi";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import { type Unipeer } from "../contracts/types";
+import { type Unipeer, type OrderBuyEvent } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import OrderDetails from "./OrdersDetails";
+import { UnipeerInterface } from "../contracts/types/Unipeer";
 
-export default function Orders() {
-  const [orders, setOrders] = useState<{
+export type Order = {
     orderID: number;
     buyer: string;
     seller: string;
@@ -33,8 +33,11 @@ export default function Orders() {
     sellerFeeAmount: BigNumber;
     status: number;
     lastInteraction: BigNumber;
-  }[]
-  >([]);
+};
+
+export default function Orders() {
+  const [buyOrders, setBuyOrders] = useState<Order[]>([]);
+  const [sellOrders, setSellOrders] = useState<Order[]>([]);
 
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -60,11 +63,8 @@ export default function Orders() {
     functionName: "sellerTimeout",
   });
 
-  const fetchOrderBuyEvents = async () => {
-    const filter = Unipeer.filters.OrderBuy(null, address);
-    const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
-
-    const events = await Promise.all(result.map(async (log) => {
+  const parseEvents = async (result: OrderBuyEvent) => {
+    return await Promise.all(result.map(async (log) => {
       const { status, lastInteraction } = await Unipeer.orders(log.args[0]);
       return {
         orderID: log.args[0].toNumber(),
@@ -79,26 +79,38 @@ export default function Orders() {
         lastInteraction: lastInteraction
       }
     }));
+  }
 
-    setOrders(events);
+  const fetchOrderBuyEvents = async () => {
+    const buyerFilter = Unipeer.filters.OrderBuy(null, address);
+    const sellerFilter = Unipeer.filters.OrderBuy(null, null, address);
+    const buyerResult = await Unipeer.queryFilter(buyerFilter, constants.block[chainId]);
+    const sellerResult = await Unipeer.queryFilter(sellerFilter, constants.block[chainId]);
+
+    const events = await parseEvents(buyerResult);
+    const events2 = await parseEvents(sellerResult);
+
+    setBuyOrders(events);
+    setSellOrders(events);
   };
 
   useEffect(() => {
     if (isConnected) fetchOrderBuyEvents();
   }, [isConnected]);
 
-  const ordersList =
+  const ordersList = (orders: Order[], isSeller=false) => 
     orders.length > 0 &&
     orders.map((item, i) => {
       return (
-        <OrderDetails key={i} order={item!} buyerTimeout={Number(buyerTimeout)} sellerTimeout={Number(sellerTimeout)} />
+        <OrderDetails key={i} order={item!} buyerTimeout={Number(buyerTimeout)} sellerTimeout={Number(sellerTimeout)} isSeller={isSeller} />
       );
     });
 
   return (
     <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
-        {ordersList}
+        {ordersList(buyOrders)}
+        {ordersList(sellOrders, true)}
       </div>
   </div>);
 }
