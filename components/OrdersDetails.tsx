@@ -51,28 +51,51 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
   const { chain } = useNetwork();
   const chainId = chain?.id || constants.defaultChainId;
 
-  const Dai = addresses.DAI[chainId];
-
-  const buyerNextState = moment.unix(order.lastInteraction.toNumber()+buyerTimeout);
-  const sellerNextState = moment.unix(order.lastInteraction.toNumber()+sellerTimeout);
-  const isBuyerTimedOut = moment().isAfter(buyerNextState);
-  const isSellerTimedOut = moment().isAfter(sellerNextState);
+  const buyerNextState = moment.unix(order.lastInteraction.toNumber() + buyerTimeout);
+  const sellerNextState = moment.unix(order.lastInteraction.toNumber() + sellerTimeout);
+  const isBuyerTimedOut = order.status == 0 && moment().isAfter(buyerNextState);
+  const isSellerTimedOut = order.status == 1 && moment().isAfter(sellerNextState);
 
   const getFunctionName= (code) => {
     switch (code) {
       case 0:
-        if (isSeller)
-          return "completeOrder"
-        return isBuyerTimedOut ? "timeoutByBuyer" : "confirmPaid";
+        return isSeller ? "completeOrder" : "confirmPaid";
       case 1:
-        if (!isSeller)
-          return ""
-        return "completeOrder";
-        //return isSeller ? "disputeOrder" : "completeOrder";
+        return isSeller ? "completeOrder" : "";
       default:
         return "";
     }
   }
+
+  const {
+    config: timeoutConfig,
+  } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: isBuyerTimedOut ? "timeoutByBuyer" : "timeoutBySeller",
+    args: [order.orderID],
+    enabled: isSellerTimedOut || isBuyerTimedOut,
+  });
+  const { data: dataTO, isError: isErrorTO, write: writeTO } = useContractWrite(timeoutConfig);
+
+  const { isLoading: isLoadingTO, } = useWaitForTransaction({
+    hash: dataTO?.hash,
+  });
+
+  const {
+    config: disputeConfig,
+  } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "disputeOrder",
+    args: [order.orderID],
+    enabled: isSeller && order.status == 1 ,
+  });
+  const { data: dataDispute, isError: isErrorDispute, write: writeDispute } = useContractWrite(disputeConfig);
+
+  const { isLoading: isLoadingDispute, } = useWaitForTransaction({
+    hash: dataDispute?.hash,
+  });
 
   const {
     config,
@@ -81,11 +104,11 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
   } = usePrepareContractWrite({
     addressOrName: addresses.UNIPEER[chainId],
     contractInterface: UNIPEER_ABI.abi,
-    functionName: isBuyerTimedOut ? "timeoutByBuyer" : "confirmPaid",
+    functionName: getFunctionName(order.status),
     args: [order.orderID],
-    enabled: isConnected,
+    enabled: isSeller ? isSellerTimedOut : isBuyerTimedOut,
   });
-  const { data, error, isError, write } = useContractWrite(config);
+  const { data, isError, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -127,17 +150,32 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
       </div>
 
       <div className="flex">
-        {(isPrepareError || isError) && (
-          <div>Error: {(prepareError || error)?.message}</div>
-        )}
+      {(isBuyerTimedOut || isSellerTimedOut) && (
+        <button
+          type="submit"
+          disabled={!writeTO || isLoadingTO ||  isErrorTO}
+          className="btn-blue m-auto"
+        >
+          {isLoadingTO ? "Sending Tx..." : isBuyerTimedOut ? "Cancel Order" : "Complete Order (by timeout)"}
+        </button>)}
 
+      {isSeller && order.status == 1 && (
+        <button
+          type="submit"
+          disabled={!writeDispute || isLoadingDispute || isErrorDispute}
+          className="btn-blue m-auto"
+        >
+          {isLoadingDispute ? "Sending Tx..." : "Dispute Order"}
+        </button>)}
+
+      {getFunctionName(order.status) != "" && (
         <button
           type="submit"
           disabled={!write || isLoading || isError}
           className="btn-blue m-auto"
         >
           {isLoading ? "Sending Tx..." : getFunctionName(order.status)}
-        </button>
+        </button>)}
       </div>
     </div>
   );

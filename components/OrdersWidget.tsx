@@ -16,7 +16,7 @@ import {
 } from "wagmi";
 
 import { addresses, constants, formatEtherscanLink } from "../util";
-import { type Unipeer, type OrderBuyEvent } from "../contracts/types";
+import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import OrderDetails from "./OrdersDetails";
@@ -63,7 +63,7 @@ export default function Orders() {
     functionName: "sellerTimeout",
   });
 
-  const parseEvents = async (result: OrderBuyEvent) => {
+  const parseEvents = async (result) => {
     return await Promise.all(result.map(async (log) => {
       const { status, lastInteraction } = await Unipeer.orders(log.args[0]);
       return {
