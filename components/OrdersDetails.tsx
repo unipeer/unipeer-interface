@@ -47,8 +47,12 @@ type Props = {
 };
 
 export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = false }: Props) {
+  const [arbitrator, setArbitrator] = useState("");
+  const [extraData, setExtraData] = useState("");
+
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
+  const provider = useProvider();
   const chainId = chain?.id || constants.defaultChainId;
 
   const buyerNextState = moment.unix(order.lastInteraction.toNumber() + buyerTimeout);
@@ -67,6 +71,44 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
     }
   }
 
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
+  useEffect(() => {
+    const fetch = async () => {
+      setArbitrator(await Unipeer.arbitrator());
+      setExtraData(await Unipeer.arbitratorExtraData());
+    };
+    fetch();
+  });
+
+  const { data: arbCost } = useContractRead({
+    addressOrName: arbitrator,
+    contractInterface: IARBITRATOR_ABI.abi,
+    functionName: "arbitrationCost",
+    args: [extraData],
+  });
+
+  const {
+    config: disputeConfig,
+  } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "disputeOrder",
+    args: [order.orderID],
+    enabled: isSeller && order.status == 1 ,
+    overrides: {
+      value: arbCost!,
+    },
+  });
+  const { data: dataDispute, isError: isErrorDispute, write: writeDispute } = useContractWrite(disputeConfig);
+
+  const { isLoading: isLoadingDispute, } = useWaitForTransaction({
+    hash: dataDispute?.hash,
+  });
+
   const {
     config: timeoutConfig,
   } = usePrepareContractWrite({
@@ -83,21 +125,6 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
   });
 
   const {
-    config: disputeConfig,
-  } = usePrepareContractWrite({
-    addressOrName: addresses.UNIPEER[chainId],
-    contractInterface: UNIPEER_ABI.abi,
-    functionName: "disputeOrder",
-    args: [order.orderID],
-    enabled: isSeller && order.status == 1 ,
-  });
-  const { data: dataDispute, isError: isErrorDispute, write: writeDispute } = useContractWrite(disputeConfig);
-
-  const { isLoading: isLoadingDispute, } = useWaitForTransaction({
-    hash: dataDispute?.hash,
-  });
-
-  const {
     config,
     error: prepareError,
     isError: isPrepareError,
@@ -106,7 +133,7 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
     contractInterface: UNIPEER_ABI.abi,
     functionName: getFunctionName(order.status),
     args: [order.orderID],
-    enabled: isSeller ? isSellerTimedOut : isBuyerTimedOut,
+    enabled: getFunctionName(order.status) != "",
   });
   const { data, isError, write } = useContractWrite(config);
 
@@ -122,7 +149,7 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
     <div className="flex flex-col border-b py-2">
       <div className="flex">
         <div>
-          Amount: {formatEther(order.amount.toNumber())} WXDai
+          Amount: {formatEther(order.amount)} WXDai
         </div>
         <div className="px-1">
           {isSeller ? ("Buyer:") : ("Seller:") }
@@ -144,15 +171,15 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
         <div className="px-1">
         Status: {printStatus(order.status)}
         </div>
-        <div className="px-1">
-        Time left: {buyerNextState.fromNow()}
-        </div>
+        {order.status == 0 || order.status ==1 && (<div className="px-1">
+          Time left: {buyerNextState.fromNow()}
+        </div>)}
       </div>
 
       <div className="flex">
       {(isBuyerTimedOut || isSellerTimedOut) && (
         <button
-          type="submit"
+          onClick={() => writeTO?.()}
           disabled={!writeTO || isLoadingTO ||  isErrorTO}
           className="btn-blue m-auto"
         >
@@ -161,7 +188,7 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
 
       {isSeller && order.status == 1 && (
         <button
-          type="submit"
+          onClick={() => writeDispute?.()}
           disabled={!writeDispute || isLoadingDispute || isErrorDispute}
           className="btn-blue m-auto"
         >
@@ -170,7 +197,7 @@ export default function Orders({ order, buyerTimeout, sellerTimeout, isSeller = 
 
       {getFunctionName(order.status) != "" && (
         <button
-          type="submit"
+          onClick={() => write?.()}
           disabled={!write || isLoading || isError}
           className="btn-blue m-auto"
         >
