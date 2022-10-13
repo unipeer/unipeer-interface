@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 
 import { parseEther, formatEther } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
+import moment from "moment";
 
 import {
   useAccount,
@@ -18,6 +19,7 @@ import { addresses, constants, formatEtherscanLink } from "../util";
 import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
+import OrderDetails from "./OrdersDetails";
 
 export default function Orders() {
   const [orders, setOrders] = useState<{
@@ -29,6 +31,8 @@ export default function Orders() {
     amount: BigNumber;
     feeAmount: BigNumber;
     sellerFeeAmount: BigNumber;
+    status: number;
+    lastInteraction: BigNumber;
   }[]
   >([]);
 
@@ -44,19 +48,36 @@ export default function Orders() {
     signerOrProvider: provider,
   });
 
+  const { data: buyerTimeout } = useContractRead({
+    addressOrName: Unipeer.address,
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "buyerTimeout",
+  });
+
+  const { data: sellerTimeout } = useContractRead({
+    addressOrName: Unipeer.address,
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "sellerTimeout",
+  });
+
   const fetchOrderBuyEvents = async () => {
     const filter = Unipeer.filters.OrderBuy(null, address);
     const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
-    const events = result.map((log) => ({
-      orderID: log.args[0].toNumber(),
-      buyer: log.args[1],
-      seller: log.args[2],
-      paymentID: log.args[3],
-      token: log.args[4],
-      amount: log.args[5],
-      feeAmount: log.args[6],
-      sellerFeeAmount: log.args[7],
+    const events = await Promise.all(result.map(async (log) => {
+      const { status, lastInteraction } = await Unipeer.orders(log.args[0]);
+      return {
+        orderID: log.args[0].toNumber(),
+        buyer: log.args[1],
+        seller: log.args[2],
+        paymentID: log.args[3],
+        token: log.args[4],
+        amount: log.args[5],
+        feeAmount: log.args[6],
+        sellerFeeAmount: log.args[7],
+        status: status,
+        lastInteraction: lastInteraction
+      }
     }));
 
     setOrders(events);
@@ -66,31 +87,11 @@ export default function Orders() {
     if (isConnected) fetchOrderBuyEvents();
   }, [isConnected]);
 
-  const {
-    config,
-    error: prepareError,
-    isError: isPrepareError,
-  } = usePrepareContractWrite({
-    addressOrName: Unipeer.address,
-    contractInterface: UNIPEER_ABI.abi,
-    functionName: "buyOrder",
-    args: [],
-    enabled: Boolean(false),
-  });
-  const { data, error, isError, write } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  });
-
   const ordersList =
     orders.length > 0 &&
     orders.map((item, i) => {
       return (
-        <div key={i}>
-          Seller: {item!.seller} <br/>
-          XDai: {formatEther(item!.amount.toNumber())}
-        </div>
+        <OrderDetails key={i} order={item!} buyerTimeout={Number(buyerTimeout)} sellerTimeout={Number(sellerTimeout)} />
       );
     });
 

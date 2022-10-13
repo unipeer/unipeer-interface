@@ -8,9 +8,10 @@ import Sell from "../components/SellWidget";
 import SellerList from "../components/SellerList";
 import OrdersList from "../components/OrdersWidget";
 
-import { useNetwork, useSwitchNetwork } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 export default function Home() {
+  const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const network = useSwitchNetwork({
     chainId: 10200,
@@ -25,7 +26,7 @@ export default function Home() {
       <Nav />
 
       <main className="py-5">
-        {chain?.id !== 100 && chain?.id !== 10200 ? (
+        {isConnected && chain?.id !== 100 && chain?.id !== 10200 ? (
           <div className="flex flex-col items-center">
             <div>Unsupported Network</div>
             <button className="btn-blue" onClick={() => network.switchNetwork?.()}>
