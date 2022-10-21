@@ -27,6 +27,7 @@ export type Order = {
     buyer: string;
     seller: string;
     paymentID: number;
+    paymentAddress: string;
     token: string;
     amount: BigNumber;
     feeAmount: BigNumber;
