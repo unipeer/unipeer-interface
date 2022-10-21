@@ -185,7 +185,7 @@ export default function Buy() {
             disabled={!write || isLoading || isError}
             className="btn-blue m-auto"
           >
-            {isLoading ? "Sending Tx..." : "Pay"}
+            {isLoading ? "Sending Tx..." : "Place Buy Order"}
           </button>
         ) : (
           <div className="m-auto">
