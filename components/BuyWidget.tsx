@@ -20,6 +20,7 @@ import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import useDebounce from "../hooks/useDebounce";
+import { CustomConnectKitButton } from "./CustomConnectKitButton";
 
 const defaultFormData = {
   paymentid: "",
@@ -179,7 +180,7 @@ export default function Buy() {
       )}
 
       <div className="w-full flex pt-4">
-        {isConnected ? (
+        {/* {isConnected ? (
           <button
             type="submit"
             disabled={!write || isLoading || isError}
@@ -188,10 +189,9 @@ export default function Buy() {
             {isLoading ? "Sending Tx..." : "Place Buy Order"}
           </button>
         ) : (
-          <div className="m-auto">
-            <ConnectKitButton />
-          </div>
-        )}
+          <CustomConnectKitButton isNav={false} />
+        )} */}
+        <CustomConnectKitButton isNav={false} />
       </div>
       {isSuccess && (
         <div>
