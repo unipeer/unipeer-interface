@@ -41,7 +41,6 @@ html {
   align-items: center;
 }
 
-
 /* CSS */
 :root {
   --primary-color-100: #feead9;
@@ -76,10 +75,10 @@ html {
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
-  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 16px;
   font-weight: 800;
   line-height: 16px;
@@ -103,7 +102,7 @@ html {
 }
 
 .button-24:active {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .b1 {
