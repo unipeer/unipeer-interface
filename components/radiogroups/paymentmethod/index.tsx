@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 
 const paymentMethods = [
@@ -18,14 +18,22 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function PaymentMethod() {
+type PaymentMethodModalProps = {
+  activeModalComponent: string;
+  setActiveModalComponent: Dispatch<SetStateAction<string>>;
+};
+
+export default function PaymentMethodModal<PaymentMethodModalProps>({
+  activeModalComponent,
+  setActiveModalComponent,
+}) {
   const [selected, setSelected] = useState(paymentMethods[0]);
   const [paypalAddress, setPaypalAddress] = useState("");
   const [venmoAddress, setVenmoAddress] = useState("");
 
   return (
     <RadioGroup value={selected} onChange={setSelected}>
-      <RadioGroup.Label className="sr-only"> Privacy setting </RadioGroup.Label>
+      <RadioGroup.Label className="sr-only"> Payment Method </RadioGroup.Label>
       <div className="rounded-2 bg-white flex flex-col gap-4">
         {paymentMethods.map((paymentMethod, settingIdx) => (
           <RadioGroup.Option
@@ -76,7 +84,10 @@ export default function PaymentMethod() {
                     </RadioGroup.Description>
                   </span>
                 </div>
-                <div className="flex flex-col items-center justify-center">
+                <div
+                  className="flex flex-col items-center justify-center"
+                  onClick={() => setActiveModalComponent("address")}
+                >
                   <img src="pencil-icon.svg" alt="Pencil icon" />
                 </div>
               </>
