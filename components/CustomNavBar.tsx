@@ -13,7 +13,7 @@ import Form from "react-bootstrap/Form";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { ButtonGroup } from "react-bootstrap";
-import PaymentModeModal from "./modals/paymentmode";
+import PaymentModeModal from "./modals/payment";
 
 export default function CustomNavBar() {
   const [show, setShow] = useState(false);
