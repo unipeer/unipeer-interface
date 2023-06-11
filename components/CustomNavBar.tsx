@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import PaymentModeModal from "./PaymentModeModal";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import React, { useState } from "react";
@@ -14,6 +13,7 @@ import Form from "react-bootstrap/Form";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { ButtonGroup } from "react-bootstrap";
+import PaymentModeModal from "./modals/paymentmode";
 
 export default function CustomNavBar() {
   const [show, setShow] = useState(false);
@@ -42,7 +42,8 @@ export default function CustomNavBar() {
   const [paymentModeValue, setPaymentModeValue] = useState(1);
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <PaymentModeModal />
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Payment Mode</Modal.Title>
         </Modal.Header>
@@ -84,7 +85,7 @@ export default function CustomNavBar() {
             </ToggleButtonGroup>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand href="#home">
