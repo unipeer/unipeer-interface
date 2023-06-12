@@ -123,3 +123,11 @@ html {
   backdrop-filter: blur(10px);
   background-color: rgba(2, 4, 35, 0.7);
 }
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
