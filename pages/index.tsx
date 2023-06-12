@@ -10,6 +10,7 @@ import OrdersList from "components/OrdersWidget";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import PaymentModeModal from "components/modals/payment";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -25,6 +26,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <PaymentModeModal />
       <CustomNavBar />
 
       <main className="py-5">

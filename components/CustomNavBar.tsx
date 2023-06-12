@@ -126,16 +126,30 @@ export default function Example() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items
+                          style={{
+                            boxShadow: "0 6px 15px 2px rgba(0, 0, 0, 0.06)",
+                          }}
+                          className="absolute right-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-1 shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        >
                           <Menu.Item>
                             {({ active }) => (
                               <div
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
+                                  "flex flex-row items-center justify-start mt-2 mx-2 px-4 py-2 cursor-pointer gap-2",
                                 )}
                               >
-                                Your Profile
+                                <div className="w-6 h-6">
+                                  <img
+                                    src="docs.svg"
+                                    alt="docs icon"
+                                    className="w-6 h-6"
+                                  />
+                                </div>
+                                <div className="text-dark-black-500 font-normal font-paragraphs text-16">
+                                  View docs
+                                </div>
                               </div>
                             )}
                           </Menu.Item>
@@ -144,22 +158,19 @@ export default function Example() {
                               <div
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
+                                  "flex flex-row items-center justify-start mb-2 mx-2 px-4 py-2 cursor-pointer gap-2",
                                 )}
                               >
-                                Settings
-                              </div>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <div
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
-                                )}
-                              >
-                                Sign out
+                                <div className="w-6 h-6">
+                                  <img
+                                    src="logout.svg"
+                                    alt="docs icon"
+                                    className="w-6 h-6"
+                                  />
+                                </div>
+                                <div className="text-dark-black-500 font-normal font-paragraphs text-16">
+                                  Logout
+                                </div>
                               </div>
                             )}
                           </Menu.Item>
@@ -270,23 +281,26 @@ export default function Example() {
                 <Disclosure.Button
                   as="a"
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
+                  className="flex flex-row gap-2 px-4 py-2 no-underline"
                 >
-                  Your Profile
+                  <div className="w-6 h-6">
+                    <img src="docs.svg" alt="docs icon" className="w-6 h-6" />
+                  </div>
+                  <div className="text-dark-black-500 font-normal font-paragraphs text-16">
+                    View docs
+                  </div>
                 </Disclosure.Button>
                 <Disclosure.Button
                   as="a"
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
+                  className="flex flex-row gap-2 px-4 py-2 no-underline"
                 >
-                  Settings
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-                >
-                  Sign out
+                  <div className="w-6 h-6">
+                    <img src="logout.svg" alt="docs icon" className="w-6 h-6" />
+                  </div>
+                  <div className="text-dark-black-500 font-normal font-paragraphs text-16">
+                    Logout
+                  </div>
                 </Disclosure.Button>
               </div>
             </div>
