@@ -30,6 +30,7 @@ module.exports = {
         "dark-black-500": "#0e144a",
         "dark-200": "#a0aaec",
         "dark-300": "#6772c8",
+        alert: "#b13774",
       },
     },
   },
