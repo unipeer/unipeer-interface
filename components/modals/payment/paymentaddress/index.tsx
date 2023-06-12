@@ -1,13 +1,27 @@
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ExclamationTriangleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import PaymentMethod from "components/radiogroups/paymentmethod";
+import PaymentAddressForm from "components/forms/paymentaddress";
 
-export default function PaymentModeModal() {
-  const [open, setOpen] = useState(true);
+type PaymentAddressModalProps = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  activeModalComponent: string;
+  setActiveModalComponent: Dispatch<SetStateAction<string>>;
+};
+
+const PaymentAddress: React.FC<PaymentAddressModalProps> = ({
+  open,
+  setOpen,
+  activeModalComponent,
+  setActiveModalComponent,
+}) => {
+  const [paymentAddress, setPaymentAddress] = useState("");
+  const [feeRatePercentage, setFeeRatePercentage] = useState("");
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -38,7 +52,7 @@ export default function PaymentModeModal() {
               <Dialog.Panel className="flex flex-col transform overflow-hidden rounded-lg bg-white  text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[650px] sm:p-16 sm:rounded-32 gap-8">
                 <div className="sm:flex flex-row justify-between items-center">
                   <div className="font-bold text-dark-800 text-32 font-headings ">
-                    Payment mode
+                    Payment address
                   </div>
                   <div
                     onClick={() => setOpen(false)}
@@ -53,8 +67,15 @@ export default function PaymentModeModal() {
                   </div>
                 </div>
                 <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 w-full">
-                    <PaymentMethod />
+                  <div className="mt-2 text-center sm:mt-0 w-full">
+                    <PaymentAddressForm
+                      paymentAddress={paymentAddress}
+                      setPaymentAddress={setPaymentAddress}
+                      feeRatePercentage={feeRatePercentage}
+                      setFeeRatePercentage={setFeeRatePercentage}
+                      activeModalComponent={activeModalComponent}
+                      setActiveModalComponent={setActiveModalComponent}
+                    />
                   </div>
                 </div>
               </Dialog.Panel>
@@ -64,4 +85,6 @@ export default function PaymentModeModal() {
       </Dialog>
     </Transition.Root>
   );
-}
+};
+
+export default PaymentAddress;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 
 const paymentMethods = [
@@ -18,14 +18,22 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function PaymentMethod() {
+type PaymentMethodModalProps = {
+  activeModalComponent: string;
+  setActiveModalComponent: Dispatch<SetStateAction<string>>;
+};
+
+export default function PaymentMethodModal<PaymentMethodModalProps>({
+  activeModalComponent,
+  setActiveModalComponent,
+}) {
   const [selected, setSelected] = useState(paymentMethods[0]);
   const [paypalAddress, setPaypalAddress] = useState("");
   const [venmoAddress, setVenmoAddress] = useState("");
 
   return (
     <RadioGroup value={selected} onChange={setSelected}>
-      <RadioGroup.Label className="sr-only"> Privacy setting </RadioGroup.Label>
+      <RadioGroup.Label className="sr-only"> Payment Method </RadioGroup.Label>
       <div className="rounded-2 bg-white flex flex-col gap-4">
         {paymentMethods.map((paymentMethod, settingIdx) => (
           <RadioGroup.Option
@@ -34,7 +42,7 @@ export default function PaymentMethod() {
             className={({ checked }) =>
               classNames(
                 checked ? "z-10 border-accent-1 border-2" : "",
-                "relative bg-accent-2 rounded-2 px-4 py-6 flex flex-row items-center cursor-pointer focus:outline-none justify-between",
+                "relative bg-accent-2 rounded-2 px-4 py-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 cursor-pointer focus:outline-none justify-center sm:justify-between",
               )
             }
           >
@@ -76,8 +84,17 @@ export default function PaymentMethod() {
                     </RadioGroup.Description>
                   </span>
                 </div>
-                <div className="flex flex-col items-center justify-center">
+                <div
+                  className={`hidden sm:flex flex-col items-center justify-center`}
+                  onClick={() => setActiveModalComponent("address")}
+                >
                   <img src="pencil-icon.svg" alt="Pencil icon" />
+                </div>
+                <div
+                  className={`flex sm:hidden flex-col items-center justify-center self-end underline underline-offset-2 text-accent-1`}
+                  onClick={() => setActiveModalComponent("address")}
+                >
+                  Edit
                 </div>
               </>
             )}
