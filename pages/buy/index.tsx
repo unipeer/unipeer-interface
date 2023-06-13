@@ -8,6 +8,7 @@ import {
   DocumentDuplicateIcon,
   HandThumbUpIcon,
   HomeIcon,
+  InformationCircleIcon,
   MagnifyingGlassIcon,
   PaperClipIcon,
   QuestionMarkCircleIcon,
@@ -24,10 +25,11 @@ import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import CustomNavBar from "components/CustomNavBar";
 
-const sellers = [
+const dummySellers = [
   {
     address: "0xd4...345b",
     liquidity: "1,000 xDAI",
@@ -116,6 +118,9 @@ const Buy = () => {
   );
   const [allPaymentOptionsEnabled, setAllPaymentOptionsEnabled] =
     useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [sellerAddress, setSellerAddress] = useState("");
+  const [sellers, setSellers] = useState(dummySellers);
 
   return (
     <>
@@ -389,24 +394,157 @@ const Buy = () => {
                       </Listbox>
                     </div>
                     <div className="flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer mt-10">
-                      <div className="flex font-paragraphs text-16 text-accent-1 font-semibold">
-                        Add preferred seller (optional)
-                      </div>
-                      <div className="flex flex-col items-center justify-center text-primary-500">
-                        <PlusIcon width={20} height={20} />
-                      </div>
+                      {sellerAddress ? (
+                        <div className="flex font-paragraphs text-16 text-accent-1 font-semibold">
+                          Add preferred seller (optional)
+                        </div>
+                      ) : (
+                        <div className="flex flex-row items-center cursor-normal justify-between bg-white px-3 py-2 rounded-2 border-dark-100 border-[0.125rem] w-full">
+                          <div className="flex font-paragraphs text-14 text-dark-500 font-semibold">
+                            <span className="font-normal">
+                              {"Preferred seller: "}&nbsp;
+                            </span>
+                            <span className="underline">
+                              {"0xd45bda...345bY239"}
+                            </span>
+                          </div>
+                          <div className="w-6 h-6">
+                            <img
+                              src="cross-icon.svg"
+                              alt="Cross icon"
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="flex flex-col items-center justify-center pt-[205px]">
-                    <button
-                      type="submit"
-                      className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
-                    >
-                      <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
-                        Connect Wallet
+                  {walletConnected ? (
+                    <div className="flex flex-col items-center justify-center pt-[205px]">
+                      <button
+                        type="submit"
+                        className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
+                      >
+                        <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                          Connect Wallet
+                        </div>
+                      </button>
+                    </div>
+                  ) : !sellers.length ? (
+                    <>
+                      <div className="flex flex-col items-center justify-center pt-10">
+                        <div className="flex flex-row items-center justify-between w-full p-4 rounded-2 border-dark-100 border-[0.125rem]">
+                          <div className="flow-root w-full">
+                            <ul role="list" className="-mb-12">
+                              <li>
+                                <div className="relative pb-12 w-full">
+                                  <span
+                                    className="absolute top-2 left-2 -ml-px h-full w-0.5 border-[1px] border-dashed border-dark-500"
+                                    aria-hidden="true"
+                                  />
+                                  <div className="relative flex space-x-3 w-full">
+                                    <div>
+                                      <span
+                                        className={classNames(
+                                          "h-4 w-4 rounded-full flex items-center justify-center ring-8 ring-white bg-success",
+                                        )}
+                                      ></span>
+                                    </div>
+                                    <div className="flex min-w-0 space-x-1 w-full">
+                                      <div className="flex flex-row items-center justify-between w-full">
+                                        <div className="flex flex-row items-center gap-1">
+                                          <p className="font-paragraphs text-14 text-dark-500">
+                                            Pay
+                                            <span className="font-semibold">
+                                              0.001 xDAI
+                                            </span>{" "}
+                                            as arbitration fee
+                                          </p>
+                                          <div className="flex flex-col items-center justify-center text-dark-500">
+                                            <a
+                                              data-tooltip-id="arbitration-fee-tooltip"
+                                              data-tooltip-content="To place a buy order successfully, you need to provide a deposit needed to cover the arbitration costs in case of a dispute. It will be refunded to you unless your order is disputed by the seller and you lose the case."
+                                            >
+                                              <InformationCircleIcon
+                                                width={15}
+                                                height={15}
+                                              />
+                                            </a>
+                                            <ReactTooltip
+                                              id="arbitration-fee-tooltip"
+                                              className="px-4 py-10 max-w-[416px] bg-dark-800 font-paragraphs font-normal text-14 text-white"
+                                              style={{
+                                                padding: "1.5rem",
+                                                backgroundColor: "#04072a",
+                                                borderRadius: "8px",
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="flex flex-row items-center gap-1 cursor-pointer">
+                                          <div className="text-16 text-primary-500 font-paragraphs font-semibold">
+                                            Faucet
+                                          </div>
+                                          <div>
+                                            <img
+                                              src="external-link.svg"
+                                              alt=""
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <div className="relative pb-12">
+                                  <div className="relative flex space-x-3">
+                                    <div>
+                                      <span
+                                        className={classNames(
+                                          "h-4 w-4 rounded-full flex items-center justify-center ring-8 ring-white bg-dark-100",
+                                        )}
+                                      ></span>
+                                    </div>
+                                    <div className="flex min-w-0 flex-1 justify-between space-x-4">
+                                      <div>
+                                        <p className="font-paragraphs text-14 text-dark-500">
+                                          Pay{" "}
+                                          <span className="font-semibold">
+                                            1,000 USD
+                                          </span>{" "}
+                                          including fee via PayPal
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
-                    </button>
-                  </div>
+                      <div className="flex flex-col items-center justify-center pt-16">
+                        <button
+                          type="submit"
+                          className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
+                        >
+                          <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                            Proceed to place buy order
+                          </div>
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center pt-[205px]">
+                      <button className="flex flex-col items-center justify-center cursor-not-allowed w-full max-h-[56px] rounded-lg bg-dark-300 py-4 text-16 font-semibold font-paragraphs leading-6 text-white opacity-50">
+                        <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                          No sellers available at the moment
+                        </div>
+                      </button>
+                    </div>
+                  )}
                 </section>
               </div>
 
