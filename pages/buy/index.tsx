@@ -17,6 +17,7 @@ import {
 import {
   Bars3Icon,
   BellIcon,
+  ChevronDownIcon,
   ClipboardIcon,
   PlusIcon,
   XMarkIcon,
@@ -105,6 +106,27 @@ const receiveOptions = [
 const tabs = [
   { name: "Buy", href: "#", current: false },
   { name: "Sell", href: "#", current: true },
+];
+
+const solutions = [
+  {
+    name: "Insights",
+    description: "Measure actions your users take",
+    href: "##",
+    icon: "IconOne",
+  },
+  {
+    name: "Automations",
+    description: "Create your own targeted content",
+    href: "##",
+    icon: "IconTwo",
+  },
+  {
+    name: "Reports",
+    description: "Keep track of your growth",
+    href: "##",
+    icon: "IconThree",
+  },
 ];
 
 function classNames(...classes) {
@@ -393,10 +415,82 @@ const Buy = () => {
                         )}
                       </Listbox>
                     </div>
-                    <div className="flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer mt-10">
-                      {sellerAddress ? (
-                        <div className="flex font-paragraphs text-16 text-accent-1 font-semibold">
-                          Add preferred seller (optional)
+                    <div className="relative flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer mt-10">
+                      {!sellerAddress ? (
+                        <div className="mt-10">
+                          {/* <div className="flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer">
+                            <div className="flex font-paragraphs text-16 text-accent-1 font-semibold">
+                              Add preferred seller (optional)
+                            </div>
+                            <div className="flex flex-col items-center justify-center text-primary-500">
+                              <PlusIcon width={20} height={20} />
+                            </div>
+                          </div> */}
+                          <Popover className="">
+                            {({ open }) => (
+                              <>
+                                <Popover.Button
+                                  className={"ring-0 outline-none"}
+                                >
+                                  <div className="flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer">
+                                    <div className="flex font-paragraphs text-16 text-accent-1 font-semibold">
+                                      Add preferred seller (optional)
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center text-primary-500">
+                                      <PlusIcon width={20} height={20} />
+                                    </div>
+                                  </div>
+                                </Popover.Button>
+                                <Transition
+                                  as={Fragment}
+                                  enter="transition ease-out duration-200"
+                                  enterFrom="opacity-0 translate-y-1"
+                                  enterTo="opacity-100 translate-y-0"
+                                  leave="transition ease-in duration-150"
+                                  leaveFrom="opacity-100 translate-y-0"
+                                  leaveTo="opacity-0 translate-y-1"
+                                >
+                                  <Popover.Panel className="absolute -top-[154px] left-0 z-9  w-full">
+                                    <div className="absolute  h-3 w-3 bottom-0 left-2 origin-bottom-left rotate-45 transform border-[1px] border-l-0 border-t-0 border-b-primary-200 border-r-primary-200 bg-primary-100"></div>
+                                    <div className="px-6 py-4 bg-primary-100 border-[1px] border-primary-200 rounded-2">
+                                      <form className="flex flex-col gap-6">
+                                        <div>
+                                          <div className="flex items-center justify-between">
+                                            <label
+                                              htmlFor="rate-percent"
+                                              className="flex text-12 font-semibold text-dark-600 font-paragraphs"
+                                            >
+                                              Preferred seller address
+                                            </label>
+                                          </div>
+                                          <div className="mt-[0.125rem] flex flex-row items-center max-h-12 w-full rounded-lg bg-white py-3 text-left sm:text-sm">
+                                            <input
+                                              type="text"
+                                              // name={feeRatePercentage}
+                                              // value={feeRatePercentage}
+                                              id="rate-percent"
+                                              className="items-center max-h-12 w-full rounded-lg bg-white py-3 text-left text-dark-black-500 font-paragraphs text-16 border-[1px] border-dark-200"
+                                              placeholder="e.g. 0xd8dA6....8bd3d"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <button
+                                            type="submit"
+                                            className="flex flex-row items-center justify-center max-h-[56px] rounded-lg bg-accent-1 py-2 px-4 gap-0 max-w-24"
+                                          >
+                                            <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                                              Add seller
+                                            </div>
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </Popover.Panel>
+                                </Transition>
+                              </>
+                            )}
+                          </Popover>
                         </div>
                       ) : (
                         <div className="flex flex-row items-center cursor-normal justify-between bg-white px-3 py-2 rounded-2 border-dark-100 border-[0.125rem] w-full">
@@ -430,7 +524,7 @@ const Buy = () => {
                         </div>
                       </button>
                     </div>
-                  ) : !sellers.length ? (
+                  ) : (
                     <>
                       <div className="flex flex-col items-center justify-center pt-10">
                         <div className="flex flex-row items-center justify-between w-full p-4 rounded-2 border-dark-100 border-[0.125rem]">
@@ -525,25 +619,27 @@ const Buy = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col items-center justify-center pt-16">
-                        <button
-                          type="submit"
-                          className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
-                        >
-                          <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
-                            Proceed to place buy order
-                          </div>
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center pt-[205px]">
-                      <button className="flex flex-col items-center justify-center cursor-not-allowed w-full max-h-[56px] rounded-lg bg-dark-300 py-4 text-16 font-semibold font-paragraphs leading-6 text-white opacity-50">
-                        <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
-                          No sellers available at the moment
+                      {!sellers.length ? (
+                        <div className="flex flex-col items-center justify-center pt-16">
+                          <button
+                            type="submit"
+                            className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
+                          >
+                            <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                              Proceed to place buy order
+                            </div>
+                          </button>
                         </div>
-                      </button>
-                    </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center pt-16">
+                          <button className="flex flex-col items-center justify-center cursor-not-allowed w-full max-h-[56px] rounded-lg bg-dark-300 py-4 text-16 font-semibold font-paragraphs leading-6 text-white opacity-50">
+                            <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
+                              No sellers available at the moment
+                            </div>
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </section>
               </div>
