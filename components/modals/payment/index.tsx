@@ -5,7 +5,6 @@ import PaymentMode from "./paymentmode";
 import PaymentAddress from "./paymentaddress";
 
 export default function PaymentModeModal() {
-  const [open, setOpen] = useState(true);
   const [activeModalComponent, setActiveModalComponent] = useState("mode");
   const [activePaymentIndex, setActivePaymentIndex] = useState(0);
 
@@ -13,15 +12,11 @@ export default function PaymentModeModal() {
     <>
       {activeModalComponent === "mode" ? (
         <PaymentMode
-          open={open}
-          setOpen={setOpen}
           activeModalComponent={activeModalComponent}
           setActiveModalComponent={setActiveModalComponent}
         />
       ) : (
         <PaymentAddress
-          open={open}
-          setOpen={setOpen}
           activeModalComponent={activeModalComponent}
           setActiveModalComponent={setActiveModalComponent}
         />

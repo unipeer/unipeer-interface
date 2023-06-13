@@ -11,6 +11,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import PaymentModeModal from "components/modals/payment";
+import WrongNetworkDetected from "components/buy/modals/wrongnetwork";
+import BasicDialog from "components/BasicDialog";
+import { PayArbitrationFeeModal } from "components/buy/modals/payfee";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -26,19 +29,26 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {/* <PaymentModeModal /> */}
+      {/* <BasicDialog
+        dialogTitle="Pay arbitration fee"
+        isCancellable={false}
+        dialogChild={<PayArbitrationFeeModal arbitrationFee="(0.001 xDAI)" />}
+      /> */}
+
       <CustomNavBar />
 
       <main className="py-5">
         {isConnected && chain?.id !== 100 && chain?.id !== 10200 ? (
-          <div className="flex flex-col items-center">
-            <div>Unsupported Network</div>
-            <button
-              className="btn-blue"
-              onClick={() => network.switchNetwork?.()}
-            >
-              Switch to Gnosis Chiado Testnet
-            </button>
-          </div>
+          <BasicDialog
+            dialogTitle="Wrong network detected!"
+            isCancellable={false}
+            dialogChild={
+              <WrongNetworkDetected
+                switchNetwork={() => network.switchNetwork?.()}
+              />
+            }
+          />
         ) : (
           <>
             <div className="w-full max-w-sm m-auto">
