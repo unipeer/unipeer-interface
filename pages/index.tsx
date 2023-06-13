@@ -35,6 +35,7 @@ export default function Home() {
         isCancellable={false}
         dialogChild={<PayArbitrationFeeModal arbitrationFee="(0.001 xDAI)" />}
       /> */}
+
       <CustomNavBar />
 
       <main className="py-5">

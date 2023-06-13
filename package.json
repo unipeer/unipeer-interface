@@ -29,6 +29,7 @@
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
+    "react-tooltip": "^5.13.2",
     "swr": "^1.2.0",
     "wagmi": "^0.6.7"
   },
