@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-const tabs = [{ name: "Buy orders" }, { name: "Sell orders" }];
+const tabs = [{ name: "Active" }, { name: "Inactive" }];
 
-type BuySellTabProps = {
+type ActiveInactiveTabProps = {
   selectedTab: string;
   setSelectedTab: Dispatch<SetStateAction<string>>;
 };
@@ -11,7 +11,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const BuySellOrdersTab = ({ selectedTab, setSelectedTab }: BuySellTabProps) => {
+const ActiveInactiveTab = ({
+  selectedTab,
+  setSelectedTab,
+}: ActiveInactiveTabProps) => {
   return (
     <div>
       <div className="hidden sm:flex bg-white max-w-fit rounded-3xl">
@@ -39,4 +42,4 @@ const BuySellOrdersTab = ({ selectedTab, setSelectedTab }: BuySellTabProps) => {
   );
 };
 
-export default BuySellOrdersTab;
+export default ActiveInactiveTab;

@@ -358,9 +358,9 @@ const Buy = () => {
                       leaveFrom="opacity-100 translate-y-0"
                       leaveTo="opacity-0 translate-y-1"
                     >
-                      <Popover.Panel className="absolute -top-[154px] left-0 z-9  w-full">
+                      <Popover.Panel className="absolute -top-[144px] left-0 z-9  w-full">
                         <div className="absolute  h-3 w-3 bottom-0 left-2 origin-bottom-left rotate-45 transform border-[1px] border-l-0 border-t-0 border-b-primary-200 border-r-primary-200 bg-primary-100"></div>
-                        <div className="px-6 py-4 bg-primary-100 border-[1px] border-primary-200 rounded-2">
+                        <div className="px-6 py-4 bg-primary-100 border-[1px] border-primary-200 rounded-8">
                           <form className="flex flex-col gap-6">
                             <div>
                               <div className="flex items-center justify-between">
@@ -401,7 +401,7 @@ const Buy = () => {
               </Popover>
             </div>
           ) : (
-            <div className="flex flex-row items-center cursor-normal justify-between bg-white px-3 py-2 rounded-2 border-dark-100 border-[0.125rem] w-full">
+            <div className="flex flex-row items-center cursor-normal justify-between bg-white px-3 py-2 rounded-8 border-dark-100 border-[0.125rem] w-full">
               <div className="flex font-paragraphs text-14 text-dark-500 font-semibold">
                 <span className="font-normal">
                   {"Preferred seller: "}&nbsp;
