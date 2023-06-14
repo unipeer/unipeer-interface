@@ -7,7 +7,6 @@ import Buy from "components/BuyWidget";
 import Sell from "components/SellWidget";
 import SellerList from "components/SellerList";
 import OrdersList from "components/OrdersWidget";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import PaymentModeModal from "components/modals/payment";
