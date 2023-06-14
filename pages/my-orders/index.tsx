@@ -34,7 +34,8 @@ import Buy from "components/buy";
 import SellerInfo from "components/tables/sellerinfo";
 import BuySellTab from "components/tabs/buysell";
 import Sell from "components/sell";
-import BuySellOrdersTab from "components/tabs/buysellorders";
+import ActiveInactiveTab from "components/tabs/activeinactiveorders";
+import BuyOrders from "components/orders/buyorders";
 
 const sortOptions = [
   "last 7 days",
@@ -43,15 +44,18 @@ const sortOptions = [
   "last 6 months",
 ];
 
+const orderDropDownOptions = ["Buy orders", "Sell orders"];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Demo = () => {
-  const [selectedTab, setSelectedTab] = useState("Buy orders");
+  const [selectedTab, setSelectedTab] = useState("Active");
   const [allPaymentOptionsEnabled, setAllPaymentOptionsEnabled] =
     useState(false);
   const [sortOption, setSortOption] = useState(sortOptions[0]);
+  const [activeOption, setActiveOption] = useState(orderDropDownOptions[0]);
   const [orders, setOrders] = useState([]);
 
   return (
@@ -64,7 +68,7 @@ const Demo = () => {
       <CustomNavBar />
 
       <main
-        className="py-5 h-[100vh]"
+        className="py-5 min-h-[100vh]"
         style={{
           backgroundImage:
             "linear-gradient(to bottom, rgba(255, 244, 242, 0.4) 0%, #fff0ee 100%)",
@@ -99,7 +103,7 @@ const Demo = () => {
                 </div>
                 <section className="bg-dark-100 sm:rounded-2xl p-8 flex flex-row justify-between items-center w-full">
                   <div>
-                    <BuySellOrdersTab
+                    <ActiveInactiveTab
                       selectedTab={selectedTab}
                       setSelectedTab={setSelectedTab}
                     />
@@ -161,14 +165,14 @@ const Demo = () => {
                 </section>
 
                 <section>
-                  {orders.length === 0 ? (
+                  {orders.length === 1 ? (
                     <div className="flex flex-col justify-center items-start">
                       <div className="text-20 text-dark-500 font-normal font-paragraphs">
                         Oops! It looks like you have not created any new orders
                         recently. Create a{" "}
                         <a
                           href="#"
-                          className="underline underline-offset-[3px] text-primary-500"
+                          className="underline underline-offset-[3px] text-primary-500 font-semibold"
                         >
                           new order
                         </a>
@@ -176,7 +180,67 @@ const Demo = () => {
                       </div>
                     </div>
                   ) : (
-                    <div></div>
+                    <div>
+                      <div className="flex flex-row justify-end">
+                        <Menu as="div" className="relative inline-block">
+                          <div className="flex">
+                            <Menu.Button className="group min-w-[206.25px] flex flex-row items-center justify-between min-w py-3 px-4 bg-white rounded-[8px] gap-12 text-16 text-dark-500 font-normal font-paragraphs">
+                              {activeOption}
+                              <ChevronDownIcon
+                                className={`-mr-1 ml-1 h-6 w-6 flex-shrink-0 text-dark-500`}
+                                aria-hidden="true"
+                              />
+                            </Menu.Button>
+                          </div>
+
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-full  origin-top-right rounded-lg bg-white border-2 border-dark-100">
+                              <div className="py-1">
+                                {orderDropDownOptions.map(
+                                  (orderDropDownOption) => (
+                                    <Menu.Item key={orderDropDownOption}>
+                                      {({ active }) => (
+                                        <div
+                                          className={classNames(
+                                            "cursor-pointer w-full group flex flex-row items-center justify-between p-4 bg-white rounded-[8px] gap-12",
+                                          )}
+                                          onClick={() =>
+                                            setActiveOption(orderDropDownOption)
+                                          }
+                                        >
+                                          <div className="w-full text-16 text-dark-500 font-normal font-paragraphs">
+                                            {orderDropDownOption}
+                                          </div>
+                                          {orderDropDownOption ===
+                                            activeOption && (
+                                            <div className="w-6 h-6">
+                                              <img
+                                                src="check.svg"
+                                                alt="check icon"
+                                                className="object-cover w-6 h-6"
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </Menu.Item>
+                                  ),
+                                )}
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </div>
+                      <BuyOrders />
+                    </div>
                   )}
                 </section>
               </div>
