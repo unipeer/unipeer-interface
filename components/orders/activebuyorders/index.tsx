@@ -1,7 +1,7 @@
 import BuyOrderCard from "components/card/buyorder";
 import React from "react";
 
-const activeOrdersData = [
+const activeBuyOrdersData = [
   {
     id: 1,
     sentAmount: 1000,
@@ -60,10 +60,10 @@ const activeOrdersData = [
   },
 ];
 
-const BuyOrders = () => {
+const ActiveBuyOrders = () => {
   return (
     <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {activeOrdersData.map((order) => {
+      {activeBuyOrdersData.map((order) => {
         return (
           <BuyOrderCard
             key={order.id}
@@ -86,4 +86,4 @@ const BuyOrders = () => {
   );
 };
 
-export default BuyOrders;
+export default ActiveBuyOrders;
