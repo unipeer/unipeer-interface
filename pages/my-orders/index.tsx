@@ -35,7 +35,10 @@ import SellerInfo from "components/tables/sellerinfo";
 import BuySellTab from "components/tabs/buysell";
 import Sell from "components/sell";
 import ActiveInactiveTab from "components/tabs/activeinactiveorders";
-import BuyOrders from "components/orders/buyorders";
+import ActiveBuyOrders from "components/orders/activebuyorders";
+import InActiveBuyOrders from "components/orders/inactivebuyorders";
+import ActiveSellOrders from "components/orders/activesellorders";
+import InActiveSellOrders from "components/orders/inactivesellorders";
 
 const sortOptions = [
   "last 7 days",
@@ -239,7 +242,21 @@ const Demo = () => {
                           </Transition>
                         </Menu>
                       </div>
-                      <BuyOrders />
+                      <>
+                        {activeOption === "Buy orders" ? (
+                          selectedTab === "Active" ? (
+                            <ActiveBuyOrders />
+                          ) : (
+                            <InActiveBuyOrders />
+                          )
+                        ) : activeOption === "Sell orders" ? (
+                          selectedTab === "Active" ? (
+                            <ActiveSellOrders />
+                          ) : (
+                            <InActiveSellOrders />
+                          )
+                        ) : null}
+                      </>
                     </div>
                   )}
                 </section>

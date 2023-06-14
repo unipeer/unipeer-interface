@@ -2,20 +2,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { ArrowDownTrayIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import React, { Fragment } from "react";
 
-/*
-id: 4,
-    sentAmount: 50,
-    sentCurrency: "USD",
-    sentProvider: "Venmo",
-    sentProviderLogo: "ic_venmo.svg",
-    receiveAmount: 48,
-    receiveCurrency: "USDC",
-    receiveProvider: "USDC",
-    receiveProviderLogo: "usdc-logo.svg",
-    status: "completed",
-    timeLeft: "00:00:00",
- */
-type BuyOrderCardType = {
+type SellOrderCardType = {
   id: number;
   sentAmount: number;
   sentCurrency: string;
@@ -30,7 +17,7 @@ type BuyOrderCardType = {
   timeLeft: string;
 };
 
-const BuyOrderCard = ({
+const SellOrderCard = ({
   id,
   sentAmount,
   sentCurrency,
@@ -43,7 +30,7 @@ const BuyOrderCard = ({
   status,
   statusCode,
   timeLeft,
-}: BuyOrderCardType) => {
+}: SellOrderCardType) => {
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">
@@ -128,7 +115,7 @@ const BuyOrderCard = ({
         <div className="flex flex-row items-center gap-6">
           <div className="flex flex-col justify-center gap-1">
             <div className="font-paragraphs font-semibold text-14 text-dark-400">
-              You pay
+              You sell
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
@@ -148,7 +135,7 @@ const BuyOrderCard = ({
           </div>
           <div className="flex flex-col justify-center gap-1">
             <div className="font-paragraphs font-semibold text-14 text-dark-400">
-              You receive
+              You get
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
@@ -171,9 +158,9 @@ const BuyOrderCard = ({
         </div>
         <div
           className={`flex flex-col items-center justify-center px-2 py-1 border-[1px] rounded-full w-fit ${
-            statusCode === "PC"
+            statusCode === "PDB"
               ? "bg-success-bg border-success"
-              : statusCode === "ASR"
+              : statusCode === "APB"
               ? "bg-warning-bg border-warning"
               : "hidden"
           }`}
@@ -183,22 +170,48 @@ const BuyOrderCard = ({
       </div>
       <div className="flex flex-row items-center justify-end gap-2">
         {/* Payment Confirmation */}
-        {statusCode === "PC" && (
-          <div className="flex flex-row items-center justify-normal gap-1">
-            <div className="h-5 w-5">
-              <img
-                src="badge-check-green.svg"
-                alt="Check icon"
-                className="object-cover"
-              />
-            </div>
-            <div className="font-paragraphs font-normal text-dark-600 text-16">
-              Payment confirmed by you
-            </div>
+        {statusCode === "PDB" && (
+          <div className="flex flex-row items-center justify-normal gap-2">
+            <>
+              <div className="flex flex-col justify-center items-center">
+                <button
+                  type="submit"
+                  className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                >
+                  <div className="text-14 font-semibold font-paragraphs text-white">
+                    Dispute order
+                  </div>
+                  <div className="h-4 w-4">
+                    <img
+                      src="exclamation-circle-white.svg"
+                      alt="exclamation circle white"
+                      className="object-cover"
+                    />
+                  </div>
+                </button>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <button
+                  type="submit"
+                  className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                >
+                  <div className="text-14 font-semibold font-paragraphs text-white">
+                    Complete order
+                  </div>
+                  <div className="h-4 w-4">
+                    <img
+                      src="check-white.svg"
+                      alt="Check White icon"
+                      className="object-cover"
+                    />
+                  </div>
+                </button>
+              </div>
+            </>
           </div>
         )}
         {/* Buy order is pending, either you can cancel or confirm */}
-        {statusCode === "ASR" && timeLeft !== "00:00:00" && (
+        {statusCode === "APB" && (
           <>
             <div className="flex flex-col justify-center items-center">
               <button
@@ -217,37 +230,24 @@ const BuyOrderCard = ({
                 </div>
               </button>
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <button
-                type="submit"
-                className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
-              >
-                <div className="text-14 font-semibold font-paragraphs text-white">
-                  Confirm payment
-                </div>
-                <div className="h-4 w-4">
-                  <img
-                    src="check-white.svg"
-                    alt="Check icon"
-                    className="object-cover"
-                  />
-                </div>
-              </button>
-            </div>
           </>
         )}
         {/* Buy order is finished, you can get tokens */}
-        {statusCode === "ASR" && timeLeft === "00:00:00" && (
+        {statusCode === "ODY" && (
           <div className="flex flex-col justify-center items-center">
             <button
               type="submit"
               className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
             >
               <div className="text-14 font-semibold font-paragraphs text-white">
-                Get tokens
+                View on Kleros
               </div>
               <div className="h-4 w-4">
-                <ArrowDownTrayIcon color="#fff" />
+                <img
+                  src="external-link-white.svg"
+                  alt="external link white"
+                  className="object-cover"
+                />
               </div>
             </button>
           </div>
@@ -286,4 +286,4 @@ const BuyOrderCard = ({
   );
 };
 
-export default BuyOrderCard;
+export default SellOrderCard;
