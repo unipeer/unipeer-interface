@@ -97,6 +97,7 @@ export default function Sell() {
       // TODO: remove hard coded token value and fetch from event
       event.set(log.args[0], { tokens: [Dai], paymentName: log.args[1] });
     });
+
     // We assume that the PaymentMethodUpdate will
     // have contiguous Payment IDs
     setPayMethods(Array.from(event.values()));
@@ -153,7 +154,7 @@ export default function Sell() {
 
   const tokenList =
     selected != -1 &&
-    payMethods[selected].tokens.map((item, i) => {
+    payMethods[selected]?.tokens.map((item, i) => {
       return (
         <option key={i} value={i}>
           {item!}

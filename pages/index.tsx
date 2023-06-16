@@ -26,7 +26,7 @@ export default function Home() {
       <Nav />
 
       <main className="py-5">
-        {isConnected && chain?.id !== 100 && chain?.id !== 10200 ? (
+        {isConnected && chain?.id !== 5 && chain?.id !== 100 && chain?.id !== 10200 ? (
           <div className="flex flex-col items-center">
             <div>Unsupported Network</div>
             <button className="btn-blue" onClick={() => network.switchNetwork?.()}>

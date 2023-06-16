@@ -2,10 +2,12 @@ import { formatUnits, parseEther } from "@ethersproject/units";
 
 export const addresses = {
   UNIPEER: {
+    5: "0xd56e8f3c7731f6e0d85a47de55926f0de8cc0368",
     100: "",
     10200: "0x4Ad052B87573d183fBD173B56E0a1A4dbbc5529a",
   },
   DAI: {
+    5: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
     100: "",
     10200: "0x18c8a7ec7897177E4529065a7E7B0878358B3BfF",
   },
@@ -14,6 +16,7 @@ export const addresses = {
 export const constants = {
   defaultChainId: 10200,
   block: {
+    5: 7830833,
     100: 222028,
     10200: 299989,
   },
@@ -27,6 +30,7 @@ export function shortenHex(hex, length = 4) {
 
 const ETHERSCAN_URL = {
   1: "https://etherscan.io",
+  5: "https://goerli.etherscan.io",
   100: "https://gnosisscan.io",
   10200: "https://blockscout.chiadochain.net",
 };
