@@ -13,6 +13,10 @@ import PaymentModeModal from "components/modals/payment";
 import WrongNetworkDetected from "components/buy/modals/wrongnetwork";
 import BasicDialog from "components/BasicDialog";
 import { PayArbitrationFeeModal } from "components/buy/modals/payfee";
+import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
+import { CancelOrderModal } from "components/buy/modals/cancel_order";
+import WithdrawTokens from "components/WithdrawTokens";
+import { WithdrawTokensModal } from "components/my_orders/modals/withdraw_tokens";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -30,9 +34,9 @@ export default function Home() {
 
       {/* <PaymentModeModal /> */}
       {/* <BasicDialog
-        dialogTitle="Pay arbitration fee"
-        isCancellable={false}
-        dialogChild={<PayArbitrationFeeModal arbitrationFee="(0.001 xDAI)" />}
+        dialogTitle="Withdraw tokens"
+        isCancellable={true}
+        dialogChild={<WithdrawTokensModal />}
       /> */}
 
       <CustomNavBar />
