@@ -1,15 +1,19 @@
 import { MouseEventHandler, useState } from "react";
 
-type ConfirmPaymentModalProp = {
-  paymentAmount: String;
-  receivedAmount: String;
-  sellerAddress: String;
+type CompleteOrderModalProp = {
+  getAmount: string;
+  getAmountCurrency: string;
+  sellAmount: string;
+  sellAmountCurrency: string;
+  sellerAddress: string;
   confirmPaymentCallback: MouseEventHandler<any>;
 };
 
-export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
-  paymentAmount,
-  receivedAmount,
+export function CompleteOrderModal<CancelOrderModalProp>({
+  getAmount,
+  getAmountCurrency,
+  sellAmount,
+  sellAmountCurrency,
   sellerAddress,
   confirmPaymentCallback,
 }) {
@@ -19,38 +23,30 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
   };
   return (
     <div className="text-20 text-dark-dark-800">
-      Please confirm whether you successfully paid the amount. You can also keep
-      track of this order under{" "}
-      <a
-        href="#"
-        className="w-full text-16 text-primary-color-500 text-20 font-normal underline font-paragraphs font-semibold"
-      >
-        My Orders
-      </a>
-      .
+      Please confirm whether you successfully received the amount.
       <div className="flex flex-col mt-10 items-center justify-start w-full h-auto rounded-lg bg-accent-2 py-6 px-4">
         <div className="flex flex-row items-center justify-start w-full">
           <div className="flex flex-col items-start justify-center w-auth mr-8">
             <div className="text-base text-dark-dark-400 font-semibold">
-              You pay
+              You get
             </div>
             <div className="text-2xl text-dark-dark-500 font-bold">
-              {paymentAmount}
+              {getAmount} ${getAmountCurrency}
             </div>
           </div>
           <div className="border-l border-solid border-black h-[48px] w-[1px]"></div>
           <div className="flex flex-col items-start justify-center w-48 ml-8">
             <div className="text-base text-primary-color-500 font-semibold">
-              You receive
+              You sell
             </div>
             <div className="text-2xl text-dark-dark-500 font-bold">
-              {receivedAmount}
+              {sellAmount} ${sellAmountCurrency}
             </div>
           </div>
         </div>
         <div className="flex flex-rowitems-start justify-center text-dark-dark-500 text-base mt-6">
-          You will receive the tokens once seller confirms the payment from
-          their end.
+          Tokens will be transferred to the buyer once you mark the order as
+          completed.
         </div>
         <div className="flex flex-row items-center justify-start w-full mt-6">
           <input
@@ -64,13 +60,11 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
             htmlFor="confirmedCheckbox"
             className="flex flex-row items-center justify-start text-dark-dark-500 text-base ml-2"
           >
-            I have successfully paid{" "}
-            <div className="text-dark-dark-500 text-base font-semibold ml-1 mr-1">
-              {paymentAmount}
-            </div>{" "}
-            to seller{" "}
-            <div className="text-dark-dark-500 text-base font-semibold ml-1 mr-1">
-              {sellerAddress}
+            <div>
+              I have successfully received the payment in my account{" "}
+              <div className="text-dark-dark-500 text-base font-semibold ml-1 mr-1">
+                {sellerAddress}
+              </div>
             </div>
           </label>
         </div>
@@ -82,7 +76,7 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
           onClick={confirmPaymentCallback}
         >
           <div className="ml-[16px] text-16 font-semibold font-paragraphs leading-6 text-white">
-            Confirm payment
+            Complete order
           </div>
           <svg
             aria-hidden="true"
@@ -104,7 +98,7 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
       ) : (
         <button className="flex flex-row mt-8 items-center justify-center w-auto cursor-not-allowed max-h-[56px] rounded-lg bg-dark-300 py-8 gap-0 text-16 font-semibold font-paragraphs leading-6 text-white opacity-50">
           <div className="mx-[16px] text-16 font-semibold font-paragraphs leading-6 text-white">
-            Confirm payment
+            Complete order
           </div>
         </button>
       )}

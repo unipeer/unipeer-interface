@@ -1,6 +1,9 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ArrowDownTrayIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import React, { Fragment } from "react";
+import BasicDialog from "components/BasicDialog";
+import { CancelOrderModal } from "components/my_orders/modals/cancel_order";
+import { CompleteOrderModal } from "components/my_orders/modals/complete_order";
+import React, { Fragment, useState } from "react";
 
 type SellOrderCardType = {
   id: number;
@@ -17,6 +20,13 @@ type SellOrderCardType = {
   timeLeft: string;
 };
 
+export type CancelOrderObj = {
+  id: number;
+  tokenName: string;
+  tokenLogo: string;
+  tokenAmount: string;
+};
+
 const SellOrderCard = ({
   id,
   sentAmount,
@@ -31,6 +41,9 @@ const SellOrderCard = ({
   statusCode,
   timeLeft,
 }: SellOrderCardType) => {
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showCompletePaymentDialog, setShowCompletePaymentDialog] =
+    useState(false);
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">
@@ -195,9 +208,32 @@ const SellOrderCard = ({
                   type="submit"
                   className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
                 >
-                  <div className="text-14 font-semibold font-paragraphs text-white">
+                  <div
+                    className="text-14 font-semibold font-paragraphs text-white"
+                    onClick={() => {
+                      setShowCompletePaymentDialog(true);
+                    }}
+                  >
                     Complete order
                   </div>
+                  {showCompletePaymentDialog && (
+                    <div>
+                      <BasicDialog
+                        dialogTitle="Complete order"
+                        isCancellable={true}
+                        dialogChild={
+                          <CompleteOrderModal
+                            getAmount={receiveAmount}
+                            getAmountCurrency={receiveCurrency}
+                            sellAmount={sentAmount}
+                            sellAmountCurrency={sentCurrency}
+                            sellerAddress={"paypal.me/chad"}
+                            confirmPaymentCallback={() => {}}
+                          />
+                        }
+                      />
+                    </div>
+                  )}
                   <div className="h-4 w-4">
                     <img
                       src="check-white.svg"
@@ -218,9 +254,29 @@ const SellOrderCard = ({
                 type="submit"
                 className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
               >
-                <div className="text-14 font-semibold font-paragraphs text-white">
+                <div
+                  className="text-14 font-semibold font-paragraphs text-white"
+                  onClick={() => {
+                    setShowCancelDialog(true);
+                  }}
+                >
                   Cancel order
                 </div>
+                {showCancelDialog && (
+                  <div>
+                    <BasicDialog
+                      dialogTitle="Cancel order"
+                      isCancellable={true}
+                      dialogChild={
+                        <CancelOrderModal
+                          tokenName={sentCurrency}
+                          tokenLogo={sentProviderLogo}
+                          tokenAmount={sentAmount}
+                        />
+                      }
+                    />
+                  </div>
+                )}
                 <div className="h-4 w-4">
                   <img
                     src="cross-outline-icon.svg"

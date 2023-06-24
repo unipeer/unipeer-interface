@@ -42,6 +42,7 @@ import InActiveSellOrders from "components/orders/inactivesellorders";
 import { WithdrawTokensModal } from "components/my_orders/modals/withdraw_tokens";
 import { WithdrawTokenModal } from "components/my_orders/modals/withdraw_token";
 import BasicDialog from "components/BasicDialog";
+import { WithdrawTokenSuccessModal } from "components/my_orders/modals/withdraw_token_success";
 
 const sortOptions = [
   "last 7 days",
@@ -57,7 +58,8 @@ export type WithdrawTokenObj = {
   convertTo: string;
   convertToLogo: string;
   balance: string;
-  lockedAmount: string
+  lockedAmount: string;
+  withdrawnAmount: string;
 };
 
 const withdrawTokensDummyObj: ReadonlyArray<WithdrawTokenObj> = [
@@ -68,7 +70,8 @@ const withdrawTokensDummyObj: ReadonlyArray<WithdrawTokenObj> = [
     convertTo: "Paypal",
     convertToLogo: "ic_paypal.svg",
     balance: "70",
-    lockedAmount: "10"
+    lockedAmount: "10",
+    withdrawnAmount: "0",
   },
   {
     id: 2,
@@ -77,7 +80,8 @@ const withdrawTokensDummyObj: ReadonlyArray<WithdrawTokenObj> = [
     convertTo: "Venmo",
     convertToLogo: "ic_venmo.svg",
     balance: "600",
-    lockedAmount: "10"
+    lockedAmount: "10",
+    withdrawnAmount: "0",
   },
   {
     id: 3,
@@ -86,7 +90,8 @@ const withdrawTokensDummyObj: ReadonlyArray<WithdrawTokenObj> = [
     convertTo: "Paypal",
     convertToLogo: "ic_paypal.svg",
     balance: "250",
-    lockedAmount: "10"
+    lockedAmount: "10",
+    withdrawnAmount: "0",
   },
 ];
 
@@ -149,6 +154,22 @@ const Demo = () => {
                 isCancellable={true}
                 dialogChild={
                   <WithdrawTokenModal
+                    activeModalComponent={setActiveWithdrawModalComponent}
+                    activeWithdrawToken={setCurrentWithdrawTokenObj}
+                    withdrawTokenObj={currentWithdrawTokenObj}
+                  />
+                }
+              />
+            ) : (
+              <></>
+            )}
+
+            {activeWithdrawModalComponent === "tokenWithdrawn" ? (
+              <BasicDialog
+                dialogTitle="Withdraw tokens"
+                isCancellable={true}
+                dialogChild={
+                  <WithdrawTokenSuccessModal
                     activeModalComponent={setActiveWithdrawModalComponent}
                     withdrawTokenObj={currentWithdrawTokenObj}
                   />

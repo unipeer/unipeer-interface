@@ -1,17 +1,27 @@
 import { Popover, Transition } from "@headlessui/react";
 import { WithdrawTokenObj } from "pages/my-orders";
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
 type WithdrawTokenModalProps = {
   activeModalComponent: Dispatch<SetStateAction<string>>;
+  activeWithdrawToken: Dispatch<SetStateAction<string>>;
   withdrawTokenObj: WithdrawTokenObj;
 };
 
 export function WithdrawTokenModal({
   activeModalComponent,
+  activeWithdrawToken,
   withdrawTokenObj,
 }): JSX.Element {
   let allFieldsAreFilled = withdrawTokenObj?.balance.trim();
+  const inputClassNormal =
+    "items-center max-h-12 w-full rounded-lg bg-white py-3 text-left text-dark-black-500 font-paragraphs text-16 border-[1px] border-primary-500";
+  const inputClassError =
+    "items-center max-h-12 w-full rounded-lg bg-white py-3 text-left text-dark-black-500 font-paragraphs text-16 border-[1px] border-state-alert";
+  const inputFieldHint = "Tokens will be withdrawn directly to your wallet";
+  const inputFieldHintError = "Amount exceeds the available balance";
+  const [inputValue, setInputValue] = useState("");
+  const [inputFieldValid, setInputFieldValid] = useState(true);
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center justify-start gap-[0.5rem] cursor-pointer">
@@ -63,7 +73,7 @@ export function WithdrawTokenModal({
                       </div>
                       <div className="w-4 h-4">
                         <img
-                          src="exclamation-circle-white.svg"
+                          src="exclamation-circle.svg"
                           alt="Details icon"
                           className="object-cover"
                         />
@@ -112,7 +122,14 @@ export function WithdrawTokenModal({
         <div className="flex flex-shrink-0 justify-between">
           <label
             htmlFor="rate-percent"
-            className="flex text-14 font-semibold text-primary-500 font-paragraphs"
+            className="flex text-14 font-semibold text-primary-500 font-paragraphs cursor-pointer"
+            onClick={() => {
+              setInputValue(
+                (
+                  withdrawTokenObj.balance - withdrawTokenObj.lockedAmount
+                ).toString(),
+              );
+            }}
           >
             Max amount
           </label>
@@ -122,15 +139,18 @@ export function WithdrawTokenModal({
         <input
           type="text"
           name="withdrawAmountInput"
-          value={withdrawTokenObj.balance - withdrawTokenObj.lockedAmount}
+          placeholder="0.0"
           id="rate-percent"
-          className="items-center max-h-12 w-full rounded-lg bg-white py-3 text-left text-dark-black-500 font-paragraphs text-16 border-[1px] border-dark-200"
-          placeholder="0"
-          // onChange={(e) => setFeeRatePercentage(e.target.value as string)}
+          value={inputValue}
+          className={inputFieldValid ? inputClassNormal : inputClassError}
+          onChange={(e) => {
+            setInputFieldValid(true);
+            setInputValue(e.target.value);
+          }}
         />
       </div>
       <div className="mt-[0.25rem] flex text-12 font-normal text-dark-black-500 font-paragraphs">
-        Tokens will be withdrawn directly to your wallet
+        {inputFieldValid ? inputFieldHint : inputFieldHintError}
       </div>
       {!allFieldsAreFilled ? (
         <div>
@@ -146,6 +166,22 @@ export function WithdrawTokenModal({
           <button
             type="submit"
             className="flex flex-row mt-8 items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
+            onClick={() => {
+              if (
+                parseFloat(inputValue) >
+                withdrawTokenObj.balance - withdrawTokenObj.lockedAmount
+              ) {
+                setInputFieldValid(false);
+              } else {
+                withdrawTokenObj.withdrawnAmount = inputValue;
+                console.log(`withdraw token input value ${inputValue}`);
+                console.log(
+                  `withdraw token obj value ${withdrawTokenObj.withdrawnAmount}`,
+                );
+                activeWithdrawToken(withdrawTokenObj);
+                activeModalComponent("tokenWithdrawn");
+              }
+            }}
           >
             <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
               Withdraw tokens

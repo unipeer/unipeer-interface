@@ -19,7 +19,7 @@ export function WithdrawTokensModal({
       <div className="flex flex-row mb-8" />
       {withdrawTokenObjList.map((token) => {
         return (
-          <div className="flex flex-row mt-2 w-full h-[100px] rounded-lg bg-accent-2 py-2 px-4">
+          <div key={token.id} className="flex flex-row mt-2 w-full h-[100px] rounded-lg bg-accent-2 py-2 px-4">
             <div className="flex flex-row flex-grow items-center justify-start">
               <div className="flex flex-col">
                 <div className="flex flex-row items-center justify-center">

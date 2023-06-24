@@ -1,6 +1,9 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ArrowDownTrayIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import React, { Fragment } from "react";
+import BasicDialog from "components/BasicDialog";
+import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
+import { CancelOrderModal } from "components/my_orders/modals/cancel_order";
+import React, { Fragment, useState } from "react";
 
 /*
 id: 4,
@@ -44,6 +47,9 @@ const BuyOrderCard = ({
   statusCode,
   timeLeft,
 }: BuyOrderCardType) => {
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showConfirmPaymentDialog, setShowConfirmPaymentDialog] =
+    useState(false);
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">
@@ -204,10 +210,28 @@ const BuyOrderCard = ({
               <button
                 type="submit"
                 className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                onClick={() => {
+                  setShowCancelDialog(true);
+                }}
               >
                 <div className="text-14 font-semibold font-paragraphs text-white">
                   Cancel order
                 </div>
+                {showCancelDialog && (
+                  <div>
+                    <BasicDialog
+                      dialogTitle="Cancel order"
+                      isCancellable={true}
+                      dialogChild={
+                        <CancelOrderModal
+                          tokenName={sentCurrency}
+                          tokenLogo={sentProviderLogo}
+                          tokenAmount={sentAmount}
+                        />
+                      }
+                    />
+                  </div>
+                )}
                 <div className="h-4 w-4">
                   <img
                     src="cross-outline-icon.svg"
@@ -221,10 +245,29 @@ const BuyOrderCard = ({
               <button
                 type="submit"
                 className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                onClick={() => {
+                  setShowConfirmPaymentDialog(true);
+                }}
               >
                 <div className="text-14 font-semibold font-paragraphs text-white">
                   Confirm payment
                 </div>
+                {showConfirmPaymentDialog && (
+                  <div>
+                    <BasicDialog
+                      dialogTitle="Confirm payment"
+                      isCancellable={true}
+                      dialogChild={
+                        <ConfirmPaymentModal
+                          paymentAmount={`${sentAmount} ${sentCurrency}`}
+                          receivedAmount={`${receiveAmount} ${receiveCurrency}`}
+                          sellerAddress={"paypal.me/chad"}
+                          confirmPaymentCallback={() => {}}
+                        />
+                      }
+                    />
+                  </div>
+                )}
                 <div className="h-4 w-4">
                   <img
                     src="check-white.svg"
