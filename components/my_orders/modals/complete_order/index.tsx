@@ -24,22 +24,22 @@ export function CompleteOrderModal<CancelOrderModalProp>({
   return (
     <div className="text-20 text-dark-dark-800">
       Please confirm whether you successfully received the amount.
-      <div className="flex flex-col mt-10 items-center justify-start w-full h-auto rounded-lg bg-accent-2 py-6 px-4">
+      <div className="flex flex-col mt-4 items-center justify-start w-auto h-auto rounded-lg bg-accent-2 py-6 px-4">
         <div className="flex flex-row items-center justify-start w-full">
-          <div className="flex flex-col items-start justify-center w-auth mr-8">
-            <div className="text-base text-dark-dark-400 font-semibold">
+          <div className="flex flex-col items-start justify-center w-auto mr-8">
+            <div className="text-base text-primary-color-500 font-semibold">
               You get
             </div>
-            <div className="text-2xl text-dark-dark-500 font-bold">
+            <div className="text-20 text-dark-dark-500 font-bold">
               {getAmount} ${getAmountCurrency}
             </div>
           </div>
           <div className="border-l border-solid border-black h-[48px] w-[1px]"></div>
           <div className="flex flex-col items-start justify-center w-48 ml-8">
-            <div className="text-base text-primary-color-500 font-semibold">
+            <div className="text-base text-dark-dark-400 font-semibold">
               You sell
             </div>
-            <div className="text-2xl text-dark-dark-500 font-bold">
+            <div className="text-20 text-dark-dark-500 font-bold">
               {sellAmount} ${sellAmountCurrency}
             </div>
           </div>

@@ -28,13 +28,13 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
         My Orders
       </a>
       .
-      <div className="flex flex-col mt-10 items-center justify-start w-full h-auto rounded-lg bg-accent-2 py-6 px-4">
+      <div className="flex flex-col mt-4 items-center justify-start w-auto h-auto rounded-lg bg-accent-2 py-6 px-4">
         <div className="flex flex-row items-center justify-start w-full">
-          <div className="flex flex-col items-start justify-center w-auth mr-8">
+          <div className="flex flex-col items-start justify-center w-auto mr-8">
             <div className="text-base text-dark-dark-400 font-semibold">
               You pay
             </div>
-            <div className="text-2xl text-dark-dark-500 font-bold">
+            <div className="text-20 text-dark-dark-500 font-bold">
               {paymentAmount}
             </div>
           </div>
@@ -43,7 +43,7 @@ export function ConfirmPaymentModal<ConfirmPaymentModalProp>({
             <div className="text-base text-primary-color-500 font-semibold">
               You receive
             </div>
-            <div className="text-2xl text-dark-dark-500 font-bold">
+            <div className="text-20 text-dark-dark-500 font-bold">
               {receivedAmount}
             </div>
           </div>

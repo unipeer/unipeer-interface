@@ -133,7 +133,7 @@ const Demo = () => {
         <div className="min-h-full">
           <main className="">
             {/* Page header */}
-            {activeWithdrawModalComponent === "tokenList" ? (
+            {activeWithdrawModalComponent === "tokenList" && (
               <BasicDialog
                 dialogTitle="Withdraw tokens"
                 isCancellable={true}
@@ -144,11 +144,12 @@ const Demo = () => {
                     withdrawTokenObjList={withdrawTokensDummyObj}
                   />
                 }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
               />
-            ) : (
-              <></>
             )}
-            {activeWithdrawModalComponent === "tokenDetails" ? (
+            {activeWithdrawModalComponent === "tokenDetails" && (
               <BasicDialog
                 dialogTitle="Withdraw tokens"
                 isCancellable={true}
@@ -159,12 +160,13 @@ const Demo = () => {
                     withdrawTokenObj={currentWithdrawTokenObj}
                   />
                 }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
               />
-            ) : (
-              <></>
             )}
 
-            {activeWithdrawModalComponent === "tokenWithdrawn" ? (
+            {activeWithdrawModalComponent === "tokenWithdrawn" && (
               <BasicDialog
                 dialogTitle="Withdraw tokens"
                 isCancellable={true}
@@ -174,9 +176,10 @@ const Demo = () => {
                     withdrawTokenObj={currentWithdrawTokenObj}
                   />
                 }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
               />
-            ) : (
-              <></>
             )}
             <div className="flex flex-row mx-auto mt-8 max-w-3xl sm:px-6 lg:max-w-7xl gap-8 min-h-full">
               <div className="space-y-8 lg:min-w-[30rem] w-full">

@@ -262,7 +262,9 @@ const BuyOrderCard = ({
                           paymentAmount={`${sentAmount} ${sentCurrency}`}
                           receivedAmount={`${receiveAmount} ${receiveCurrency}`}
                           sellerAddress={"paypal.me/chad"}
-                          confirmPaymentCallback={() => {}}
+                          confirmPaymentCallback={() => {
+                            setShowConfirmPaymentDialog(false);
+                          }}
                         />
                       }
                     />

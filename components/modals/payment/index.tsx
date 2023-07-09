@@ -1,21 +1,29 @@
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, MouseEventHandler, SetStateAction, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import PaymentMode from "./paymentmode";
 import PaymentAddress from "./paymentaddress";
 
-export default function PaymentModeModal() {
-  const [activeModalComponent, setActiveModalComponent] = useState("mode");
+type PaymentModeModalProps = {
+  activeModalComponent: string;
+  setActiveModalComponent: MouseEventHandler<any>;
+};
+
+export default function PaymentModeModal({
+  activeModalComponent,
+  setActiveModalComponent,
+}) {
   const [activePaymentIndex, setActivePaymentIndex] = useState(0);
 
   return (
     <>
-      {activeModalComponent === "mode" ? (
+      {activeModalComponent === "mode" && (
         <PaymentMode
           activeModalComponent={activeModalComponent}
           setActiveModalComponent={setActiveModalComponent}
         />
-      ) : (
+      )}
+      {activeModalComponent === "address" && (
         <PaymentAddress
           activeModalComponent={activeModalComponent}
           setActiveModalComponent={setActiveModalComponent}
