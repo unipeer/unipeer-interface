@@ -63,8 +63,8 @@ export function CancelOrderModal({
                       <div className="px-4 py-6 bg-dark-100 border-[1px] border-dark-200 rounded-8 flex flex-col gap-4">
                         <div className="flex flex-col justify-center gap-1">
                           <div className="font-paragraphs font-semibold text-12 text-dark-600">
-                            A part of your balance that's locked in existing
-                            orders.
+                            A part of your balance that&apos;s locked in
+                            existing orders.
                           </div>
                         </div>
                       </div>

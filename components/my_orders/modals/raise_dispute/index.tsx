@@ -32,7 +32,7 @@ export function RaiseDisputeModal<RaiseDisputModalProp>({
           </div>
         </div>
         <div className="flex flex-row mt-4 items-center justify-start w-full text-20 text-dark-dark-500">
-          Seller's payment address - {" "}
+          Seller&apos;s payment address - {" "}
           <div className="text-20 text-dark-dark-500 font-semibold">
             {sellerAddress}
           </div>
