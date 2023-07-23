@@ -118,6 +118,7 @@ const Demo = () => {
 
   return (
     <>
+    <>
       <Head>
         <title>Unipeer</title>
         <link rel="icon" href="/favicon.ico" />
@@ -199,6 +200,7 @@ const Demo = () => {
           </main>
         </div>
       </main>
+    </>
     </>
   );
 };

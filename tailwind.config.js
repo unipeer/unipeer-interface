@@ -3,6 +3,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -89,5 +90,6 @@ module.exports = {
       },
     },
   },
+  plugins: [require("@tailwindcss/forms")],
   plugins: [require("@tailwindcss/forms")],
 };
