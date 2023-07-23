@@ -1,13 +1,20 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/router";
+import BasicDialog from "./BasicDialog";
+import PaymentMode from "./modals/payment/paymentmode";
+import PaymentMethodModal from "./radiogroups/paymentmethodmodal";
+import PaymentModeModal from "./modals/payment";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
+  const router = useRouter();
+  const [activeModalComponent, setActiveModalComponent] = useState("");
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
@@ -26,7 +33,12 @@ export default function Example() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
+                <div
+                  className="flex flex-shrink-0 items-center cursor-pointer"
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
                   <img
                     src="/nav_logo.svg"
                     width="150"
@@ -51,8 +63,19 @@ export default function Example() {
                     </div>
                     <div className="flex flex-row items-center justify-center w-2 h-2 rounded-full bg-alert"></div>
                   </div>
-                  <div className="flex flex-row items-center justify-center cursor-pointer">
+                  <div
+                    className="flex flex-row items-center justify-center cursor-pointer"
+                    onClick={() => {
+                      setActiveModalComponent("mode");
+                    }}
+                  >
                     <div className="flex flex-row items-center justify-center">
+                      {
+                        <PaymentModeModal
+                          activeModalComponent={activeModalComponent}
+                          setActiveModalComponent={setActiveModalComponent}
+                        />
+                      }
                       <img
                         src="/ic_paypal.svg"
                         // width="28"
@@ -91,6 +114,9 @@ export default function Example() {
                       <button
                         type="button"
                         className="relative hidden md:inline-flex items-center rounded-md border-accent-1 border-[2px] hover:bg-accent-1 px-4 py-[12px] text-sm font-semibold font-paragraphs text-accent-1 hover:text-white"
+                        onClick={() => {
+                          router.push("/my-orders");
+                        }}
                       >
                         <span>My Orders</span>
                       </button>

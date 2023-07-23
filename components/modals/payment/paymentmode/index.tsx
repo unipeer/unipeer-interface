@@ -4,7 +4,7 @@ import {
   ExclamationTriangleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import PaymentMethod from "components/radiogroups/paymentmethod";
+import PaymentMethod from "components/radiogroups/paymentmethodmodal";
 import PaymentAddress from "../paymentaddress";
 import BasicDialog from "components/BasicDialog";
 
@@ -27,6 +27,9 @@ const PaymentMode: React.FC<PaymentModeModalProps> = ({
           setActiveModalComponent={setActiveModalComponent}
         />
       }
+      onCloseCallback={() => {
+        setActiveModalComponent("");
+      }}
     />
   );
 };

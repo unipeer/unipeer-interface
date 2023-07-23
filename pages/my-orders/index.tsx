@@ -39,12 +39,60 @@ import ActiveBuyOrders from "components/orders/activebuyorders";
 import InActiveBuyOrders from "components/orders/inactivebuyorders";
 import ActiveSellOrders from "components/orders/activesellorders";
 import InActiveSellOrders from "components/orders/inactivesellorders";
+import { WithdrawTokensModal } from "components/my_orders/modals/withdraw_tokens";
+import { WithdrawTokenModal } from "components/my_orders/modals/withdraw_token";
+import BasicDialog from "components/BasicDialog";
+import { WithdrawTokenSuccessModal } from "components/my_orders/modals/withdraw_token_success";
 
 const sortOptions = [
   "last 7 days",
   "last 30 days",
   "last 3 months",
   "last 6 months",
+];
+
+export type WithdrawTokenObj = {
+  id: number;
+  convertFrom: string;
+  convertFromLogo: string;
+  convertTo: string;
+  convertToLogo: string;
+  balance: string;
+  lockedAmount: string;
+  withdrawnAmount: string;
+};
+
+const withdrawTokensDummyObj: ReadonlyArray<WithdrawTokenObj> = [
+  {
+    id: 1,
+    convertFrom: "xDAI",
+    convertFromLogo: "xdai-logo.png",
+    convertTo: "Paypal",
+    convertToLogo: "ic_paypal.svg",
+    balance: "70",
+    lockedAmount: "10",
+    withdrawnAmount: "0",
+  },
+  {
+    id: 2,
+    convertFrom: "xDAI",
+    convertFromLogo: "xdai-logo.png",
+    convertTo: "Venmo",
+    convertToLogo: "ic_venmo.svg",
+    balance: "600",
+    lockedAmount: "10",
+    withdrawnAmount: "0",
+  },
+  {
+    id: 3,
+    convertFrom: "USDC",
+    convertFromLogo: "usdc-logo.svg",
+    convertTo: "Paypal",
+    convertToLogo: "ic_paypal.svg",
+    balance: "250",
+    lockedAmount: "10",
+    withdrawnAmount: "0",
+  },
 ];
 
 const orderDropDownOptions = ["Buy orders", "Sell orders"];
@@ -60,6 +108,11 @@ const Demo = () => {
   const [sortOption, setSortOption] = useState(sortOptions[0]);
   const [activeOption, setActiveOption] = useState(orderDropDownOptions[0]);
   const [orders, setOrders] = useState([]);
+  const [activeWithdrawModalComponent, setActiveWithdrawModalComponent] =
+    useState("");
+  const [currentWithdrawTokenObj, setCurrentWithdrawTokenObj] = useState(
+    withdrawTokensDummyObj[0],
+  );
 
   return (
     <>
@@ -80,7 +133,54 @@ const Demo = () => {
         <div className="min-h-full">
           <main className="">
             {/* Page header */}
+            {activeWithdrawModalComponent === "tokenList" && (
+              <BasicDialog
+                dialogTitle="Withdraw tokens"
+                isCancellable={true}
+                dialogChild={
+                  <WithdrawTokensModal
+                    activeModalComponent={setActiveWithdrawModalComponent}
+                    activeWithdrawToken={setCurrentWithdrawTokenObj}
+                    withdrawTokenObjList={withdrawTokensDummyObj}
+                  />
+                }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
+              />
+            )}
+            {activeWithdrawModalComponent === "tokenDetails" && (
+              <BasicDialog
+                dialogTitle="Withdraw tokens"
+                isCancellable={true}
+                dialogChild={
+                  <WithdrawTokenModal
+                    activeModalComponent={setActiveWithdrawModalComponent}
+                    activeWithdrawToken={setCurrentWithdrawTokenObj}
+                    withdrawTokenObj={currentWithdrawTokenObj}
+                  />
+                }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
+              />
+            )}
 
+            {activeWithdrawModalComponent === "tokenWithdrawn" && (
+              <BasicDialog
+                dialogTitle="Withdraw tokens"
+                isCancellable={true}
+                dialogChild={
+                  <WithdrawTokenSuccessModal
+                    activeModalComponent={setActiveWithdrawModalComponent}
+                    withdrawTokenObj={currentWithdrawTokenObj}
+                  />
+                }
+                onCloseCallback={() => {
+                  setActiveWithdrawModalComponent("")
+                }}
+              />
+            )}
             <div className="flex flex-row mx-auto mt-8 max-w-3xl sm:px-6 lg:max-w-7xl gap-8 min-h-full">
               <div className="space-y-8 lg:min-w-[30rem] w-full">
                 {/* Description list*/}
@@ -89,7 +189,16 @@ const Demo = () => {
                     My Orders
                   </div>
                   <div>
-                    <button className="flex flex-row justify-center items-center gap-2 px-4 py-2 bg-dark-800 rounded-[8px]">
+                    <button
+                      className="flex flex-row justify-center items-center gap-2 px-4 py-2 bg-dark-800 rounded-[8px]"
+                      onClick={() => {
+                        // setActiveWithdrawModalComponent("n");
+                        console.log(
+                          `loading ${activeWithdrawModalComponent} dialog`,
+                        );
+                        setActiveWithdrawModalComponent("tokenList");
+                      }}
+                    >
                       <div className="text-14 font-semibold font-paragraphs text-white">
                         Withdraw from escrow
                       </div>

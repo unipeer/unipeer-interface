@@ -1,22 +1,40 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import React, { Component, Dispatch, Fragment, SetStateAction, useState } from "react";
+import React, {
+  Component,
+  Dispatch,
+  Fragment,
+  MouseEventHandler,
+  SetStateAction,
+  useState,
+} from "react";
 
 type BasicDialogProp = {
   dialogTitle: string;
   isCancellable: boolean;
   dialogChild: JSX.Element;
+  onCloseCallback?: () => void;
 };
 
 const BasicDialog: React.FC<BasicDialogProp> = ({
   dialogTitle,
   isCancellable,
   dialogChild,
+  onCloseCallback,
 }) => {
   const [open, setOpen] = useState(true);
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={() => {
+          if (onCloseCallback) {
+            onCloseCallback();
+          }
+          setOpen(false);
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -40,29 +58,29 @@ const BasicDialog: React.FC<BasicDialogProp> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col transform overflow-hidden rounded-lg bg-white  text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[650px] sm:p-16 sm:rounded-32 gap-8">
+              <Dialog.Panel className="flex flex-col transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[650px] sm:p-16 sm:rounded-32 gap-8">
                 <div className="sm:flex flex-row justify-between items-center">
                   <div className="font-bold text-dark-800 text-32 font-headings">
                     {dialogTitle}
                   </div>
-                  {isCancellable?(<div
-                    onClick={() => setOpen(false)}
-                    className="text-32 cursor-pointer"
-                  >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon
-                      color="black"
-                      className="h-8 w-8"
-                      aria-hidden="true"
-                    />
-                  </div>):(
+                  {isCancellable ? (
+                    <div
+                      onClick={() => setOpen(false)}
+                      className="text-32 cursor-pointer"
+                    >
+                      <span className="sr-only">Close</span>
+                      <XMarkIcon
+                        color="black"
+                        className="h-8 w-8"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  ) : (
                     <></>
                   )}
                 </div>
                 <div className="sm:flex sm:items-start">
-                  <div className="mt-0 sm:mt-0 w-full">
-                    {dialogChild}
-                  </div>
+                  <div className="mt-0 sm:mt-0 w-full">{dialogChild}</div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

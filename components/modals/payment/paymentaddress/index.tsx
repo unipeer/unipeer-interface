@@ -4,7 +4,7 @@ import {
   ExclamationTriangleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import PaymentMethod from "components/radiogroups/paymentmethod";
+import PaymentMethod from "components/radiogroups/paymentmethodmodal";
 import PaymentAddressForm from "components/forms/paymentaddress";
 import BasicDialog from "components/BasicDialog";
 
@@ -34,6 +34,9 @@ const PaymentAddress: React.FC<PaymentAddressModalProps> = ({
           setActiveModalComponent={setActiveModalComponent}
         />
       }
+      onCloseCallback={() => {
+        setActiveModalComponent("");
+      }}
     />
   );
 };
