@@ -3,6 +3,8 @@ import { ArrowDownTrayIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import BasicDialog from "components/BasicDialog";
 import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
 import { CancelOrderModal } from "components/my_orders/modals/cancel_order";
+import CryptoIcon from "components/shared/crypto_icons";
+import { BuyOrder } from "components/shared/types";
 import React, { Fragment, useState } from "react";
 
 /*
@@ -20,33 +22,11 @@ id: 4,
  */
 type BuyOrderCardType = {
   id: number;
-  sentAmount: number;
-  sentCurrency: string;
-  sentProvider: string;
-  sentProviderLogo: string;
-  receiveAmount: number;
-  receiveCurrency: string;
-  receiveProvider: string;
-  receiveProviderLogo: string;
-  status: string;
-  statusCode: string;
-  timeLeft: string;
+  timeLeft: number;
+  order: BuyOrder;
 };
 
-const BuyOrderCard = ({
-  id,
-  sentAmount,
-  sentCurrency,
-  sentProvider,
-  sentProviderLogo,
-  receiveAmount,
-  receiveCurrency,
-  receiveProvider,
-  receiveProviderLogo,
-  status,
-  statusCode,
-  timeLeft,
-}: BuyOrderCardType) => {
+const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showConfirmPaymentDialog, setShowConfirmPaymentDialog] =
     useState(false);
@@ -88,7 +68,10 @@ const BuyOrderCard = ({
                           Order created on
                         </div>
                         <div className="font-paragraphs font-normal text-14 text-dark-500">
-                          23 Apr, 2023 at 09:56:12 am
+                          {/* 23 Apr, 2023 at 09:56:12 am */}
+                          {new Date(
+                            order.lastInteraction.toNumber() * 1000,
+                          ).toLocaleString()}
                         </div>
                       </div>
                       <div className="flex flex-col justify-center gap-1">
@@ -96,7 +79,7 @@ const BuyOrderCard = ({
                           Seller’s address
                         </div>
                         <a className="font-paragraphs font-normal text-14 text-dark-500 underline underline-offset-2">
-                          paypal.com/chad
+                          {order.paymentAddress}
                         </a>
                       </div>
                     </div>
@@ -138,14 +121,10 @@ const BuyOrderCard = ({
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
-                {sentAmount} {sentCurrency}
+                {String(order.amount)} {order.token}
               </div>
               <div className="w-6 h-6">
-                <img
-                  src={sentProviderLogo}
-                  alt={sentProvider}
-                  className="object-cover"
-                />
+                <CryptoIcon symbol={order.token} />
               </div>
             </div>
           </div>
@@ -158,14 +137,10 @@ const BuyOrderCard = ({
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
-                {receiveAmount} {receiveCurrency}
+                {order.amount.toString()} {order.token}
               </div>
               <div className="w-6 h-6">
-                <img
-                  src={receiveProviderLogo}
-                  alt={receiveProvider}
-                  className="object-cover"
-                />
+                <CryptoIcon symbol={order.token} />
               </div>
             </div>
           </div>
@@ -177,9 +152,9 @@ const BuyOrderCard = ({
         </div>
         <div
           className={`flex flex-col items-center justify-center px-2 py-1 border-[1px] rounded-full w-fit ${
-            statusCode === "PC"
+            order.status === OrderStatus.COMPLETED
               ? "bg-success-bg border-success"
-              : statusCode === "ASR"
+              : order.status === OrderStatus.CANCELLED
               ? "bg-warning-bg border-warning"
               : "hidden"
           }`}
@@ -189,7 +164,7 @@ const BuyOrderCard = ({
       </div>
       <div className="flex flex-row items-center justify-end gap-2">
         {/* Payment Confirmation */}
-        {statusCode === "PC" && (
+        {order.status === OrderStatus.COMPLETED && (
           <div className="flex flex-row items-center justify-normal gap-1">
             <div className="h-5 w-5">
               <img
@@ -204,7 +179,7 @@ const BuyOrderCard = ({
           </div>
         )}
         {/* Buy order is pending, either you can cancel or confirm */}
-        {statusCode === "ASR" && timeLeft !== "00:00:00" && (
+        {order.status === OrderStatus.CREATED && timeLeft !== 0 && (
           <>
             <div className="flex flex-col justify-center items-center">
               <button
@@ -224,9 +199,8 @@ const BuyOrderCard = ({
                       isCancellable={true}
                       dialogChild={
                         <CancelOrderModal
-                          tokenName={sentCurrency}
-                          tokenLogo={sentProviderLogo}
-                          tokenAmount={sentAmount}
+                          tokenName={order.token}
+                          tokenAmount={order.amount}
                         />
                       }
                     />
@@ -259,9 +233,9 @@ const BuyOrderCard = ({
                       isCancellable={true}
                       dialogChild={
                         <ConfirmPaymentModal
-                          paymentAmount={`${sentAmount} ${sentCurrency}`}
-                          receivedAmount={`${receiveAmount} ${receiveCurrency}`}
-                          sellerAddress={"paypal.me/chad"}
+                          paymentAmount={`${order.amount} ${order.token}`}
+                          receivedAmount={`${order.amount} ${order.token}`}
+                          sellerAddress={`${order.seller}`}
                           confirmPaymentCallback={() => {
                             setShowConfirmPaymentDialog(false);
                           }}
@@ -282,7 +256,7 @@ const BuyOrderCard = ({
           </>
         )}
         {/* Buy order is finished, you can get tokens */}
-        {statusCode === "ASR" && timeLeft === "00:00:00" && (
+        {order.status === OrderStatus.CREATED && timeLeft !== 0 && (
           <div className="flex flex-col justify-center items-center">
             <button
               type="submit"
@@ -298,7 +272,7 @@ const BuyOrderCard = ({
           </div>
         )}
         {/* Buy order is finished, you can get tokens */}
-        {statusCode === "C" && (
+        {order.status === OrderStatus.CREATED && (
           <div className="flex flex-row items-center justify-normal gap-1">
             <div className="h-5 w-5">
               <img
@@ -312,7 +286,7 @@ const BuyOrderCard = ({
             </div>
           </div>
         )}
-        {statusCode === "CANCEL" && (
+        {order.status === OrderStatus.CANCELLED && (
           <div className="flex flex-row items-center justify-normal gap-1">
             <div className="h-6 w-6">
               <img

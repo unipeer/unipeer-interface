@@ -1,4 +1,9 @@
+import { BigNumber } from "@ethersproject/bignumber";
 import React, { useState } from "react";
+import { addresses, constants } from "../../../util";
+import { useAccount, useNetwork, useProvider, useContract } from "wagmi";
+import { type Unipeer } from "../../../contracts/types";
+import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 
 const dummySellers = [
   {
@@ -49,6 +54,27 @@ const dummySellers = [
 
 const SellerInfo = () => {
   const [sellers, setSellers] = useState(dummySellers);
+
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const provider = useProvider();
+  const [sellers1, setSellers1] = useState<
+    {
+      sender: string;
+      paymentId: number;
+      paymentAddress: string;
+      feeRate: BigNumber;
+      amount: BigNumber;
+    }[]
+  >([]);
+  const chainId = chain?.id || constants.defaultChainId;
+  const Dai = addresses.DAI[chainId];
+
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
 
   return (
     <div className="">

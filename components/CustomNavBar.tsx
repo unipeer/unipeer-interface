@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, MouseEventHandler, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
@@ -7,6 +7,8 @@ import BasicDialog from "./BasicDialog";
 import PaymentMode from "./modals/payment/paymentmode";
 import PaymentMethodModal from "./radiogroups/paymentmethodmodal";
 import PaymentModeModal from "./modals/payment";
+import { ConnectKitButton } from "connectkit";
+import { CustomConnectKitButton } from "./CustomConnectKitButton";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -123,25 +125,7 @@ export default function Example() {
                     </div>
                     <Menu as="div" className="relative ml-3">
                       <div>
-                        <Menu.Button className="flex bg-white text-sm flex-row items-center gap-2">
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          />
-                          <span className="font-paragraphs text-16 text-dark-black-500">
-                            0xcb8...b56
-                          </span>
-                          <div className="flex flex-row items-center justify-center">
-                            <img
-                              src="/chevron-down.svg"
-                              // width="28"
-                              // height="28"
-                              alt="Down Arrow icon"
-                            />
-                          </div>
-                        </Menu.Button>
+                        <CustomConnectKitButton isNav={true} />
                       </div>
                       <Transition
                         as={Fragment}
@@ -194,9 +178,24 @@ export default function Example() {
                                     className="w-6 h-6"
                                   />
                                 </div>
-                                <div className="text-dark-black-500 font-normal font-paragraphs text-16">
-                                  Logout
-                                </div>
+
+                                <ConnectKitButton.Custom>
+                                  {({
+                                    isConnected,
+                                    show,
+                                    truncatedAddress,
+                                    ensName,
+                                  }) => {
+                                    return (
+                                      <div
+                                        className="text-dark-black-500 font-normal font-paragraphs text-16"
+                                        onClick={show}
+                                      >
+                                        Logout
+                                      </div>
+                                    );
+                                  }}
+                                </ConnectKitButton.Custom>
                               </div>
                             )}
                           </Menu.Item>
