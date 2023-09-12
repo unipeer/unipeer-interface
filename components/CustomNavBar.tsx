@@ -1,12 +1,15 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import BasicDialog from "./BasicDialog";
 import PaymentMode from "./modals/payment/paymentmode";
 import PaymentMethodModal from "./radiogroups/paymentmethodmodal";
 import PaymentModeModal from "./modals/payment";
+import { useDispatch, useSelector } from "react-redux";
+import { buyRequest } from "../redux-api/actions/buy-actions";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,12 +17,25 @@ function classNames(...classes) {
 
 export default function Example() {
   const router = useRouter();
+  const pathname = usePathname();
+  const dispatch = useDispatch<any>();
+
+  const { loading, responseData } = useSelector(
+    (state: any) => state.buyReducer,
+  );
+
+  console.log("loading123", loading, responseData);
+
   const [activeModalComponent, setActiveModalComponent] = useState("");
+
+  useEffect(() => {
+    dispatch(buyRequest());
+  }, [dispatch]);
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
-          <div className="flex flex-row items-center justify-between w-full mx-auto h-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-row items-center justify-between w-full mx-auto h-[73px] max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-row items-center justify-between py-4 w-full">
               <div className="flex flex-row md:gap-8">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
@@ -47,54 +63,73 @@ export default function Example() {
                     alt="Unipeer logo"
                   />
                 </div>
-                <div className="hidden md:ml-6 md:flex md:space-x-7 lg:space-x-12">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <div className="flex flex-row items-center justify-center gap-[0.125rem]">
-                    <div className="flex flex-row items-center justify-center">
-                      <img
-                        src="/gnosis-logo.svg"
-                        // width="150"
-                        // height="30"
-                        alt="Gnosis logo"
-                      />
-                    </div>
-                    <div className="flex flex-row items-center justify-center border-indigo-500 px-1 text-16 font-normal text-dark-black-500">
-                      Gnosis
-                    </div>
-                    <div className="flex flex-row items-center justify-center w-2 h-2 rounded-full bg-alert"></div>
+                <div className="flex flex-row justify-center items-center gap-7 relative">
+                  <div
+                    className={classNames(
+                      "text-base text-dark-black-500",
+                      pathname === "/" ? "font-semibold" : "",
+                    )}
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    onKeyDown={() => {
+                      router.push("/");
+                    }}
+                    tabIndex={0}
+                    role="button"
+                  >
+                    Buy tokens
                   </div>
                   <div
-                    className="flex flex-row items-center justify-center cursor-pointer"
+                    className={classNames(
+                      "w-[82px] absolute border-b-4 border-b-[#fe5e44] border-solid left-0.5 top-[58px]",
+                      pathname === "/" ? "block" : "hidden",
+                    )}
+                  ></div>
+                  <div
+                    className={classNames(
+                      "text-base text-dark-black-500",
+                      pathname === "/sell" ? "font-semibold" : "",
+                    )}
                     onClick={() => {
-                      setActiveModalComponent("mode");
+                      router.push("/sell");
                     }}
+                    onKeyDown={() => {
+                      router.push("/sell");
+                    }}
+                    tabIndex={0}
+                    role="button"
                   >
-                    <div className="flex flex-row items-center justify-center">
-                      {
-                        <PaymentModeModal
-                          activeModalComponent={activeModalComponent}
-                          setActiveModalComponent={setActiveModalComponent}
-                        />
-                      }
-                      <img
-                        src="/ic_paypal.svg"
-                        // width="28"
-                        // height="28"
-                        alt="Paypal logo"
-                      />
-                    </div>
-                    <div className="flex flex-row items-center justify-center border-indigo-500 px-1 text-16 font-normal text-dark-black-500">
-                      Paypal
-                    </div>
-                    <div className="flex flex-row items-center justify-center">
-                      <img
-                        src="/chevron-down.svg"
-                        // width="28"
-                        // height="28"
-                        alt="Down Arrow icon"
-                      />
-                    </div>
+                    Sell tokens
                   </div>
+                  <div
+                    className={classNames(
+                      "w-[82px] absolute border-b-4 border-b-[#fe5e44] border-solid left-[108px] top-[58px]",
+                      pathname === "/sell" ? "block" : "hidden",
+                    )}
+                  ></div>
+                  <div
+                    className={classNames(
+                      "text-base text-dark-black-500",
+                      pathname === "/my-orders" ? "font-semibold" : "",
+                    )}
+                    onClick={() => {
+                      router.push("/my-orders");
+                    }}
+                    onKeyDown={() => {
+                      router.push("/my-orders");
+                    }}
+                    tabIndex={0}
+                    role="button"
+                  >
+                    My orders
+                  </div>
+                  <div
+                    className={classNames(
+                      "w-[75px] absolute border-b-4 border-b-[#fe5e44] border-solid left-[214px] top-[58px]",
+                      pathname === "/my-orders" ? "block" : "hidden",
+                    )}
+                  ></div>
                 </div>
               </div>
               <div className="flex items-center">
@@ -110,7 +145,7 @@ export default function Example() {
                 ) : (
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center gap-2 lg:gap-10">
                     {/* Profile dropdown */}
-                    <div className="flex-shrink-0">
+                    {/* <div className="flex-shrink-0">
                       <button
                         type="button"
                         className="relative hidden md:inline-flex items-center rounded-md border-accent-1 border-[2px] hover:bg-accent-1 px-4 py-[12px] text-sm font-semibold font-paragraphs text-accent-1 hover:text-white"
@@ -120,6 +155,60 @@ export default function Example() {
                       >
                         <span>My Orders</span>
                       </button>
+                    </div> */}
+                    <div className="hidden md:ml-6 md:flex md:space-x-7">
+                      {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+                      <div className="flex flex-row items-center justify-center gap-[0.125rem]">
+                        <div className="flex flex-row items-center justify-center w-2 h-2 rounded-full bg-alert"></div>
+                        <div className="flex flex-row items-center justify-center ml-1">
+                          <img
+                            src="/gnosis-logo.svg"
+                            // width="150"
+                            // height="30"
+                            alt="Gnosis logo"
+                          />
+                        </div>
+                        <div className="flex flex-row items-center justify-center">
+                          <img
+                            src="/chevron-down.svg"
+                            // width="28"
+                            // height="28"
+                            alt="Down Arrow icon"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="flex flex-row items-center justify-center cursor-pointer"
+                        onClick={() => {
+                          setActiveModalComponent("mode");
+                        }}
+                      >
+                        <div className="flex flex-row items-center justify-center">
+                          {
+                            <PaymentModeModal
+                              activeModalComponent={activeModalComponent}
+                              setActiveModalComponent={setActiveModalComponent}
+                            />
+                          }
+                          <img
+                            src="/ic_paypal.svg"
+                            // width="28"
+                            // height="28"
+                            alt="Paypal logo"
+                          />
+                        </div>
+                        <div className="flex flex-row items-center justify-center border-indigo-500 px-1 text-16 font-normal text-dark-black-500">
+                          Paypal
+                        </div>
+                        <div className="flex flex-row items-center justify-center">
+                          <img
+                            src="/chevron-down.svg"
+                            // width="28"
+                            // height="28"
+                            alt="Down Arrow icon"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <Menu as="div" className="relative ml-3">
                       <div>

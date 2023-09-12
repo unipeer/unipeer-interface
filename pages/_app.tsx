@@ -1,7 +1,13 @@
 import type { AppProps } from "next/app";
 import "../styles/index.css";
 
-import { Chain, WagmiConfig, createClient, configureChains, chain } from "wagmi";
+import {
+  Chain,
+  WagmiConfig,
+  createClient,
+  configureChains,
+  chain,
+} from "wagmi";
 
 import { publicProvider } from "wagmi/providers/public";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -9,10 +15,13 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { infuraProvider } from 'wagmi/providers/infura';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { infuraProvider } from "wagmi/providers/infura";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 
 import { ConnectKitProvider } from "connectkit";
+
+import { Provider } from 'react-redux';
+import store from '../redux-api/stores/root-store';
 
 const chiadoExplorer = {
   name: "blockscout",
@@ -59,14 +68,17 @@ const gnosis: Chain = {
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.goerli, chiado, gnosis],
   [
-    alchemyProvider({ apiKey: 'NS_hpSkXxGXkrl5Paz4KPlZWHZGAPCxC', priority: 0 }),
-    infuraProvider({ apiKey: "6f3991348bbd4261823c3904d2425cc3", priority: 1}),
+    alchemyProvider({
+      apiKey: "NS_hpSkXxGXkrl5Paz4KPlZWHZGAPCxC",
+      priority: 0,
+    }),
+    infuraProvider({ apiKey: "6f3991348bbd4261823c3904d2425cc3", priority: 1 }),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (chain?.id == 5) return { http: ""};
+        if (chain?.id == 5) return { http: "" };
         return { http: chain.rpcUrls.default };
       },
-      priority: 2
+      priority: 2,
     }),
   ],
 );
@@ -94,11 +106,16 @@ const client = createClient({
   webSocketProvider,
 });
 
+const configuredRootStore = store();
+
+
 function NextWeb3App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={client}>
       <ConnectKitProvider>
-        <Component {...pageProps} />
+        <Provider store={configuredRootStore}>
+          <Component {...pageProps} />
+        </Provider>
       </ConnectKitProvider>
     </WagmiConfig>
   );
