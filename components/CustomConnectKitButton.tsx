@@ -1,3 +1,4 @@
+import { Menu } from "@headlessui/react";
 import { ConnectKitButton } from "connectkit";
 
 import styled from "styled-components";
@@ -77,9 +78,34 @@ export const CustomConnectKitButton = ({ isNav }) => {
       {({ isConnected, show, truncatedAddress, ensName }) => {
         if (isNav) {
           return (
-            <StyledButtonHolo onClick={show}>
-              {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
-            </StyledButtonHolo>
+            // <StyledButtonHolo onClick={show}>
+            //   {isConnected ? ensName ?? truncatedAddress : "Connect Wallet"}
+            // </StyledButtonHolo>
+            isConnected ? (
+              <Menu.Button className="flex bg-white text-sm flex-row items-center gap-2">
+                <span className="sr-only">Open user menu</span>
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt=""
+                />
+                <span className="font-paragraphs text-16 text-dark-black-500">
+                  {truncatedAddress}
+                </span>
+                <div className="flex flex-row items-center justify-center">
+                  <img
+                    src="/chevron-down.svg"
+                    // width="28"
+                    // height="28"
+                    alt="Down Arrow icon"
+                  />
+                </div>
+              </Menu.Button>
+            ) : (
+              <StyledButtonHolo onClick={show}>
+                {"Connect Wallet"}
+              </StyledButtonHolo>
+            )
           );
         } else {
           return (

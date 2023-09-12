@@ -1,5 +1,17 @@
 import BuyOrderCard from "components/card/buyorder";
-import React from "react";
+import { BuyOrder, getOrderFromRawData } from "components/shared/types";
+import React, { useEffect, useState } from "react";
+import {
+  useAccount,
+  useContract,
+  useContractRead,
+  useNetwork,
+  useProvider,
+} from "wagmi";
+import { type Unipeer } from "../../../contracts/types";
+import UNIPEER_ABI from "../../../contracts/Unipeer.json";
+import { addresses } from "../../../util";
+import { constants } from "../../../util";
 
 const activeBuyOrdersData = [
   {
@@ -60,25 +72,69 @@ const activeBuyOrdersData = [
   },
 ];
 
+type Props = {
+  order: BuyOrder;
+  buyerTimeout: number;
+  sellerTimeout: number;
+  isSeller: boolean;
+};
+
 const ActiveBuyOrders = () => {
+  const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
+
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const provider = useProvider();
+  const chainId = chain?.id || constants.defaultChainId;
+
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
+
+  const { data: buyerTimeout } = useContractRead({
+    addressOrName: Unipeer.address,
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "buyerTimeout",
+  });
+
+  const parseEvents = async (result) => {
+    return await Promise.all(
+      result
+        .map(async (log) => {
+          return await getOrderFromRawData(log, Unipeer);
+        })
+        .filter((order: BuyOrder) => {
+          return (
+            order.status !== OrderStatus.COMPLETED &&
+            order.status !== OrderStatus.CANCELLED
+          );
+        }),
+    );
+  };
+
+  const fetchOrderBuyEvents = async () => {
+    const buyerFilter = Unipeer.filters.OrderBuy(null, address);
+    const buyerResult = await Unipeer.queryFilter(
+      buyerFilter,
+      constants.block[chainId],
+    );
+    const events = await parseEvents(buyerResult);
+    setBuyOrders(events);
+  };
+
+  useEffect(() => {
+    if (isConnected) fetchOrderBuyEvents();
+  }, [isConnected]);
   return (
     <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {activeBuyOrdersData.map((order) => {
+      {buyOrders.map((order) => {
         return (
           <BuyOrderCard
-            key={order.id}
-            id={order.id}
-            sentAmount={order.sentAmount}
-            sentCurrency={order.sentCurrency}
-            sentProvider={order.sentProvider}
-            sentProviderLogo={order.sentProviderLogo}
-            receiveAmount={order.receiveAmount}
-            receiveCurrency={order.receiveCurrency}
-            receiveProvider={order.receiveProvider}
-            receiveProviderLogo={order.receiveProviderLogo}
-            status={order.status}
-            statusCode={order.statusCode}
-            timeLeft={order.timeLeft}
+            id={order.orderID}
+            timeLeft={Number(buyerTimeout)}
+            order={order}
           />
         );
       })}
