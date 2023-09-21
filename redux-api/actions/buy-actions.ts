@@ -44,27 +44,50 @@ function setBuyError(error) {
 export function buyRequest(address, chainId, Unipeer) {
   return (dispatch) => {
     dispatch(setBuyLoading());
-
+    const Dai = addresses.DAI[chainId];
     // const { address, isConnected } = useAccount();
-  const buyerFilter = Unipeer.filters.OrderBuy(null, address);
-  const buyerResult = Unipeer.queryFilter(buyerFilter, constants.block[chainId]);
-  buyerResult.then((result) => {
-    result.map(async (log) => {
-      const { status, lastInteraction } = await Unipeer.orders(log.args[0]);
-      return {
-        orderID: log.args[0].toNumber(),
-        buyer: log.args[1],
-        seller: log.args[2],
-        paymentID: log.args[3],
-        token: log.args[4],
-        amount: log.args[5],
-        feeAmount: log.args[6],
-        sellerFeeAmount: log.args[7],
-        status: status,
-        lastInteraction: lastInteraction
-      }
+  // const buyerFilter = Unipeer.filters.OrderBuy(null, address);
+  // const buyerResult = Unipeer.queryFilter(buyerFilter, constants.block[chainId]);
+  const filter = Unipeer.filters.SellerPaymentMethod();
+  const result = Unipeer.queryFilter(filter, constants.block[chainId]);
+  // result.then((result) => {
+  //   result.map(async (log) => {
+  //     const { status, lastInteraction } = await Unipeer.orders(log.args[0]);
+  //     console.log("status ", status)
+  //     console.log("lastInteraction ", lastInteraction)
+  //     return {
+  //       orderID: log.args[0].toNumber(),
+  //       buyer: log.args[1],
+  //       seller: log.args[2],
+  //       paymentID: log.args[3],
+  //       token: log.args[4],
+  //       amount: log.args[5],
+  //       feeAmount: log.args[6],
+  //       sellerFeeAmount: log.args[7],
+  //       status: status,
+  //       lastInteraction: lastInteraction
+  //     }
+  //   }).forEach((result) => {
+  //     dispatch(setBuySuccess(result));
+  //   })
+  // })
+  console.log("filter1", result)
+
+  result.then((result) => {
+    console.log("result2", result)
+    result.map((log) => {
+      console.log("log1", log)
+      const bal = Unipeer.tokenBalance(log.args[0], Dai);
+        return {
+          sender: log.args[0],
+          paymentId: log.args[1],
+          paymentAddress: log.args[2],
+          feeRate: log.args[3],
+          amount: bal,
+        };
     }).forEach((result) => {
-      dispatch(setBuySuccess(result));
+      console.log("result1", result)
+      dispatch(setBuySuccess(result))
     })
   })
   };

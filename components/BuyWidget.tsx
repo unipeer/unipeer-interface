@@ -66,6 +66,19 @@ export default function Buy() {
     fetch();
   });
 
+  // const dispatch = useDispatch<any>();
+
+  // const { loading, responseData } = useSelector(
+  //   (state: any) => state.buyReducer,
+  // );
+
+  // console.log("loading123", loading, responseData);
+  const filter = Unipeer.filters.SellerPaymentMethod();
+  const result = Unipeer.queryFilter(filter, constants.block[chainId]);
+  result.then((result) => {
+    console.log("result4", result);
+  });
+
   const { data: arbCost } = useContractRead({
     addressOrName: arbitrator,
     contractInterface: IARBITRATOR_ABI.abi,

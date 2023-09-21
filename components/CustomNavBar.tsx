@@ -1,4 +1,4 @@
-import { Fragment, MouseEventHandler, useState } from "react";
+import { Fragment, MouseEventHandler, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
@@ -9,6 +9,21 @@ import PaymentMethodModal from "./radiogroups/paymentmethodmodal";
 import PaymentModeModal from "./modals/payment";
 import { ConnectKitButton } from "connectkit";
 import { CustomConnectKitButton } from "./CustomConnectKitButton";
+import { useDispatch, useSelector } from "react-redux";
+import { buyRequest } from "../redux-api/actions/buy-actions";
+import {
+  useAccount,
+  useContract,
+  useProvider,
+  usePrepareContractWrite,
+  useContractWrite,
+  useContractRead,
+  useWaitForTransaction,
+  useNetwork,
+} from "wagmi";
+import { addresses, constants, formatEtherscanLink } from "../util";
+import { type Unipeer } from "../contracts/types";
+import UNIPEER_ABI from "../contracts/Unipeer.json";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -17,6 +32,32 @@ function classNames(...classes) {
 export default function Example() {
   const router = useRouter();
   const [activeModalComponent, setActiveModalComponent] = useState("");
+  const dispatch = useDispatch<any>();
+
+  const { loading, responseData } = useSelector(
+    (state: any) => state.buyReducer,
+  );
+
+  console.log("loading123", loading, responseData);
+  const { address, isConnected } = useAccount();
+
+  const provider = useProvider();
+  const { chain } = useNetwork();
+
+  const chainId = chain?.id || constants.defaultChainId;
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
+  const filter = Unipeer.filters.SellerPaymentMethod();
+  const result = Unipeer.queryFilter(filter, constants.block[chainId]);
+  result.then((result) => {
+    console.log("result3", result);
+  });
+  useEffect(() => {
+    dispatch(buyRequest(address, chainId, Unipeer));
+  }, [dispatch]);
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
