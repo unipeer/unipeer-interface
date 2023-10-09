@@ -4,7 +4,7 @@ export const addresses = {
   UNIPEER: {
     5: "0xd56e8f3c7731f6e0d85a47de55926f0de8cc0368",
     100: "",
-    10200: "0x304D014228Dfba6ad7706ABEE16967Af29E2Aee2",
+    10200: "0x4Ad052B87573d183fBD173B56E0a1A4dbbc5529a",
   },
   DAI: {
     5: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
