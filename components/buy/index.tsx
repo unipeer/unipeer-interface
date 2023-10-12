@@ -27,7 +27,7 @@ import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-
+import CurrencyAndTokenModal from './modals/CurrencyAndTokenModal/CurrencyAndTokenModal'
 const dummySellers = [
   {
     address: "0xd4...345b",
@@ -116,8 +116,12 @@ const Buy = () => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [sellerAddress, setSellerAddress] = useState("");
   const [sellers, setSellers] = useState(dummySellers);
+  const [openCurrencyModal, setOpenCurrencyModal] = useState(false);
 
   return (
+    <>
+    <CurrencyAndTokenModal openModal= {openCurrencyModal}
+      setOpenModal={setOpenCurrencyModal}/>    
     <div>
       <div className="mt-10">
         <div className="relative rounded-lg px-4 py-3 bg-dark-100">
@@ -139,7 +143,10 @@ const Buy = () => {
             {({ open }) => (
               <>
                 <div className="absolute right-4 bottom-4 mt-2">
-                  <Listbox.Button className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200">
+                  <Listbox.Button onClick={() => {
+              setOpenCurrencyModal(true);
+            }}
+ className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200">
                     <span className="flex items-center">
                       <img
                         src={selectedPayOption.logo}
@@ -158,14 +165,14 @@ const Buy = () => {
                     </span>
                   </Listbox.Button>
 
-                  <Transition
+                  {/* <Transition
                     show={open}
                     as={Fragment}
                     leave="transition ease-in duration-100"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Options static={false} className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                       {paymentOptions.map((paymentOption) => (
                         <Listbox.Option
                           key={paymentOption.id}
@@ -215,7 +222,7 @@ const Buy = () => {
                         </Listbox.Option>
                       ))}
                     </Listbox.Options>
-                  </Transition>
+                  </Transition> */}
                 </div>
               </>
             )}
@@ -543,6 +550,7 @@ const Buy = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 
