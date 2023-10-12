@@ -16,6 +16,7 @@ type BasicDialogProp = {
   onCloseCallback?: () => void;
   openModal: boolean;
   setOpenModal: any;
+  customClassName: string;
 };
 
 const BasicDialogV2: React.FC<BasicDialogProp> = ({
@@ -23,18 +24,17 @@ const BasicDialogV2: React.FC<BasicDialogProp> = ({
   isCancellable,
   dialogChild,
   openModal,
-  setOpenModal
+  setOpenModal,
+  customClassName,
 }) => {
-  // const [open, setOpen] = useState(true);
+  const ClassName =
+    "flex flex-col transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[650px] sm:p-16 sm:rounded-32 gap-8" +
+    " " +
+    customClassName;
+
   return (
     <Transition.Root show={openModal} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={() => {
-         
-        }}
-      >
+      <Dialog as="div" className="relative z-10" onClose={() => {}}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -58,7 +58,7 @@ const BasicDialogV2: React.FC<BasicDialogProp> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[650px] sm:p-16 sm:rounded-32 gap-8">
+              <Dialog.Panel className={ClassName}>
                 <div className="sm:flex flex-row justify-between items-center">
                   <div className="font-bold text-dark-800 text-32 font-headings">
                     {dialogTitle}
