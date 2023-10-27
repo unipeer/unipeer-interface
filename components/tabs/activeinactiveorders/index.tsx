@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-const tabs = [{ name: "Active" }, { name: "Inactive" }];
+const tabs = [{ name: "Active" }, { name: "History" }];
 
 type ActiveInactiveTabProps = {
   selectedTab: string;
@@ -27,7 +27,7 @@ const ActiveInactiveTab = ({
               key={tab.name}
               className={classNames(
                 selectedTab === tab.name
-                  ? "bg-primary-500 text-white"
+                  ? "bg-dark-800 text-white"
                   : "bg-white text-dark-800",
                 "cursor-pointer m-2 px-[27.5px] py-2 font-semibold font-paragraphs text-20 rounded-[20px]",
               )}

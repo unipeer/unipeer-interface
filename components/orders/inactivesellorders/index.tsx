@@ -12,6 +12,8 @@ import { type Unipeer } from "../../../contracts/types";
 import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
+import { useDispatch } from "react-redux";
+import { inactiveSellRequest } from "redux-api/actions/inactive-sell-order-actions";
 
 const inactiveSellOrdersData = [
   {
@@ -64,34 +66,10 @@ const InActiveSellOrders = () => {
     functionName: "buyerTimeout",
   });
 
-  const parseEvents = async (result) => {
-    return await Promise.all(
-      result
-        .map(async (log) => {
-          return await getOrderFromRawData(log, Unipeer);
-        })
-        .filter((order: BuyOrder) => {
-          return (
-            order.status !== OrderStatus.COMPLETED &&
-            order.status !== OrderStatus.CANCELLED
-          );
-        }),
-    );
-  };
-
-  const fetchOrderSellEvents = async () => {
-    const sellerFilter = Unipeer.filters.OrderBuy(null, null, address);
-    const sellerResult = await Unipeer.queryFilter(
-      sellerFilter,
-      constants.block[chainId],
-    );
-    const events = await parseEvents(sellerResult);
-    setSellOrders(events);
-  };
-
+  const dispatch = useDispatch<any>();
   useEffect(() => {
-    if (isConnected) fetchOrderSellEvents();
-  }, [isConnected]);
+    dispatch(inactiveSellRequest(address, chainId, Unipeer));
+  }, [dispatch]);
   return (
     <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
       {sellOrders.map((order) => {

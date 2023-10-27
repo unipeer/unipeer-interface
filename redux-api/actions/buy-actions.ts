@@ -78,6 +78,9 @@ export function buyRequest(address, chainId, Unipeer) {
     result.map((log) => {
       console.log("log1", log)
       const bal = Unipeer.tokenBalance(log.args[0], Dai);
+      const filterPaymentMethodTokenEnabled = Unipeer.filters.PaymentMethodTokenEnabled(log.args[1], addresses.DAI[chainId])
+      const resultTokenEnabled = Unipeer.queryFilter(filterPaymentMethodTokenEnabled, constants.block[chainId]);
+      console.log("token enabled " + resultTokenEnabled)
         return {
           sender: log.args[0],
           paymentId: log.args[1],

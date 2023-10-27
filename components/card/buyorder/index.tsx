@@ -256,7 +256,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
           </>
         )}
         {/* Buy order is finished, you can get tokens */}
-        {order.status === OrderStatus.CREATED && timeLeft !== 0 && (
+        {order.status === OrderStatus.COMPLETED && timeLeft === 0 && (
           <div className="flex flex-col justify-center items-center">
             <button
               type="submit"
@@ -272,7 +272,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
           </div>
         )}
         {/* Buy order is finished, you can get tokens */}
-        {order.status === OrderStatus.CREATED && (
+        {order.status === OrderStatus.COMPLETED && (
           <div className="flex flex-row items-center justify-normal gap-1">
             <div className="h-5 w-5">
               <img
