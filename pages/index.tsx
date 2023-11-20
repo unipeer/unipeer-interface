@@ -118,89 +118,89 @@ const Demo = () => {
 
   return (
     <>
-    <>
-      <Head>
-        <title>Unipeer</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <>
+        <Head>
+          <title>Unipeer</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <CustomNavBar />
+        <CustomNavBar />
 
-      <main
-        className="py-5"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, rgba(255, 244, 242, 0.4) 0%, #fff0ee 100%)",
-        }}
-      >
-        <div className="min-h-full">
-          <main className="">
-            {/* Page header */}
+        <main
+          className="py-5"
+          style={{
+            backgroundImage:
+              "linear-gradient(to bottom, rgba(255, 244, 242, 0.4) 0%, #fff0ee 100%)",
+          }}
+        >
+          <div className="min-h-full">
+            <main className="">
+              {/* Page header */}
 
-            <div className="flex flex-row mx-auto mt-8 max-w-3xl sm:px-6 lg:max-w-7xl gap-8">
-              <div className="space-y-8 lg:min-w-[30rem]">
-                {/* Description list*/}
+              <div className="flex flex-row mx-auto mt-8 max-w-3xl sm:px-6 lg:max-w-7xl gap-8">
+                <div className="space-y-8 lg:min-w-[30rem]">
+                  {/* Description list*/}
+                  <section
+                    className="bg-white sm:rounded-2xl p-8"
+                    style={{
+                      boxShadow: "0 6px 15px 2px rgba(0, 0, 0, 0.06)",
+                    }}
+                  >
+                    <BuySellTab
+                      selectedTab={selectedTab}
+                      setSelectedTab={setSelectedTab}
+                    />
+                    <>{selectedTab === "Buy" ? <Buy /> : <Sell />}</>
+                  </section>
+                </div>
+
                 <section
-                  className="bg-white sm:rounded-2xl p-8"
+                  aria-labelledby="timeline-title"
+                  className="bg-white sm:rounded-2xl p-8 w-full"
                   style={{
                     boxShadow: "0 6px 15px 2px rgba(0, 0, 0, 0.06)",
                   }}
                 >
-                  <BuySellTab
-                    selectedTab={selectedTab}
-                    setSelectedTab={setSelectedTab}
-                  />
-                  <>{selectedTab === "Buy" ? <Buy /> : <Sell />}</>
-                </section>
-              </div>
-
-              <section
-                aria-labelledby="timeline-title"
-                className="bg-white sm:rounded-2xl p-8 w-full"
-                style={{
-                  boxShadow: "0 6px 15px 2px rgba(0, 0, 0, 0.06)",
-                }}
-              >
-                <div className="">
-                  <div className="pt-2 pb-8 flex flex-row w-full justify-between items-center">
-                    <div className="font-paragraphs font-semibold text-20 text-dark-800">
-                      Seller information
-                    </div>
-                    <div className="flex flex-row gap-2 items-center justify-center">
-                      <div className="font-paragraphs font-normal text-dark-800 text-14">
-                        All payment modes
+                  <div className="">
+                    <div className="pt-2 pb-8 flex flex-row w-full justify-between items-center">
+                      <div className="font-paragraphs font-semibold text-20 text-dark-800">
+                        Seller information
                       </div>
-                      <Switch
-                        checked={allPaymentOptionsEnabled}
-                        onChange={setAllPaymentOptionsEnabled}
-                        className={classNames(
-                          allPaymentOptionsEnabled
-                            ? "bg-dark-200"
-                            : "bg-dark-100",
-                          "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none",
-                        )}
-                      >
-                        <span className="sr-only">Use setting</span>
-                        <span
-                          aria-hidden="true"
+                      <div className="flex flex-row gap-2 items-center justify-center">
+                        <div className="font-paragraphs font-normal text-dark-800 text-14">
+                          All payment modes
+                        </div>
+                        <Switch
+                          checked={allPaymentOptionsEnabled}
+                          onChange={setAllPaymentOptionsEnabled}
                           className={classNames(
                             allPaymentOptionsEnabled
-                              ? "ml-[1px] mt-[2px] bg-white translate-x-5"
-                              : "mt-[2px] translate-x-0",
-                            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-dark-200 ring-0 transition duration-200 ease-in-out",
+                              ? "bg-dark-200"
+                              : "bg-dark-100",
+                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none",
                           )}
-                        />
-                      </Switch>
+                        >
+                          <span className="sr-only">Use setting</span>
+                          <span
+                            aria-hidden="true"
+                            className={classNames(
+                              allPaymentOptionsEnabled
+                                ? "ml-[1px] mt-[2px] bg-white translate-x-5"
+                                : "mt-[2px] translate-x-0",
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-dark-200 ring-0 transition duration-200 ease-in-out",
+                            )}
+                          />
+                        </Switch>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <SellerInfo />
-              </section>
-            </div>
-          </main>
-        </div>
-      </main>
-    </>
+                  <SellerInfo />
+                </section>
+              </div>
+            </main>
+          </div>
+        </main>
+      </>
     </>
   );
 };
