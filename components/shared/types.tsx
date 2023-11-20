@@ -1,5 +1,6 @@
 import { BigNumber } from "ethers";
 import { type Unipeer } from "../../contracts/types";
+import { OrderStatus, getOrderStatus } from "./order_status";
 
 export type BuyOrder = {
   orderID: number;
@@ -20,6 +21,10 @@ export async function getOrderFromRawData(
   unipeer: Unipeer,
 ): Promise<BuyOrder> {
   const { status, lastInteraction } = await unipeer.orders(orderRaw.args[0]);
+  console.log(
+    `parsing order ${orderRaw} status ${status} and interaction ${lastInteraction}`,
+  );
+  const orderStatusResult = getOrderStatus(status);
   return new Promise<BuyOrder>(() => {
     return {
       orderID: orderRaw.args[0].toNumber(),
@@ -31,7 +36,7 @@ export async function getOrderFromRawData(
       amount: orderRaw.args[6],
       feeAmount: orderRaw.args[7],
       sellerFeeAmount: orderRaw.args[7],
-      status: getOrderStatus(status),
+      status: orderStatusResult,
       lastInteraction: lastInteraction,
     };
   });

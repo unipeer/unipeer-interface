@@ -12,8 +12,9 @@ import { type Unipeer } from "../../../contracts/types";
 import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { activeBuyRequest } from "redux-api/actions/active-buy-order-actions";
+import { AppState } from "redux-api/reducers/root-reducer";
 
 const activeBuyOrdersData = [
   {
@@ -83,7 +84,18 @@ type Props = {
 
 const ActiveBuyOrders = () => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-
+  const loading = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.loading,
+  );
+  const success = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.success,
+  );
+  const error = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.error,
+  );
+  const responseData = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.responseData,
+  );
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
@@ -102,21 +114,33 @@ const ActiveBuyOrders = () => {
   });
   const dispatch = useDispatch<any>();
   useEffect(() => {
-    dispatch(activeBuyRequest(address, chainId, Unipeer))
-  }, [dispatch])
-  return (
-    <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {buyOrders.map((order) => {
-        return (
-          <BuyOrderCard
-            id={order.orderID}
-            timeLeft={Number(buyerTimeout)}
-            order={order}
-          />
-        );
-      })}
-    </div>
-  );
+    dispatch(activeBuyRequest(address, chainId, Unipeer));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      console.log("active buy orders: " + responseData);
+    }
+  }, [success]);
+  if (success) {
+    console.log("active buy orders: " + responseData);
+    return (
+      <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
+        {responseData?.map((order) => {
+          return (
+            <BuyOrderCard
+              id={order.orderID}
+              timeLeft={Number(buyerTimeout)}
+              order={order}
+            />
+          );
+        })}
+      </div>
+    );
+  } else {
+    console.log("waiting for active results " + responseData);
+    return <div></div>;
+  }
 };
 
 export default ActiveBuyOrders;

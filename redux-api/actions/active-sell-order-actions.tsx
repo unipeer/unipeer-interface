@@ -39,9 +39,11 @@ export function activeSellRequest(
       const sellerResult = unipeer.queryFilter(
         sellerFilter,
         constants.block[chainId],
-      );
-      const events = parseEvents(sellerResult);
-      dispatch(setSellSuccess(events));
+      ).then((result) => {
+        console.log("got result in action " + result)
+        const events = parseEvents(result);
+        dispatch(setSellSuccess(events));
+      })
     } catch (err) {
       dispatch(setSellError(err));
     }

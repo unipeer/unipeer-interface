@@ -36,12 +36,13 @@ export function inactiveSellRequest(
     dispatch(setSellLoading());
     try {
       const sellerFilter = unipeer.filters.OrderBuy(null, null, address);
-      const sellerResult = unipeer.queryFilter(
-        sellerFilter,
-        constants.block[chainId],
-      );
-      const events = parseEvents(sellerResult);
-      dispatch(setSellSuccess(events));
+      const sellerResult = unipeer
+        .queryFilter(sellerFilter, constants.block[chainId])
+        .then((result) => {
+          console.log("got result in action " + result)
+          const events = parseEvents(result);
+          dispatch(setSellSuccess(events));
+        });
     } catch (err) {
       dispatch(setSellError(err));
     }

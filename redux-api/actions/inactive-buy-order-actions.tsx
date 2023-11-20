@@ -1,3 +1,5 @@
+import { OrderStatus } from "components/shared/order_status";
+import { OrderBuyEvent } from "contracts/types/Unipeer";
 import {
   INACTIVE_BUY_ORDER_ERROR,
   INACTIVE_BUY_ORDER_LOADING,
@@ -36,29 +38,43 @@ export function inactiveBuyRequest(
     dispatch(setBuyLoading());
     try {
       const buyerFilter = unipeer.filters.OrderBuy(null, address);
-      const buyerResult = unipeer.queryFilter(
-        buyerFilter,
-        constants.block[chainId],
-      );
-      const events = parseEvents(buyerResult);
-      dispatch(setBuySuccess(events));
+      unipeer
+        .queryFilter(buyerFilter, constants.block[chainId])
+        .then((result) => {
+          console.log("got raw result " + result);
+          const buyOrdersResult = parseEvents(result);
+          console.log("got inactive buy order result " + buyOrdersResult);
+          dispatch(setBuySuccess(buyOrdersResult));
+        });
     } catch (err) {
       dispatch(setBuyError(err));
     }
   };
 
-  const parseEvents = (result) => {
-    return Promise.all(
-      result
-        .map((log) => {
-          return getOrderFromRawData(log, unipeer);
-        })
-        .filter((order: BuyOrder) => {
-          return (
-            order.status === OrderStatus.COMPLETED ||
-            order.status === OrderStatus.CANCELLED
-          );
-        }),
-    );
-  };
+  function parseEvents(result: OrderBuyEvent[]): BuyOrder[] {
+    let eventsResult: BuyOrder[] = [];
+    result.forEach((curr) => {
+      getOrderFromRawData(curr, unipeer).then((order: BuyOrder) => {
+        if (
+          order.status === OrderStatus.COMPLETED ||
+          order.status === OrderStatus.CANCELLED
+        ) {
+          eventsResult.push(order);
+        }
+      });
+    });
+    return eventsResult;
+    // return Promise.all(
+    //   result
+    //     .map(async (log) => {
+    //       return await getOrderFromRawData(log, unipeer);
+    //     })
+    //     .filter((order: BuyOrder) => {
+    //       return (
+    //         order.status === OrderStatus.COMPLETED ||
+    // order.status === OrderStatus.CANCELLED
+    //       );
+    //     }),
+    // );
+  }
 }

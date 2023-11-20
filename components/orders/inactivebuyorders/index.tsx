@@ -14,6 +14,7 @@ import { addresses } from "../../../util";
 import { constants } from "../../../util";
 import { inactiveBuyRequest } from "redux-api/actions/inactive-buy-order-actions";
 import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "redux-api/reducers/root-reducer";
 
 const inactiveBuyOrdersData = [
   {
@@ -55,7 +56,18 @@ type Props = {
 
 const InActiveBuyOrders = () => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-
+  const loading = useSelector(
+    (state: AppState) => state.inactiveBuyOrderReducer.loading,
+  );
+  const success = useSelector(
+    (state: AppState) => state.inactiveBuyOrderReducer.success,
+  );
+  const error = useSelector(
+    (state: AppState) => state.inactiveBuyOrderReducer.error,
+  );
+  const responseData = useSelector(
+    (state: AppState) => state.inactiveBuyOrderReducer.responseData,
+  );
   const dispatch = useDispatch<any>();
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -77,9 +89,10 @@ const InActiveBuyOrders = () => {
   useEffect(() => {
     dispatch(inactiveBuyRequest(address, chainId, Unipeer));
   }, [dispatch]);
+  console.log("inactive buy orders: " + responseData)
   return (
     <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {buyOrders.map((order) => {
+      {responseData.map((order) => {
         return (
           <BuyOrderCard
             id={order.orderID}

@@ -1,4 +1,4 @@
-enum OrderStatus {
+export enum OrderStatus {
   CREATED,
   PAID,
   COMPLETED,
@@ -8,7 +8,7 @@ enum OrderStatus {
   UNDEFINED
 }
 
-function getOrderStatus(status: number): OrderStatus {
+export function getOrderStatus(status: number): OrderStatus {
   switch (status) {
     case 0:
       return OrderStatus.CREATED;
