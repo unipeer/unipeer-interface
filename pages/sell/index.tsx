@@ -10,10 +10,6 @@ import TokenDepositSuccess from "components/sellpage/TokenDepositSuccess";
 const Demo = () => {
   const [currentCard, setCurrentCard] = useState("A");
 
-  useEffect(() => {
-    console.log(currentCard);
-  }, [currentCard, setCurrentCard]);
-
   function addNewPosition() {
     setCurrentCard("B");
   }

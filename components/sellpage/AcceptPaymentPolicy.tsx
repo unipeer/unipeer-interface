@@ -56,14 +56,12 @@ const AcceptPaymentPolicy: React.FC<AcceptPaymentPolicyProps> = ({
           <button
             type="submit"
             className="flex flex-row items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 px-6 py-4 gap-[10px]"
+            onClick={() => {
+              setActiveModalComponent("");
+              setNewModalDialogue("PayNetworkFee");
+            }}
           >
-            <div
-              className="text-16 font-semibold font-paragraphs leading-6 text-white"
-              onClick={() => {
-                setActiveModalComponent("");
-                setNewModalDialogue("PayNetworkFee");
-              }}
-            >
+            <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
               Proceed to deposit your tokens
             </div>
           </button>

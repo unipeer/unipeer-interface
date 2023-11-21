@@ -1,23 +1,29 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import BasicDialog from "components/BasicDialogV4";
+import BasicDialogV5 from "components/BasicDialogV5";
+import WithdrawTokensModalForm from "./WithdrawTokensModalForm";
+import WithdrawTokensModalSuccess from "./WithdrawTokensModalSuccess";
 
-type WithdrawTokensProps = {
+type WithdrawTokensModalProps = {
   activeModalComponent: string;
   setActiveModalComponent: Dispatch<SetStateAction<string>>;
 };
 
-const WithdrawTokens: React.FC<WithdrawTokensProps> = ({
+const WithdrawTokensModal: React.FC<WithdrawTokensModalProps> = ({
   activeModalComponent,
   setActiveModalComponent,
 }) => {
-  return activeModalComponent === "WithdrawToken" ? (
-    <BasicDialog
+  const [withdrawFromSuccess, setWithdrawFromSuccess] = useState(false);
+
+  return activeModalComponent === "WithdrawTokensModal" ? (
+    <BasicDialogV5
       dialogTitle="Withdraw tokens"
       isCancellable={true}
       dialogChild={
-        <div className="flex flex-col">
-          <div></div>
-        </div>
+        withdrawFromSuccess ? (
+          <WithdrawTokensModalSuccess />
+        ) : (
+          <WithdrawTokensModalForm />
+        )
       }
       onCloseCallback={() => {
         setActiveModalComponent("");
@@ -26,4 +32,4 @@ const WithdrawTokens: React.FC<WithdrawTokensProps> = ({
   ) : null;
 };
 
-export default WithdrawTokens;
+export default WithdrawTokensModal;
