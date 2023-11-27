@@ -20,7 +20,7 @@ const PaymentAddress: React.FC<PaymentAddressModalProps> = ({
   const [paymentAddress, setPaymentAddress] = useState("");
   const [feeRatePercentage, setFeeRatePercentage] = useState("");
 
-  return (
+  return activeModalComponent === "PaymentAddress" ? (
     <BasicDialog
       dialogTitle="Payment address"
       isCancellable={true}
@@ -38,7 +38,7 @@ const PaymentAddress: React.FC<PaymentAddressModalProps> = ({
         setActiveModalComponent("");
       }}
     />
-  );
+  ) : null;
 };
 
 export default PaymentAddress;
