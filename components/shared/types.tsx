@@ -25,8 +25,18 @@ export async function getOrderFromRawData(
     `parsing order ${orderRaw} status ${status} and interaction ${lastInteraction}`,
   );
   const orderStatusResult = getOrderStatus(status);
-  return new Promise<BuyOrder>(() => {
-    return {
+  console.log(`parsed order status ${orderStatusResult}`);
+  console.log(`parsing 1 ${orderRaw.args[0].toNumber()}`);
+  console.log(`parsing 2 ${orderRaw.args[1]}`);
+  console.log(`parsing 3 ${orderRaw.args[2]}`);
+  console.log(`parsing 4 ${orderRaw.args[3]}`);
+  console.log(`parsing 5 ${orderRaw.args[4]}`);
+  console.log(`parsing 6 ${orderRaw.args[5]}`);
+  console.log(`parsing 7 ${orderRaw.args[6]}`);
+  console.log(`parsing 8 ${orderRaw.args[7]}`);
+  // return a new promise
+  return new Promise<BuyOrder>((resolve, reject) => {
+    const result = {
       orderID: orderRaw.args[0].toNumber(),
       buyer: orderRaw.args[1],
       seller: orderRaw.args[2],
@@ -39,5 +49,6 @@ export async function getOrderFromRawData(
       status: orderStatusResult,
       lastInteraction: lastInteraction,
     };
+    resolve(result);
   });
 }

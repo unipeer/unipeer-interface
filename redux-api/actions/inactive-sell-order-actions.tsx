@@ -1,3 +1,5 @@
+import { OrderStatus } from "components/shared/order_status";
+import { OrderBuyEvent } from "contracts/types/Unipeer";
 import {
   INACTIVE_SELL_ORDER_ERROR,
   INACTIVE_SELL_ORDER_LOADING,
@@ -36,30 +38,40 @@ export function inactiveSellRequest(
     dispatch(setSellLoading());
     try {
       const sellerFilter = unipeer.filters.OrderBuy(null, null, address);
-      const sellerResult = unipeer
+      unipeer
         .queryFilter(sellerFilter, constants.block[chainId])
         .then((result) => {
-          console.log("got result in action " + result)
-          const events = parseEvents(result);
-          dispatch(setSellSuccess(events));
+          console.log("got raw result " + JSON.stringify(result));
+          parseEvents(result).then((buyOrdersResult: BuyOrder[]) => {
+            console.log("success result " + JSON.stringify(buyOrdersResult));
+            dispatch(setSellSuccess(buyOrdersResult));
+          });
         });
     } catch (err) {
       dispatch(setSellError(err));
     }
   };
 
-  const parseEvents = (result) => {
-    return Promise.all(
-      result
-        .map((log) => {
-          return getOrderFromRawData(log, unipeer);
-        })
-        .filter((order: BuyOrder) => {
-          return (
-            order.status !== OrderStatus.COMPLETED &&
-            order.status !== OrderStatus.CANCELLED
-          );
-        }),
-    );
-  };
+  function parseEvents(result: OrderBuyEvent[]): Promise<BuyOrder[]> {
+    return new Promise<BuyOrder[]>((resolve, reject) => {
+      let eventsResult: BuyOrder[] = [];
+      let counter = 0;
+      result.forEach(async (curr) => {
+        const parsedResult = await getOrderFromRawData(curr, unipeer);
+        console.log(
+          "filtering order with status " + JSON.stringify(parsedResult),
+        );
+        if (
+          parsedResult.status === OrderStatus.COMPLETED ||
+          parsedResult.status === OrderStatus.CANCELLED
+        ) {
+          eventsResult.push(parsedResult);
+        }
+        counter++;
+        if (counter === result.length) {
+          resolve(eventsResult);
+        }
+      });
+    });
+  }
 }

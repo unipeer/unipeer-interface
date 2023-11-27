@@ -23,5 +23,5 @@ export function getOrderStatus(status: number): OrderStatus {
     case 5:
       return OrderStatus.RESOLVED;
   }
-  return OrderStatus.UNDEFINED
+  return OrderStatus.UNDEFINED;
 }

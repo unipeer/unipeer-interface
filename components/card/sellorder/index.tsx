@@ -6,6 +6,7 @@ import { CompleteOrderModal } from "components/my_orders/modals/complete_order";
 import { DisputeRaisedModal } from "components/my_orders/modals/dispute_raised";
 import { RaiseDisputeModal } from "components/my_orders/modals/raise_dispute";
 import CryptoIcon from "components/shared/crypto_icons";
+import { OrderStatus } from "components/shared/order_status";
 import { BuyOrder } from "components/shared/types";
 import React, { Fragment, useState } from "react";
 

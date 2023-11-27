@@ -41,40 +41,37 @@ export function inactiveBuyRequest(
       unipeer
         .queryFilter(buyerFilter, constants.block[chainId])
         .then((result) => {
-          console.log("got raw result " + result);
-          const buyOrdersResult = parseEvents(result);
-          console.log("got inactive buy order result " + buyOrdersResult);
-          dispatch(setBuySuccess(buyOrdersResult));
+          console.log("got raw result " + JSON.stringify(result));
+          parseEvents(result).then((buyOrdersResult: BuyOrder[]) => {
+            console.log("success result " + JSON.stringify(buyOrdersResult));
+            dispatch(setBuySuccess(buyOrdersResult));
+          });
         });
     } catch (err) {
       dispatch(setBuyError(err));
     }
   };
 
-  function parseEvents(result: OrderBuyEvent[]): BuyOrder[] {
-    let eventsResult: BuyOrder[] = [];
-    result.forEach((curr) => {
-      getOrderFromRawData(curr, unipeer).then((order: BuyOrder) => {
+  function parseEvents(result: OrderBuyEvent[]): Promise<BuyOrder[]> {
+    return new Promise<BuyOrder[]>((resolve, reject) => {
+      let eventsResult: BuyOrder[] = [];
+      let counter = 0;
+      result.forEach(async (curr) => {
+        const parsedResult = await getOrderFromRawData(curr, unipeer);
+        console.log(
+          "filtering order with status " + JSON.stringify(parsedResult),
+        );
         if (
-          order.status === OrderStatus.COMPLETED ||
-          order.status === OrderStatus.CANCELLED
+          parsedResult.status === OrderStatus.COMPLETED ||
+          parsedResult.status === OrderStatus.CANCELLED
         ) {
-          eventsResult.push(order);
+          eventsResult.push(parsedResult);
+        }
+        counter++;
+        if (counter === result.length) {
+          resolve(eventsResult);
         }
       });
     });
-    return eventsResult;
-    // return Promise.all(
-    //   result
-    //     .map(async (log) => {
-    //       return await getOrderFromRawData(log, unipeer);
-    //     })
-    //     .filter((order: BuyOrder) => {
-    //       return (
-    //         order.status === OrderStatus.COMPLETED ||
-    // order.status === OrderStatus.CANCELLED
-    //       );
-    //     }),
-    // );
   }
 }
