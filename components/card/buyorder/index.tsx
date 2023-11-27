@@ -4,6 +4,7 @@ import BasicDialog from "components/BasicDialog";
 import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
 import { CancelOrderModal } from "components/my_orders/modals/cancel_order";
 import CryptoIcon from "components/shared/crypto_icons";
+import { OrderStatus } from "components/shared/order_status";
 import { BuyOrder } from "components/shared/types";
 import React, { Fragment, useState } from "react";
 

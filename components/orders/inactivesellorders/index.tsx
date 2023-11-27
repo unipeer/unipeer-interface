@@ -12,8 +12,10 @@ import { type Unipeer } from "../../../contracts/types";
 import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { inactiveSellRequest } from "redux-api/actions/inactive-sell-order-actions";
+import { AppState } from "redux-api/reducers/root-reducer";
+import SellOrderCard from "components/card/sellorder";
 
 const inactiveSellOrdersData = [
   {
@@ -48,7 +50,18 @@ const inactiveSellOrdersData = [
 
 const InActiveSellOrders = () => {
   const [sellOrders, setSellOrders] = useState<BuyOrder[]>([]);
-
+  const loading = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.loading,
+  );
+  const success = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.success,
+  );
+  const error = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.error,
+  );
+  const responseData = useSelector(
+    (state: AppState) => state.activeBuyOrderReducer.responseData,
+  );
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
@@ -70,19 +83,25 @@ const InActiveSellOrders = () => {
   useEffect(() => {
     dispatch(inactiveSellRequest(address, chainId, Unipeer));
   }, [dispatch]);
-  return (
-    <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {sellOrders.map((order) => {
-        return (
-          <BuyOrderCard
-            id={order.orderID}
-            timeLeft={Number(buyerTimeout)}
-            order={order}
-          />
-        );
-      })}
-    </div>
-  );
+  if (success) {
+    console.log("inactive sell orders: " + responseData);
+    return (
+      <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
+        {responseData.map((order) => {
+          return (
+            <SellOrderCard
+              id={order.orderID}
+              timeLeft={Number(buyerTimeout)}
+              order={order}
+            />
+          );
+        })}
+      </div>
+    );
+  } else {
+    console.log("waiting for active results " + responseData);
+    return <div></div>;
+  }
 };
 
 export default InActiveSellOrders;
