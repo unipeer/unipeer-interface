@@ -116,12 +116,6 @@ const ActiveBuyOrders = () => {
   useEffect(() => {
     dispatch(activeBuyRequest(address, chainId, Unipeer));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (success) {
-      console.log("active buy orders: " + responseData);
-    }
-  }, [success]);
   if (success) {
     console.log("active buy orders: " + responseData);
     return (

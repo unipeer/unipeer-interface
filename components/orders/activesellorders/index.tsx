@@ -51,24 +51,25 @@ const ActiveSellOrders = () => {
   useEffect(() => {
     dispatch(activeSellRequest(address, chainId, Unipeer));
   }, [dispatch]);
-
-  // const { loading, responseData } = useSelector(
-  //   (state: any) => state.ac,
-  // );
-  console.log("active sell orders: " + responseData)
-  return (
-    <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {responseData.map((order) => {
-        return (
-          <SellOrderCard
-            id={order.orderID}
-            timeLeft={Number(buyerTimeout)}
-            order={order}
-          />
-        );
-      })}
-    </div>
-  );
+  if (success) {
+    console.log("active sell orders: " + responseData);
+    return (
+      <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
+        {responseData.map((order) => {
+          return (
+            <SellOrderCard
+              id={order.orderID}
+              timeLeft={Number(buyerTimeout)}
+              order={order}
+            />
+          );
+        })}
+      </div>
+    );
+  } else {
+    console.log("waiting for active results " + responseData);
+    return <div></div>;
+  }
 };
 
 export default ActiveSellOrders;

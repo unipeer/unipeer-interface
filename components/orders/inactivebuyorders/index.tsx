@@ -89,20 +89,25 @@ const InActiveBuyOrders = () => {
   useEffect(() => {
     dispatch(inactiveBuyRequest(address, chainId, Unipeer));
   }, [dispatch]);
-  console.log("inactive buy orders: " + responseData)
-  return (
-    <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-      {responseData.map((order) => {
-        return (
-          <BuyOrderCard
-            id={order.orderID}
-            timeLeft={Number(buyerTimeout)}
-            order={order}
-          />
-        );
-      })}
-    </div>
-  );
+  if (success) {
+    console.log("inactive buy orders: " + responseData);
+    return (
+      <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
+        {responseData.map((order) => {
+          return (
+            <BuyOrderCard
+              id={order.orderID}
+              timeLeft={Number(buyerTimeout)}
+              order={order}
+            />
+          );
+        })}
+      </div>
+    );
+  } else {
+    console.log("waiting for active results " + responseData);
+    return <div></div>;
+  }
 };
 
 export default InActiveBuyOrders;
