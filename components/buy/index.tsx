@@ -31,6 +31,7 @@ import CurrencyAndTokenModal from "./modals/CurrencyAndTokenModal/CurrencyAndTok
 
 import CurrencyList from "./modals/CurrencyAndTokenModal/CurrencyList.json";
 import Flag from "react-world-flags";
+import TokenList from "@uniswap/default-token-list/build/uniswap-default.tokenlist.json";
 
 const dummySellers = [
   {
@@ -120,15 +121,28 @@ const Buy = () => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [sellerAddress, setSellerAddress] = useState("");
   const [sellers, setSellers] = useState(dummySellers);
+
   const [openCurrencyModal, setOpenCurrencyModal] = useState(false);
   const [currencyCode, setCurrencyCode] = useState(CurrencyList[0]);
+
+  const defaultTokenList = TokenList.tokens;
+
+  const [openTokenModal, setOpenTokenModal] = useState(false);
+  const [tokenCode, setTokenCode] = useState(defaultTokenList[0]);
 
   return (
     <>
       <CurrencyAndTokenModal
         openModal={openCurrencyModal}
         setOpenModal={setOpenCurrencyModal}
-        setCurrencyCode={setCurrencyCode}
+        setCurrencyOrTokenCode={setCurrencyCode}
+        isTokenModal={false}
+      />
+      <CurrencyAndTokenModal
+        openModal={openTokenModal}
+        setOpenModal={setOpenTokenModal}
+        setCurrencyOrTokenCode={setTokenCode}
+        isTokenModal={true}
       />
       <div>
         <div className="mt-10">
@@ -148,29 +162,32 @@ const Buy = () => {
               placeholder="0"
             />
             <div>
-                <>
-                  <div className="absolute right-4 bottom-4 mt-2">
-                    <div
-                      onClick={() => {
-                        setOpenCurrencyModal(true);
-                      }}
-                      className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200"
-                    >
-                      <span className="flex items-center">
-                        <Flag code={currencyCode.numericCode} className="h-4 w-5" />
-                        <span className="ml-2 block truncate">
-                          {currencyCode.currencies[0].code}
-                        </span>
+              <>
+                <div className="absolute right-4 bottom-4 mt-2">
+                  <div
+                    onClick={() => {
+                      setOpenCurrencyModal(true);
+                    }}
+                    className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200"
+                  >
+                    <span className="flex items-center">
+                      <Flag
+                        code={currencyCode.numericCode}
+                        className="h-4 w-5"
+                      />
+                      <span className="ml-2 block truncate">
+                        {currencyCode.currencies[0].code}
                       </span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
-                    </div>
+                    </span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
                   </div>
-                </>
+                </div>
+              </>
             </div>
           </div>
           <div className="relative rounded-lg px-4 py-3 bg-primary-100 mt-4">
@@ -188,96 +205,35 @@ const Buy = () => {
               className="border-b border-transparent focus:ring-0 sm:text-32 mt-1 block w-full border-0 p-0 bg-primary-100 outline-none font-headings font-bold text-dark-500"
               placeholder="0"
             />
-            <Listbox
-              value={selectedReceiveOption}
-              onChange={setSelectedReceiveOption}
-            >
-              {({ open }) => (
-                <>
-                  <div className="absolute right-4 bottom-4 mt-2">
-                    <Listbox.Button className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200">
-                      <span className="flex items-center">
-                        <img
-                          src={selectedReceiveOption.logo}
-                          alt=""
-                          className="h-5 w-5 flex-shrink-0"
-                        />
-                        <span className="ml-2 block truncate">
-                          {selectedReceiveOption.name}
-                        </span>
+            <div>
+              <>
+                <div className="absolute right-4 bottom-4 mt-2">
+                  <div
+                    onClick={() => {
+                      setOpenTokenModal(true);
+                    }}
+                    className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 border-[1px] border-dark-200"
+                  >
+                    <span className="flex items-center">
+                      <img
+                        src={tokenCode?.logoURI}
+                        alt=""
+                        className="h-4 w-5"
+                      />
+                      <span className="ml-2 block truncate">
+                        {tokenCode?.symbol}
                       </span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
-                    </Listbox.Button>
-
-                    <Transition
-                      show={open}
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {receiveOptions.map((paymentOption) => (
-                          <Listbox.Option
-                            key={paymentOption.id}
-                            className={({ active }) =>
-                              classNames(
-                                active
-                                  ? "bg-indigo-600 text-white"
-                                  : "text-gray-900",
-                                "relative cursor-default select-none py-2 pl-3 pr-9",
-                              )
-                            }
-                            value={paymentOption}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <div className="flex items-center">
-                                  <img
-                                    src={paymentOption.logo}
-                                    alt=""
-                                    className="h-5 w-5 flex-shrink-0"
-                                  />
-                                  <span
-                                    className={classNames(
-                                      selected
-                                        ? "font-semibold"
-                                        : "font-normal",
-                                      "ml-2 block truncate",
-                                    )}
-                                  >
-                                    {paymentOption.name}
-                                  </span>
-                                </div>
-
-                                {selected ? (
-                                  <span
-                                    className={classNames(
-                                      active ? "text-white" : "text-indigo-600",
-                                      "absolute inset-y-0 right-0 flex items-center pr-4",
-                                    )}
-                                  >
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
+                    </span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
                   </div>
-                </>
-              )}
-            </Listbox>
+                </div>
+              </>
+            </div>
           </div>
           <div className="relative flex flex-row items-center justify-start gap-[0.25rem] cursor-pointer mt-10">
             {!sellerAddress ? (

@@ -30,7 +30,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import CustomNavBar from "components/CustomNavBar";
 import Buy from "components/buy";
-import SellerInfo from "components/tables/sellerinfo";
+import SellerInfo from "components/tables/SellerInfo/SellerInfo";
 import BuySellTab from "components/tabs/buysell";
 import Sell from "components/sell";
 
@@ -146,11 +146,53 @@ const Demo = () => {
                       boxShadow: "0 6px 15px 2px rgba(0, 0, 0, 0.06)",
                     }}
                   >
-                    <BuySellTab
-                      selectedTab={selectedTab}
-                      setSelectedTab={setSelectedTab}
-                    />
-                    <>{selectedTab === "Buy" ? <Buy /> : <Sell />}</>
+                    {/* <BuySellTab
+                    selectedTab={selectedTab}
+                    setSelectedTab={setSelectedTab}
+                  /> */}
+                    <div className="flex-row flex justify-between">
+                      <div className="text-xl font-semibold not-italic leading-[1.6] tracking-[-0.5px] text-[#04072a];">
+                        Buy tokens
+                      </div>
+                      <div className="w-[139px] h-[34px] flex items-center justify-evenly bg-[#fef5d3] rounded-[100px]">
+                        <div>
+                          <a
+                            data-tooltip-id="payPal-policy-tooltip"
+                            data-tooltip-content="The rules for buying with this payment method are specified in the PayPal Payment Policy. Make sure to understand the policy before making a payment in case of a dispute."
+                          >
+                            <img
+                              src="/information-circle.svg"
+                              width="16"
+                              height="16"
+                              alt="information"
+                            ></img>
+                          </a>
+                          <ReactTooltip
+                            id="payPal-policy-tooltip"
+                            className="px-4 py-10 max-w-[416px] bg-dark-800 font-paragraphs font-normal text-14 text-white"
+                            style={{
+                              padding: "1.5rem",
+                              backgroundColor: "#04072a",
+                              borderRadius: "8px",
+                              zIndex: "100",
+                            }}
+                            place="bottom"
+                          />
+                        </div>
+                        <div className="text-xs font-semibold not-italic leading-normal tracking-[-0.5px] text-[#04072a]">
+                          Payment policy
+                        </div>
+                        <div>
+                          <img
+                            src="/external-link.svg"
+                            width="16"
+                            height="16"
+                            alt="information"
+                          ></img>
+                        </div>
+                      </div>
+                    </div>
+                    <Buy />
                   </section>
                 </div>
 

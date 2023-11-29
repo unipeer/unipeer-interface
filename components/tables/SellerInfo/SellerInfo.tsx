@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { addresses, constants } from "../../../util";
 import { useAccount, useNetwork, useProvider, useContract } from "wagmi";
 import { type Unipeer } from "../../../contracts/types";
@@ -53,27 +53,55 @@ const dummySellers = [
 ];
 
 const SellerInfo = () => {
-  const [sellers, setSellers] = useState(dummySellers);
+  const [sellers, setSellers] = useState<any[]>([]);
 
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const provider = useProvider();
-  const [sellers1, setSellers1] = useState<
-    {
-      sender: string;
-      paymentId: number;
-      paymentAddress: string;
-      feeRate: BigNumber;
-      amount: BigNumber;
-    }[]
-  >([]);
-  const chainId = chain?.id || constants.defaultChainId;
+  // const [sellers1, setSellers1] = useState<
+  // {
+  //   sender: string;
+  //   paymentId: number;
+  //   paymentAddress: string;
+  //   feeRate: BigNumber;
+  //   amount: BigNumber;
+  // }
+  // [] > [];
+
+  //Api call
+  const chainId = 10200;
+  console.log("chainId", chainId);
   const Dai = addresses.DAI[chainId];
 
   const Unipeer: Unipeer = useContract({
     addressOrName: addresses.UNIPEER[chainId],
     contractInterface: UNIPEER_ABI.abi,
     signerOrProvider: provider,
+  });
+
+  const fetchSellerList = async () => {
+    const filter = Unipeer.filters.SellerPaymentMethod();
+    const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
+
+    const events = await Promise.all(
+      result.map(async (log) => {
+        const bal = await Unipeer.tokenBalance(log.args[0], Dai);
+        return {
+          sender: log.args[0],
+          paymentId: log.args[1],
+          paymentAddress: log.args[2],
+          feeRate: log.args[3],
+          amount: bal,
+        };
+      }),
+    );
+
+    setSellers(events);
+    console.log("events12234", events);
+  };
+
+  useEffect(() => {
+    fetchSellerList();
   });
 
   return (
@@ -118,44 +146,41 @@ const SellerInfo = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {sellers.map((seller) => (
-                    <tr key={seller.address}>
+                  {sellers?.map((seller) => (
+                    <tr key={seller?.sender}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-8 flex flex-row items-center gap-1">
                         <div className="font-paragraphs text-14 font-normal text-dark-500">
-                          {seller.address}
+                          {seller?.sender}
                         </div>
                         <div className="cursor-pointer">
                           <img src="duplicate.svg" alt="" />
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 font-paragraphs text-14 font-normal text-dark-500">
-                        {seller.liquidity}
+                        {seller?.amount._hex}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 font-paragraphs text-14 font-normal text-dark-500">
-                        {seller.fee}
+                        {seller?.feeRate._hex}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 flex flex-row gap-1">
-                        {seller.paymentModes.map((paymentMode) => (
-                          <div key={paymentMode.id}>
-                            <img
+                        {/* {seller.paymentModes.map((paymentMode) => ( */}
+                        <div>
+                          {/* <img
                               src={paymentMode.icon}
                               alt={paymentMode.name}
-                            />
-                          </div>
-                        ))}
+                            /> */}
+                          <div>{seller?.paymentAddress}</div>
+                        </div>
+                        {/* ))} */}
                       </td>
                       <td className="whitespace-nowrap px-4 py-4">
                         <div className="w-full bg-dark-100 rounded-full h-2.5">
                           <div
                             className={`h-2.5 rounded-full bg-${
-                              seller.reputation > 70
-                                ? "success"
-                                : seller.reputation >= 40
-                                ? "warning"
-                                : "alert"
+                              'success'
                             }`}
                             style={{
-                              width: `${seller.reputation}%`,
+                              width: `${70}%`,
                             }}
                           ></div>
                         </div>

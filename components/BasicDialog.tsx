@@ -7,13 +7,14 @@ import React, {
   MouseEventHandler,
   SetStateAction,
   useState,
+  useCallback,
 } from "react";
 
 type BasicDialogProp = {
   dialogTitle: string;
   isCancellable: boolean;
   dialogChild: JSX.Element;
-  onCloseCallback?: () => void;
+  onCloseCallback: any;
 };
 
 const BasicDialog: React.FC<BasicDialogProp> = ({
@@ -23,15 +24,18 @@ const BasicDialog: React.FC<BasicDialogProp> = ({
   onCloseCallback,
 }) => {
   const [open, setOpen] = useState(true);
+  const callback = useCallback(() => {
+    if (onCloseCallback) {
+      onCloseCallback();
+    }
+  }, [onCloseCallback]);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         onClose={() => {
-          if (onCloseCallback) {
-            onCloseCallback();
-          }
+          callback();
           setOpen(false);
         }}
       >
@@ -65,7 +69,10 @@ const BasicDialog: React.FC<BasicDialogProp> = ({
                   </div>
                   {isCancellable ? (
                     <div
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        callback();
+                        setOpen(false);
+                      }}
                       className="text-32 cursor-pointer"
                     >
                       <span className="sr-only">Close</span>

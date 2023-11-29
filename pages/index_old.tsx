@@ -10,11 +10,11 @@ import OrdersList from "components/OrdersWidget";
 
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import PaymentModeModal from "components/modals/payment";
-import WrongNetworkDetected from "components/buy/modals/wrongnetwork";
+import WrongNetworkDetected from "components/buy/modals/WrongNetworkDetected/WrongNetworkDetected";
 import BasicDialog from "components/BasicDialog";
-import { PayArbitrationFeeModal } from "components/buy/modals/payfee";
-import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
-import { CancelOrderModal } from "components/buy/modals/cancel_order";
+import { PayArbitrationFeeModal } from "components/buy/modals/PayArbitrationFeeModal/PayArbitrationFeeModal";
+import { ConfirmPaymentModal } from "components/buy/modals/ConfirmPaymentModal/ConfirmPaymentModal";
+import { CancelOrderModal } from "components/buy/modals/CancelOrderModal/CancelOrderModal";
 import WithdrawTokens from "components/WithdrawTokens";
 import { WithdrawTokensModal } from "components/my_orders/modals/withdraw_tokens";
 

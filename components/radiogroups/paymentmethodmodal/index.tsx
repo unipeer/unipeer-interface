@@ -1,5 +1,21 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { RadioGroup } from "@headlessui/react";
+import { type Unipeer, ERC20 } from "../../../contracts/types";
+import UNIPEER_ABI from "../../../contracts/Unipeer.json";
+import { addresses, constants, formatEtherscanLink } from "../../../util";
+
+import {
+  useAccount,
+  useContract,
+  useContractRead,
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+  useNetwork,
+  useProvider,
+} from "wagmi";
+import { useDispatch } from "react-redux";
+import { getAvailablePaymentMethords } from "redux-api/actions/active-buy-order-actions";
 
 const paymentMethods = [
   {
@@ -31,6 +47,59 @@ export default function PaymentMethodModal<PaymentMethodModalProps>({
   const [paypalAddress, setPaypalAddress] = useState("");
   const [venmoAddress, setVenmoAddress] = useState("");
 
+  const { chain } = useNetwork();
+  const provider = useProvider();
+
+  const chainId = chain?.id || constants.defaultChainId;
+
+  const UnipeerAddr = addresses.UNIPEER[chainId];
+  const Dai = addresses.DAI[chainId];
+
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
+  const { address, isConnected } = useAccount();
+  console.log("addres123s", address);
+  const fetchPaymentMethods = async () => {
+    // Read list of payment method IDs, name and list of enabled tokens
+    // const events = useEventListener(Unipeer, "Unipeer", "PaymentMethodUpdate", library, 100);
+    // let pm = await Unipeer.paymentMethods(0);
+    const filter = Unipeer.filters.PaymentMethodUpdate();
+    const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
+
+    const event = new Map();
+    result.forEach(async (log) => {
+      // const filterPaymentMethodAddress =
+      //   Unipeer.filters.PaymentMethodTokenEnabled(log.args.paymentID, null);
+      // const resultAddress = Unipeer.queryFilter(
+      //   filterPaymentMethodAddress,
+      //   constants.block[chainId],
+      // );
+      // const test  = await resultAddress.then(result => result.data);
+
+      // TODO: remove hard coded token value and fetch from event
+      event.set(log.args[0], {
+        tokens: [Dai],
+        paymentName: log.args.paymentName,
+        icon: "ic_" + log.args.paymentName.toLowerCase() + ".svg",
+        // resultAddress: resultAddress,
+      });
+    });
+
+    // We assume that the PaymentMethodUpdate will
+    // have contiguous Payment IDs
+    // setPayMethods(Array.from(event.values()));
+    // setSelected(0);
+    // setToken(0);
+    console.log("Array.from(event.values())", Array.from(event.values()));
+  };
+  fetchPaymentMethods();
+  const dispatch = useDispatch<any>();
+  useEffect(() => {
+    dispatch(getAvailablePaymentMethords(address, chainId, Unipeer));
+  }, [dispatch]);
   return (
     <RadioGroup value={selected} onChange={setSelected}>
       <RadioGroup.Label className="sr-only"> Payment Method </RadioGroup.Label>

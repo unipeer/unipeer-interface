@@ -14,6 +14,7 @@ export default function PaymentModeModal({
   setActiveModalComponent,
 }) {
   const [activePaymentIndex, setActivePaymentIndex] = useState(0);
+  console.log('activeModalComponent', activeModalComponent);
 
   return (
     <>

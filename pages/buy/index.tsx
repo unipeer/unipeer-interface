@@ -30,7 +30,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import CustomNavBar from "components/CustomNavBar";
 import Buy from "components/buy";
-import SellerInfo from "components/tables/sellerinfo";
+import SellerInfo from "components/tables/SellerInfo/SellerInfo";
 import BuySellTab from "components/tabs/buysell";
 import Sell from "components/sell";
 
