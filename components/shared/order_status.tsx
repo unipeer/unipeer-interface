@@ -5,7 +5,7 @@ export enum OrderStatus {
   CANCELLED,
   DISPUTED,
   RESOLVED,
-  UNDEFINED
+  UNDEFINED,
 }
 
 export function getOrderStatus(status: number): OrderStatus {

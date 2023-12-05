@@ -1,6 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyLiquidityPagination from "./MyLiquidityPagination";
 import mockData from "./myliquiditymockdata";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useAccount,
+  useContract,
+  useContractRead,
+  useNetwork,
+  useProvider,
+} from "wagmi";
+import { type Unipeer } from "../../contracts/types";
+import UNIPEER_ABI from "../../contracts/Unipeer.json";
+import { addresses, formatEtherscanLink } from "../../util";
+import { constants } from "../../util";
+import { myLiquidityItemslist } from "redux-api/actions/my-liquidity-actions";
+import { BuyOrder } from "components/shared/types";
+import { AppState } from "redux-api/reducers/root-reducer";
 
 type SellPageDefaultProps = {
   addNewPosition: any;
@@ -44,7 +60,40 @@ const myLiquidityMockData = mockData;
 const SellPageDefault: React.FC<SellPageDefaultProps> = ({
   addNewPosition,
 }) => {
-  const [myLiquidityArr, setMyLiquidityArr] = useState(true);
+  const [myLiquidityArr, setMyLiquidityArr] = useState([]);
+  const loading = useSelector(
+    (state: AppState) => state.myLiquidityList.loading,
+  );
+  const success = useSelector(
+    (state: AppState) => state.myLiquidityList.success,
+  );
+  const error = useSelector((state: AppState) => state.myLiquidityList.error);
+  const responseData = useSelector(
+    (state: AppState) => state.myLiquidityList.responseData,
+  );
+
+  const dispatch = useDispatch<any>();
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const provider = useProvider();
+  const chainId = chain?.id || constants.defaultChainId;
+
+  const Unipeer: Unipeer = useContract({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    signerOrProvider: provider,
+  });
+
+  useEffect(() => {
+    dispatch(myLiquidityItemslist(address, chainId, Unipeer));
+  }, [dispatch, address, chainId, Unipeer]);
+
+  useEffect(() => {
+    // console.log(responseData);
+    if (responseData.length > 0) {
+      setMyLiquidityArr(responseData);
+    }
+  }, [responseData]);
 
   return (
     <>
@@ -63,8 +112,8 @@ const SellPageDefault: React.FC<SellPageDefaultProps> = ({
             </div>
           </div>
           <div className="flex flex-row mx-auto mt-8 lg:max-w-[736px] gap-8">
-            {myLiquidityArr ? (
-              <MyLiquidityPagination cardData={myLiquidityMockData} />
+            {myLiquidityArr.length > 0 ? (
+              <MyLiquidityPagination cardData={myLiquidityArr} />
             ) : (
               <section
                 aria-labelledby="timeline-title"

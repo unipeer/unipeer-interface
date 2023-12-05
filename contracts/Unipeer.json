@@ -3306,30 +3306,14 @@
     "absolutePath": "src/Unipeer.sol",
     "id": 28199,
     "exportedSymbols": {
-      "Address": [
-        25254
-      ],
-      "IArbitrable": [
-        23218
-      ],
-      "IArbitrator": [
-        23314
-      ],
-      "IERC20": [
-        24582
-      ],
-      "IERC20Permit": [
-        24643
-      ],
-      "IEvidence": [
-        23350
-      ],
-      "SafeERC20": [
-        24924
-      ],
-      "Unipeer": [
-        28198
-      ]
+      "Address": [25254],
+      "IArbitrable": [23218],
+      "IArbitrator": [23314],
+      "IERC20": [24582],
+      "IERC20Permit": [24643],
+      "IEvidence": [23350],
+      "SafeERC20": [24924],
+      "Unipeer": [28198]
     },
     "nodeType": "SourceUnit",
     "src": "176:41202:22",
@@ -3339,11 +3323,7 @@
         "nodeType": "PragmaDirective",
         "src": "176:23:22",
         "nodes": [],
-        "literals": [
-          "solidity",
-          "0.8",
-          ".17"
-        ]
+        "literals": ["solidity", "0.8", ".17"]
       },
       {
         "id": 25415,
@@ -3398,9 +3378,7 @@
             "libraryName": {
               "id": 25422,
               "name": "SafeERC20",
-              "nameLocations": [
-                "428:9:22"
-              ],
+              "nameLocations": ["428:9:22"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 24924,
               "src": "428:9:22"
@@ -3411,9 +3389,7 @@
               "pathNode": {
                 "id": 25423,
                 "name": "IERC20",
-                "nameLocations": [
-                  "442:6:22"
-                ],
+                "nameLocations": ["442:6:22"],
                 "nodeType": "IdentifierPath",
                 "referencedDeclaration": 24582,
                 "src": "442:6:22"
@@ -3770,9 +3746,7 @@
                     "pathNode": {
                       "id": 25453,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "2749:6:22"
-                      ],
+                      "nameLocations": ["2749:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "2749:6:22"
@@ -4201,9 +4175,7 @@
                   "pathNode": {
                     "id": 25487,
                     "name": "IERC20",
-                    "nameLocations": [
-                      "3918:6:22"
-                    ],
+                    "nameLocations": ["3918:6:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 24582,
                     "src": "3918:6:22"
@@ -4265,9 +4237,7 @@
                   "pathNode": {
                     "id": 25492,
                     "name": "Status",
-                    "nameLocations": [
-                      "4029:6:22"
-                    ],
+                    "nameLocations": ["4029:6:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 25448,
                     "src": "4029:6:22"
@@ -4367,9 +4337,7 @@
                   "pathNode": {
                     "id": 25500,
                     "name": "Party",
-                    "nameLocations": [
-                      "4516:5:22"
-                    ],
+                    "nameLocations": ["4516:5:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 25441,
                     "src": "4516:5:22"
@@ -4542,9 +4510,7 @@
                   "pathNode": {
                     "id": 25514,
                     "name": "Party",
-                    "nameLocations": [
-                      "5026:5:22"
-                    ],
+                    "nameLocations": ["5026:5:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 25441,
                     "src": "5026:5:22"
@@ -4624,9 +4590,7 @@
                     "pathNode": {
                       "id": 25520,
                       "name": "Round",
-                      "nameLocations": [
-                        "5199:5:22"
-                      ],
+                      "nameLocations": ["5199:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25511,
                       "src": "5199:5:22"
@@ -4662,9 +4626,7 @@
                   "pathNode": {
                     "id": 25524,
                     "name": "IArbitrator",
-                    "nameLocations": [
-                      "5277:11:22"
-                    ],
+                    "nameLocations": ["5277:11:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 23314,
                     "src": "5277:11:22"
@@ -4796,9 +4758,7 @@
                 "pathNode": {
                   "id": 25534,
                   "name": "IERC20",
-                  "nameLocations": [
-                    "5931:6:22"
-                  ],
+                  "nameLocations": ["5931:6:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 24582,
                   "src": "5931:6:22"
@@ -4882,9 +4842,7 @@
                 "pathNode": {
                   "id": 25541,
                   "name": "PaymentMethod",
-                  "nameLocations": [
-                    "6140:13:22"
-                  ],
+                  "nameLocations": ["6140:13:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25466,
                   "src": "6140:13:22"
@@ -5036,9 +4994,7 @@
                   "pathNode": {
                     "id": 25552,
                     "name": "IERC20",
-                    "nameLocations": [
-                      "6545:6:22"
-                    ],
+                    "nameLocations": ["6545:6:22"],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 24582,
                     "src": "6545:6:22"
@@ -5094,9 +5050,7 @@
                 "pathNode": {
                   "id": 25558,
                   "name": "Order",
-                  "nameLocations": [
-                    "6624:5:22"
-                  ],
+                  "nameLocations": ["6624:5:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25495,
                   "src": "6624:5:22"
@@ -5158,9 +5112,7 @@
                 "pathNode": {
                   "id": 25563,
                   "name": "DisputeData",
-                  "nameLocations": [
-                    "6716:11:22"
-                  ],
+                  "nameLocations": ["6716:11:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25529,
                   "src": "6716:11:22"
@@ -5264,9 +5216,7 @@
               "pathNode": {
                 "id": 25573,
                 "name": "IArbitrator",
-                "nameLocations": [
-                  "6995:11:22"
-                ],
+                "nameLocations": ["6995:11:22"],
                 "nodeType": "IdentifierPath",
                 "referencedDeclaration": 23314,
                 "src": "6995:11:22"
@@ -5411,10 +5361,7 @@
                       "id": 25579,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7283:7:22",
                       "typeDescriptions": {
@@ -5570,9 +5517,7 @@
                     "pathNode": {
                       "id": 25596,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "7598:6:22"
-                      ],
+                      "nameLocations": ["7598:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "7598:6:22"
@@ -5811,9 +5756,7 @@
                     "pathNode": {
                       "id": 25615,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "7828:6:22"
-                      ],
+                      "nameLocations": ["7828:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "7828:6:22"
@@ -5894,9 +5837,7 @@
                     "pathNode": {
                       "id": 25622,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "7907:6:22"
-                      ],
+                      "nameLocations": ["7907:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "7907:6:22"
@@ -6108,9 +6049,7 @@
                     "pathNode": {
                       "id": 25639,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "8098:6:22"
-                      ],
+                      "nameLocations": ["8098:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "8098:6:22"
@@ -6220,9 +6159,7 @@
                     "pathNode": {
                       "id": 25648,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "8178:6:22"
-                      ],
+                      "nameLocations": ["8178:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "8178:6:22"
@@ -6445,9 +6382,7 @@
                     "pathNode": {
                       "id": 25665,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "8391:6:22"
-                      ],
+                      "nameLocations": ["8391:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "8391:6:22"
@@ -6843,9 +6778,7 @@
                     "pathNode": {
                       "id": 25699,
                       "name": "Party",
-                      "nameLocations": [
-                        "9011:5:22"
-                      ],
+                      "nameLocations": ["9011:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25441,
                       "src": "9011:5:22"
@@ -6932,9 +6865,7 @@
                     "pathNode": {
                       "id": 25707,
                       "name": "Party",
-                      "nameLocations": [
-                        "9405:5:22"
-                      ],
+                      "nameLocations": ["9405:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25441,
                       "src": "9405:5:22"
@@ -7571,9 +7502,7 @@
                     "pathNode": {
                       "id": 25723,
                       "name": "IArbitrator",
-                      "nameLocations": [
-                        "10574:11:22"
-                      ],
+                      "nameLocations": ["10574:11:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23314,
                       "src": "10574:11:22"
@@ -7802,9 +7731,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    25791
-                  ],
+                  "assignments": [25791],
                   "declarations": [
                     {
                       "constant": false,
@@ -7976,9 +7903,7 @@
                 "modifierName": {
                   "id": 25787,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "11628:9:22"
-                  ],
+                  "nameLocations": ["11628:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "11628:9:22"
@@ -8150,9 +8075,7 @@
                 "modifierName": {
                   "id": 25812,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "12191:9:22"
-                  ],
+                  "nameLocations": ["12191:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "12191:9:22"
@@ -8188,9 +8111,7 @@
                     "pathNode": {
                       "id": 25806,
                       "name": "IArbitrator",
-                      "nameLocations": [
-                        "12104:11:22"
-                      ],
+                      "nameLocations": ["12104:11:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 23314,
                       "src": "12104:11:22"
@@ -8402,9 +8323,7 @@
                 "modifierName": {
                   "id": 25829,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "12671:9:22"
-                  ],
+                  "nameLocations": ["12671:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "12671:9:22"
@@ -8575,10 +8494,7 @@
                       "id": 25857,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "13013:7:22",
                       "typeDescriptions": {
@@ -8607,9 +8523,7 @@
                   "src": "13013:74:22"
                 },
                 {
-                  "assignments": [
-                    25866
-                  ],
+                  "assignments": [25866],
                   "declarations": [
                     {
                       "constant": false,
@@ -8632,9 +8546,7 @@
                         "pathNode": {
                           "id": 25864,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "13097:13:22"
-                          ],
+                          "nameLocations": ["13097:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "13097:13:22"
@@ -9171,9 +9083,7 @@
                 "modifierName": {
                   "id": 25854,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "12993:9:22"
-                  ],
+                  "nameLocations": ["12993:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "12993:9:22"
@@ -9263,9 +9173,7 @@
                     "pathNode": {
                       "id": 25850,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "12951:6:22"
-                      ],
+                      "nameLocations": ["12951:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "12951:6:22"
@@ -9380,10 +9288,7 @@
                       "id": 25918,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "13606:7:22",
                       "typeDescriptions": {
@@ -9412,9 +9317,7 @@
                   "src": "13606:74:22"
                 },
                 {
-                  "assignments": [
-                    25927
-                  ],
+                  "assignments": [25927],
                   "declarations": [
                     {
                       "constant": false,
@@ -9437,9 +9340,7 @@
                         "pathNode": {
                           "id": 25925,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "13691:13:22"
-                          ],
+                          "nameLocations": ["13691:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "13691:13:22"
@@ -9684,9 +9585,7 @@
                 "modifierName": {
                   "id": 25915,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "13582:9:22"
-                  ],
+                  "nameLocations": ["13582:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "13582:9:22"
@@ -9781,9 +9680,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    25958
-                  ],
+                  "assignments": [25958],
                   "declarations": [
                     {
                       "constant": false,
@@ -9806,9 +9703,7 @@
                         "pathNode": {
                           "id": 25956,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "14010:13:22"
-                          ],
+                          "nameLocations": ["14010:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "14010:13:22"
@@ -10053,9 +9948,7 @@
                 "modifierName": {
                   "id": 25953,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "13986:9:22"
-                  ],
+                  "nameLocations": ["13986:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "13986:9:22"
@@ -10150,9 +10043,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    25992
-                  ],
+                  "assignments": [25992],
                   "declarations": [
                     {
                       "constant": false,
@@ -10175,9 +10066,7 @@
                         "pathNode": {
                           "id": 25990,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "14324:13:22"
-                          ],
+                          "nameLocations": ["14324:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "14324:13:22"
@@ -10486,9 +10375,7 @@
                 "modifierName": {
                   "id": 25987,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "14300:9:22"
-                  ],
+                  "nameLocations": ["14300:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "14300:9:22"
@@ -10551,9 +10438,7 @@
                     "pathNode": {
                       "id": 25981,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "14245:6:22"
-                      ],
+                      "nameLocations": ["14245:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "14245:6:22"
@@ -10674,9 +10559,7 @@
                 "modifierName": {
                   "id": 26022,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "14654:9:22"
-                  ],
+                  "nameLocations": ["14654:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "14654:9:22"
@@ -10798,9 +10681,7 @@
                 "modifierName": {
                   "id": 26034,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "14766:9:22"
-                  ],
+                  "nameLocations": ["14766:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "14766:9:22"
@@ -10943,10 +10824,7 @@
                       "id": 26049,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "14890:7:22",
                       "typeDescriptions": {
@@ -11029,9 +10907,7 @@
                 "modifierName": {
                   "id": 26046,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "14870:9:22"
-                  ],
+                  "nameLocations": ["14870:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "14870:9:22"
@@ -11199,10 +11075,7 @@
                       "id": 26073,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "15112:7:22",
                       "typeDescriptions": {
@@ -11482,9 +11355,7 @@
                 "modifierName": {
                   "id": 26070,
                   "name": "onlyAdmin",
-                  "nameLocations": [
-                    "15092:9:22"
-                  ],
+                  "nameLocations": ["15092:9:22"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 25589,
                   "src": "15092:9:22"
@@ -11520,9 +11391,7 @@
                     "pathNode": {
                       "id": 26062,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "15038:6:22"
-                      ],
+                      "nameLocations": ["15038:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "15038:6:22"
@@ -11617,9 +11486,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26113
-                  ],
+                  "assignments": [26113],
                   "declarations": [
                     {
                       "constant": false,
@@ -11791,10 +11658,7 @@
                       "id": 26117,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "16096:7:22",
                       "typeDescriptions": {
@@ -11823,9 +11687,7 @@
                   "src": "16096:105:22"
                 },
                 {
-                  "assignments": [
-                    26128
-                  ],
+                  "assignments": [26128],
                   "declarations": [
                     {
                       "constant": false,
@@ -11848,9 +11710,7 @@
                         "pathNode": {
                           "id": 26126,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "16212:13:22"
-                          ],
+                          "nameLocations": ["16212:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "16212:13:22"
@@ -12301,9 +12161,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26169
-                  ],
+                  "assignments": [26169],
                   "declarations": [
                     {
                       "constant": false,
@@ -12326,9 +12184,7 @@
                         "pathNode": {
                           "id": 26167,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "16549:13:22"
-                          ],
+                          "nameLocations": ["16549:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "16549:13:22"
@@ -12505,10 +12361,7 @@
                       "id": 26174,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "16612:7:22",
                       "typeDescriptions": {
@@ -12979,9 +12832,7 @@
                     "pathNode": {
                       "id": 26160,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "16498:6:22"
-                      ],
+                      "nameLocations": ["16498:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "16498:6:22"
@@ -13192,10 +13043,7 @@
                       "id": 26221,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "16960:7:22",
                       "typeDescriptions": {
@@ -13578,9 +13426,7 @@
                     "pathNode": {
                       "id": 26214,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "16909:6:22"
-                      ],
+                      "nameLocations": ["16909:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "16909:6:22"
@@ -13647,9 +13493,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26272
-                  ],
+                  "assignments": [26272],
                   "declarations": [
                     {
                       "constant": false,
@@ -13672,9 +13516,7 @@
                         "pathNode": {
                           "id": 26270,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "17531:13:22"
-                          ],
+                          "nameLocations": ["17531:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "17531:13:22"
@@ -13911,10 +13753,7 @@
                       "id": 26277,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "17594:7:22",
                       "typeDescriptions": {
@@ -14063,10 +13902,7 @@
                       "id": 26291,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "17684:7:22",
                       "typeDescriptions": {
@@ -14220,10 +14056,7 @@
                       "id": 26301,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "17759:7:22",
                       "typeDescriptions": {
@@ -14252,9 +14085,7 @@
                   "src": "17759:78:22"
                 },
                 {
-                  "assignments": [
-                    26313
-                  ],
+                  "assignments": [26313],
                   "declarations": [
                     {
                       "constant": false,
@@ -14444,10 +14275,7 @@
                       "id": 26319,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "17930:7:22",
                       "typeDescriptions": {
@@ -14724,10 +14552,7 @@
                   }
                 },
                 {
-                  "assignments": [
-                    26346,
-                    null
-                  ],
+                  "assignments": [26346, null],
                   "declarations": [
                     {
                       "constant": false,
@@ -14828,10 +14653,7 @@
                   "src": "18173:56:22"
                 },
                 {
-                  "assignments": [
-                    26353,
-                    26355
-                  ],
+                  "assignments": [26353, 26355],
                   "declarations": [
                     {
                       "constant": false,
@@ -15104,10 +14926,7 @@
                       "id": 26364,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "18338:7:22",
                       "typeDescriptions": {
@@ -16099,9 +15918,7 @@
                     "pathNode": {
                       "id": 26263,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "17452:6:22"
-                      ],
+                      "nameLocations": ["17452:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "17452:6:22"
@@ -16168,9 +15985,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26437
-                  ],
+                  "assignments": [26437],
                   "declarations": [
                     {
                       "constant": false,
@@ -16193,9 +16008,7 @@
                         "pathNode": {
                           "id": 26435,
                           "name": "Order",
-                          "nameLocations": [
-                            "19647:5:22"
-                          ],
+                          "nameLocations": ["19647:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "19647:5:22"
@@ -16362,10 +16175,7 @@
                       "id": 26442,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "19695:7:22",
                       "typeDescriptions": {
@@ -16501,10 +16311,7 @@
                       "id": 26451,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "19755:7:22",
                       "typeDescriptions": {
@@ -16685,10 +16492,7 @@
                       "id": 26460,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "19829:7:22",
                       "typeDescriptions": {
@@ -16984,9 +16788,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26499
-                  ],
+                  "assignments": [26499],
                   "declarations": [
                     {
                       "constant": false,
@@ -17009,9 +16811,7 @@
                         "pathNode": {
                           "id": 26497,
                           "name": "Order",
-                          "nameLocations": [
-                            "20465:5:22"
-                          ],
+                          "nameLocations": ["20465:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "20465:5:22"
@@ -17178,10 +16978,7 @@
                       "id": 26504,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "20513:7:22",
                       "typeDescriptions": {
@@ -17317,10 +17114,7 @@
                       "id": 26513,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "20575:7:22",
                       "typeDescriptions": {
@@ -17593,10 +17387,7 @@
                       "id": 26522,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "20897:7:22",
                       "typeDescriptions": {
@@ -17803,9 +17594,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26556
-                  ],
+                  "assignments": [26556],
                   "declarations": [
                     {
                       "constant": false,
@@ -17828,9 +17617,7 @@
                         "pathNode": {
                           "id": 26554,
                           "name": "Order",
-                          "nameLocations": [
-                            "21236:5:22"
-                          ],
+                          "nameLocations": ["21236:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "21236:5:22"
@@ -17997,10 +17784,7 @@
                       "id": 26561,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "21284:7:22",
                       "typeDescriptions": {
@@ -18136,10 +17920,7 @@
                       "id": 26570,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "21346:7:22",
                       "typeDescriptions": {
@@ -18320,10 +18101,7 @@
                       "id": 26579,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "21414:7:22",
                       "typeDescriptions": {
@@ -18495,10 +18273,7 @@
                       "id": 26591,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "21611:7:22",
                       "typeDescriptions": {
@@ -18676,9 +18451,7 @@
                   "src": "21758:30:22"
                 },
                 {
-                  "assignments": [
-                    26617
-                  ],
+                  "assignments": [26617],
                   "declarations": [
                     {
                       "constant": false,
@@ -18790,9 +18563,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "names": [
-                        "value"
-                      ],
+                      "names": ["value"],
                       "nodeType": "FunctionCallOptions",
                       "options": [
                         {
@@ -18849,9 +18620,7 @@
                   "src": "21798:121:22"
                 },
                 {
-                  "assignments": [
-                    26629
-                  ],
+                  "assignments": [26629],
                   "declarations": [
                     {
                       "constant": false,
@@ -18874,9 +18643,7 @@
                         "pathNode": {
                           "id": 26627,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "21930:11:22"
-                          ],
+                          "nameLocations": ["21930:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "21930:11:22"
@@ -19248,9 +19015,7 @@
                   "src": "22118:71:22"
                 },
                 {
-                  "assignments": [
-                    26665
-                  ],
+                  "assignments": [26665],
                   "declarations": [
                     {
                       "constant": false,
@@ -19273,9 +19038,7 @@
                         "pathNode": {
                           "id": 26663,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "22200:13:22"
-                          ],
+                          "nameLocations": ["22200:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "22200:13:22"
@@ -19530,9 +19293,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26687
-                  ],
+                  "assignments": [26687],
                   "declarations": [
                     {
                       "constant": false,
@@ -19555,9 +19316,7 @@
                         "pathNode": {
                           "id": 26685,
                           "name": "Order",
-                          "nameLocations": [
-                            "22552:5:22"
-                          ],
+                          "nameLocations": ["22552:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "22552:5:22"
@@ -19721,10 +19480,7 @@
                       "id": 26692,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "22600:7:22",
                       "typeDescriptions": {
@@ -19905,10 +19661,7 @@
                       "id": 26701,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "22674:7:22",
                       "typeDescriptions": {
@@ -19937,9 +19690,7 @@
                   "src": "22674:139:22"
                 },
                 {
-                  "assignments": [
-                    26714
-                  ],
+                  "assignments": [26714],
                   "declarations": [
                     {
                       "constant": false,
@@ -20002,9 +19753,7 @@
                   "src": "22824:29:22"
                 },
                 {
-                  "assignments": [
-                    26719
-                  ],
+                  "assignments": [26719],
                   "declarations": [
                     {
                       "constant": false,
@@ -20659,9 +20408,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26778
-                  ],
+                  "assignments": [26778],
                   "declarations": [
                     {
                       "constant": false,
@@ -20684,9 +20431,7 @@
                         "pathNode": {
                           "id": 26776,
                           "name": "Order",
-                          "nameLocations": [
-                            "23309:5:22"
-                          ],
+                          "nameLocations": ["23309:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "23309:5:22"
@@ -20850,10 +20595,7 @@
                       "id": 26783,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "23357:7:22",
                       "typeDescriptions": {
@@ -21034,10 +20776,7 @@
                       "id": 26792,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "23425:7:22",
                       "typeDescriptions": {
@@ -21292,9 +21031,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26827
-                  ],
+                  "assignments": [26827],
                   "declarations": [
                     {
                       "constant": false,
@@ -21317,9 +21054,7 @@
                         "pathNode": {
                           "id": 26825,
                           "name": "Order",
-                          "nameLocations": [
-                            "24123:5:22"
-                          ],
+                          "nameLocations": ["24123:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "24123:5:22"
@@ -21483,10 +21218,7 @@
                       "id": 26832,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "24171:7:22",
                       "typeDescriptions": {
@@ -21515,9 +21247,7 @@
                   "src": "24171:74:22"
                 },
                 {
-                  "assignments": [
-                    26843
-                  ],
+                  "assignments": [26843],
                   "declarations": [
                     {
                       "constant": false,
@@ -21540,9 +21270,7 @@
                         "pathNode": {
                           "id": 26841,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "24255:11:22"
-                          ],
+                          "nameLocations": ["24255:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "24255:11:22"
@@ -21833,9 +21561,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    26869
-                  ],
+                  "assignments": [26869],
                   "declarations": [
                     {
                       "constant": false,
@@ -21858,9 +21584,7 @@
                         "pathNode": {
                           "id": 26867,
                           "name": "Order",
-                          "nameLocations": [
-                            "24750:5:22"
-                          ],
+                          "nameLocations": ["24750:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "24750:5:22"
@@ -22008,10 +21732,7 @@
                       "id": 26874,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "24798:7:22",
                       "typeDescriptions": {
@@ -22147,10 +21868,7 @@
                       "id": 26882,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "24852:7:22",
                       "typeDescriptions": {
@@ -22179,9 +21897,7 @@
                   "src": "24852:64:22"
                 },
                 {
-                  "assignments": [
-                    26893
-                  ],
+                  "assignments": [26893],
                   "declarations": [
                     {
                       "constant": false,
@@ -22204,9 +21920,7 @@
                         "pathNode": {
                           "id": 26891,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "24927:11:22"
-                          ],
+                          "nameLocations": ["24927:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "24927:11:22"
@@ -22263,10 +21977,7 @@
                   "src": "24927:48:22"
                 },
                 {
-                  "assignments": [
-                    26899,
-                    26901
-                  ],
+                  "assignments": [26899, 26901],
                   "declarations": [
                     {
                       "constant": false,
@@ -22590,10 +22301,7 @@
                       "id": 26909,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "25112:7:22",
                       "typeDescriptions": {
@@ -22622,9 +22330,7 @@
                   "src": "25112:152:22"
                 },
                 {
-                  "assignments": [
-                    26923
-                  ],
+                  "assignments": [26923],
                   "declarations": [
                     {
                       "constant": false,
@@ -22659,9 +22365,7 @@
                   "src": "25275:18:22"
                 },
                 {
-                  "assignments": [
-                    26926
-                  ],
+                  "assignments": [26926],
                   "declarations": [
                     {
                       "constant": false,
@@ -23103,10 +22807,7 @@
                               "id": 26953,
                               "name": "require",
                               "nodeType": "Identifier",
-                              "overloadedDeclarations": [
-                                -18,
-                                -18
-                              ],
+                              "overloadedDeclarations": [-18, -18],
                               "referencedDeclaration": -18,
                               "src": "25572:7:22",
                               "typeDescriptions": {
@@ -23288,9 +22989,7 @@
                   }
                 },
                 {
-                  "assignments": [
-                    26975
-                  ],
+                  "assignments": [26975],
                   "declarations": [
                     {
                       "constant": false,
@@ -23313,9 +23012,7 @@
                         "pathNode": {
                           "id": 26973,
                           "name": "Round",
-                          "nameLocations": [
-                            "25819:5:22"
-                          ],
+                          "nameLocations": ["25819:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25511,
                           "src": "25819:5:22"
@@ -23495,10 +23192,7 @@
                       "id": 26982,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "25886:7:22",
                       "typeDescriptions": {
@@ -23527,9 +23221,7 @@
                   "src": "25886:53:22"
                 },
                 {
-                  "assignments": [
-                    26991
-                  ],
+                  "assignments": [26991],
                   "declarations": [
                     {
                       "constant": false,
@@ -23693,9 +23385,7 @@
                   "src": "25950:88:22"
                 },
                 {
-                  "assignments": [
-                    27002
-                  ],
+                  "assignments": [27002],
                   "declarations": [
                     {
                       "constant": false,
@@ -23869,9 +23559,7 @@
                   "src": "26140:861:22",
                   "statements": [
                     {
-                      "assignments": [
-                        27014
-                      ],
+                      "assignments": [27014],
                       "declarations": [
                         {
                           "constant": false,
@@ -23906,9 +23594,7 @@
                       "src": "26249:20:22"
                     },
                     {
-                      "assignments": [
-                        27017
-                      ],
+                      "assignments": [27017],
                       "declarations": [
                         {
                           "constant": false,
@@ -25161,9 +24847,7 @@
                                   "isLValue": false,
                                   "isPure": false,
                                   "lValueRequested": false,
-                                  "names": [
-                                    "value"
-                                  ],
+                                  "names": ["value"],
                                   "nodeType": "FunctionCallOptions",
                                   "options": [
                                     {
@@ -25878,9 +25562,7 @@
                     "pathNode": {
                       "id": 26862,
                       "name": "Party",
-                      "nameLocations": [
-                        "24710:5:22"
-                      ],
+                      "nameLocations": ["24710:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25441,
                       "src": "24710:5:22"
@@ -25920,9 +25602,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27175
-                  ],
+                  "assignments": [27175],
                   "declarations": [
                     {
                       "constant": false,
@@ -26034,9 +25714,7 @@
                   "src": "28203:70:22"
                 },
                 {
-                  "assignments": [
-                    27185
-                  ],
+                  "assignments": [27185],
                   "declarations": [
                     {
                       "constant": false,
@@ -26059,9 +25737,7 @@
                         "pathNode": {
                           "id": 27183,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "28283:11:22"
-                          ],
+                          "nameLocations": ["28283:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "28283:11:22"
@@ -26118,9 +25794,7 @@
                   "src": "28283:47:22"
                 },
                 {
-                  "assignments": [
-                    27192
-                  ],
+                  "assignments": [27192],
                   "declarations": [
                     {
                       "constant": false,
@@ -26143,9 +25817,7 @@
                         "pathNode": {
                           "id": 27190,
                           "name": "Order",
-                          "nameLocations": [
-                            "28340:5:22"
-                          ],
+                          "nameLocations": ["28340:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "28340:5:22"
@@ -26353,10 +26025,7 @@
                       "id": 27197,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "28388:7:22",
                       "typeDescriptions": {
@@ -26492,10 +26161,7 @@
                       "id": 27209,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "28467:7:22",
                       "typeDescriptions": {
@@ -26524,9 +26190,7 @@
                   "src": "28467:68:22"
                 },
                 {
-                  "assignments": [
-                    27220
-                  ],
+                  "assignments": [27220],
                   "declarations": [
                     {
                       "constant": false,
@@ -26549,9 +26213,7 @@
                         "pathNode": {
                           "id": 27218,
                           "name": "Round",
-                          "nameLocations": [
-                            "28546:5:22"
-                          ],
+                          "nameLocations": ["28546:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25511,
                           "src": "28546:5:22"
@@ -27353,9 +27015,7 @@
                 }
               ]
             },
-            "baseFunctions": [
-              23217
-            ],
+            "baseFunctions": [23217],
             "documentation": {
               "id": 27167,
               "nodeType": "StructuredDocumentation",
@@ -27452,9 +27112,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27297
-                  ],
+                  "assignments": [27297],
                   "declarations": [
                     {
                       "constant": false,
@@ -27477,9 +27135,7 @@
                         "pathNode": {
                           "id": 27295,
                           "name": "Order",
-                          "nameLocations": [
-                            "29731:5:22"
-                          ],
+                          "nameLocations": ["29731:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "29731:5:22"
@@ -27643,10 +27299,7 @@
                       "id": 27302,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "29779:7:22",
                       "typeDescriptions": {
@@ -27675,9 +27328,7 @@
                   "src": "29779:71:22"
                 },
                 {
-                  "assignments": [
-                    27313
-                  ],
+                  "assignments": [27313],
                   "declarations": [
                     {
                       "constant": false,
@@ -27700,9 +27351,7 @@
                         "pathNode": {
                           "id": 27311,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "29860:11:22"
-                          ],
+                          "nameLocations": ["29860:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "29860:11:22"
@@ -27850,10 +27499,7 @@
                       "id": 27318,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "29918:7:22",
                       "typeDescriptions": {
@@ -27882,9 +27528,7 @@
                   "src": "29918:58:22"
                 },
                 {
-                  "assignments": [
-                    27327
-                  ],
+                  "assignments": [27327],
                   "declarations": [
                     {
                       "constant": false,
@@ -28271,9 +27915,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27360
-                  ],
+                  "assignments": [27360],
                   "declarations": [
                     {
                       "constant": false,
@@ -28296,9 +27938,7 @@
                         "pathNode": {
                           "id": 27358,
                           "name": "Order",
-                          "nameLocations": [
-                            "30995:5:22"
-                          ],
+                          "nameLocations": ["30995:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "30995:5:22"
@@ -28462,10 +28102,7 @@
                       "id": 27365,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "31043:7:22",
                       "typeDescriptions": {
@@ -28494,9 +28131,7 @@
                   "src": "31043:71:22"
                 },
                 {
-                  "assignments": [
-                    27376
-                  ],
+                  "assignments": [27376],
                   "declarations": [
                     {
                       "constant": false,
@@ -28519,9 +28154,7 @@
                         "pathNode": {
                           "id": 27374,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "31124:11:22"
-                          ],
+                          "nameLocations": ["31124:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "31124:11:22"
@@ -28578,9 +28211,7 @@
                   "src": "31124:48:22"
                 },
                 {
-                  "assignments": [
-                    27382
-                  ],
+                  "assignments": [27382],
                   "declarations": [
                     {
                       "constant": false,
@@ -28688,9 +28319,7 @@
                   "src": "31183:45:22"
                 },
                 {
-                  "assignments": [
-                    27390
-                  ],
+                  "assignments": [27390],
                   "declarations": [
                     {
                       "constant": false,
@@ -28725,9 +28354,7 @@
                   "src": "31239:14:22"
                 },
                 {
-                  "assignments": [
-                    27393
-                  ],
+                  "assignments": [27393],
                   "declarations": [
                     {
                       "constant": false,
@@ -29139,9 +28766,7 @@
                   },
                   "id": 27428,
                   "initializationExpression": {
-                    "assignments": [
-                      27398
-                    ],
+                    "assignments": [27398],
                     "declarations": [
                       {
                         "constant": false,
@@ -29444,9 +29069,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27445
-                  ],
+                  "assignments": [27445],
                   "declarations": [
                     {
                       "constant": false,
@@ -29469,9 +29092,7 @@
                         "pathNode": {
                           "id": 27443,
                           "name": "Order",
-                          "nameLocations": [
-                            "31913:5:22"
-                          ],
+                          "nameLocations": ["31913:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "31913:5:22"
@@ -29679,9 +29300,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27467
-                  ],
+                  "assignments": [27467],
                   "declarations": [
                     {
                       "constant": false,
@@ -29704,9 +29323,7 @@
                         "pathNode": {
                           "id": 27465,
                           "name": "Order",
-                          "nameLocations": [
-                            "32150:5:22"
-                          ],
+                          "nameLocations": ["32150:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25495,
                           "src": "32150:5:22"
@@ -30030,9 +29647,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27496
-                  ],
+                  "assignments": [27496],
                   "declarations": [
                     {
                       "constant": false,
@@ -30055,9 +29670,7 @@
                         "pathNode": {
                           "id": 27494,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "32421:13:22"
-                          ],
+                          "nameLocations": ["32421:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "32421:13:22"
@@ -30318,9 +29931,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27520
-                  ],
+                  "assignments": [27520],
                   "declarations": [
                     {
                       "constant": false,
@@ -30343,9 +29954,7 @@
                         "pathNode": {
                           "id": 27518,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "32668:13:22"
-                          ],
+                          "nameLocations": ["32668:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "32668:13:22"
@@ -30581,9 +30190,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27543
-                  ],
+                  "assignments": [27543],
                   "declarations": [
                     {
                       "constant": false,
@@ -30606,9 +30213,7 @@
                         "pathNode": {
                           "id": 27541,
                           "name": "PaymentMethod",
-                          "nameLocations": [
-                            "32910:13:22"
-                          ],
+                          "nameLocations": ["32910:13:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25466,
                           "src": "32910:13:22"
@@ -30783,9 +30388,7 @@
                     "pathNode": {
                       "id": 27534,
                       "name": "IERC20",
-                      "nameLocations": [
-                        "32828:6:22"
-                      ],
+                      "nameLocations": ["32828:6:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 24582,
                       "src": "32828:6:22"
@@ -31047,9 +30650,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27582
-                  ],
+                  "assignments": [27582],
                   "declarations": [
                     {
                       "constant": false,
@@ -31072,9 +30673,7 @@
                         "pathNode": {
                           "id": 27580,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "33479:11:22"
-                          ],
+                          "nameLocations": ["33479:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "33479:11:22"
@@ -31263,9 +30862,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27607
-                  ],
+                  "assignments": [27607],
                   "declarations": [
                     {
                       "constant": false,
@@ -31288,9 +30885,7 @@
                         "pathNode": {
                           "id": 27605,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "34051:11:22"
-                          ],
+                          "nameLocations": ["34051:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "34051:11:22"
@@ -31347,9 +30942,7 @@
                   "src": "34051:48:22"
                 },
                 {
-                  "assignments": [
-                    27614
-                  ],
+                  "assignments": [27614],
                   "declarations": [
                     {
                       "constant": false,
@@ -31372,9 +30965,7 @@
                         "pathNode": {
                           "id": 27612,
                           "name": "Round",
-                          "nameLocations": [
-                            "34109:5:22"
-                          ],
+                          "nameLocations": ["34109:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25511,
                           "src": "34109:5:22"
@@ -31709,9 +31300,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27649
-                  ],
+                  "assignments": [27649],
                   "declarations": [
                     {
                       "constant": false,
@@ -31734,9 +31323,7 @@
                         "pathNode": {
                           "id": 27647,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "34738:11:22"
-                          ],
+                          "nameLocations": ["34738:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "34738:11:22"
@@ -31793,9 +31380,7 @@
                   "src": "34738:48:22"
                 },
                 {
-                  "assignments": [
-                    27656
-                  ],
+                  "assignments": [27656],
                   "declarations": [
                     {
                       "constant": false,
@@ -31818,9 +31403,7 @@
                         "pathNode": {
                           "id": 27654,
                           "name": "Round",
-                          "nameLocations": [
-                            "34796:5:22"
-                          ],
+                          "nameLocations": ["34796:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25511,
                           "src": "34796:5:22"
@@ -32208,9 +31791,7 @@
                     "pathNode": {
                       "id": 27639,
                       "name": "Party",
-                      "nameLocations": [
-                        "34638:5:22"
-                      ],
+                      "nameLocations": ["34638:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25441,
                       "src": "34638:5:22"
@@ -32625,9 +32206,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27712
-                  ],
+                  "assignments": [27712],
                   "declarations": [
                     {
                       "constant": false,
@@ -32690,9 +32269,7 @@
                   "src": "35706:29:22"
                 },
                 {
-                  "assignments": [
-                    27717
-                  ],
+                  "assignments": [27717],
                   "declarations": [
                     {
                       "constant": false,
@@ -32755,9 +32332,7 @@
                   "src": "35745:23:22"
                 },
                 {
-                  "assignments": [
-                    27722
-                  ],
+                  "assignments": [27722],
                   "declarations": [
                     {
                       "constant": false,
@@ -32820,9 +32395,7 @@
                   "src": "35778:35:22"
                 },
                 {
-                  "assignments": [
-                    27727
-                  ],
+                  "assignments": [27727],
                   "declarations": [
                     {
                       "constant": false,
@@ -32885,9 +32458,7 @@
                   "src": "35823:37:22"
                 },
                 {
-                  "assignments": [
-                    27732
-                  ],
+                  "assignments": [27732],
                   "declarations": [
                     {
                       "constant": false,
@@ -33616,9 +33187,7 @@
                       "src": "36709:566:22",
                       "statements": [
                         {
-                          "assignments": [
-                            27831
-                          ],
+                          "assignments": [27831],
                           "declarations": [
                             {
                               "constant": false,
@@ -33869,9 +33438,7 @@
                           "src": "36978:38:22"
                         },
                         {
-                          "assignments": [
-                            27853
-                          ],
+                          "assignments": [27853],
                           "declarations": [
                             {
                               "constant": false,
@@ -34663,9 +34230,7 @@
                     "pathNode": {
                       "id": 27703,
                       "name": "DisputeData",
-                      "nameLocations": [
-                        "35637:11:22"
-                      ],
+                      "nameLocations": ["35637:11:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25529,
                       "src": "35637:11:22"
@@ -34700,9 +34265,7 @@
                     "pathNode": {
                       "id": 27706,
                       "name": "Order",
-                      "nameLocations": [
-                        "35666:5:22"
-                      ],
+                      "nameLocations": ["35666:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25495,
                       "src": "35666:5:22"
@@ -34742,9 +34305,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    27898
-                  ],
+                  "assignments": [27898],
                   "declarations": [
                     {
                       "constant": false,
@@ -34767,9 +34328,7 @@
                         "pathNode": {
                           "id": 27896,
                           "name": "DisputeData",
-                          "nameLocations": [
-                            "38019:11:22"
-                          ],
+                          "nameLocations": ["38019:11:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25529,
                           "src": "38019:11:22"
@@ -34826,9 +34385,7 @@
                   "src": "38019:48:22"
                 },
                 {
-                  "assignments": [
-                    27905
-                  ],
+                  "assignments": [27905],
                   "declarations": [
                     {
                       "constant": false,
@@ -34851,9 +34408,7 @@
                         "pathNode": {
                           "id": 27903,
                           "name": "Round",
-                          "nameLocations": [
-                            "38077:5:22"
-                          ],
+                          "nameLocations": ["38077:5:22"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 25511,
                           "src": "38077:5:22"
@@ -34926,9 +34481,7 @@
                   "src": "38077:44:22"
                 },
                 {
-                  "assignments": [
-                    27916
-                  ],
+                  "assignments": [27916],
                   "declarations": [
                     {
                       "constant": false,
@@ -35041,9 +34594,7 @@
                   "src": "38131:69:22"
                 },
                 {
-                  "assignments": [
-                    27923
-                  ],
+                  "assignments": [27923],
                   "declarations": [
                     {
                       "constant": false,
@@ -35585,9 +35136,7 @@
                       "src": "38521:518:22",
                       "statements": [
                         {
-                          "assignments": [
-                            27957
-                          ],
+                          "assignments": [27957],
                           "declarations": [
                             {
                               "constant": false,
@@ -35868,9 +35417,7 @@
                           "src": "38621:116:22"
                         },
                         {
-                          "assignments": [
-                            27977
-                          ],
+                          "assignments": [27977],
                           "declarations": [
                             {
                               "constant": false,
@@ -37407,9 +36954,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    28096
-                  ],
+                  "assignments": [28096],
                   "declarations": [
                     {
                       "constant": false,
@@ -37472,9 +37017,7 @@
                   "src": "40275:29:22"
                 },
                 {
-                  "assignments": [
-                    28101
-                  ],
+                  "assignments": [28101],
                   "declarations": [
                     {
                       "constant": false,
@@ -37537,9 +37080,7 @@
                   "src": "40314:23:22"
                 },
                 {
-                  "assignments": [
-                    28106
-                  ],
+                  "assignments": [28106],
                   "declarations": [
                     {
                       "constant": false,
@@ -37602,9 +37143,7 @@
                   "src": "40347:35:22"
                 },
                 {
-                  "assignments": [
-                    28111
-                  ],
+                  "assignments": [28111],
                   "declarations": [
                     {
                       "constant": false,
@@ -38263,9 +37802,7 @@
                     "pathNode": {
                       "id": 28090,
                       "name": "Order",
-                      "nameLocations": [
-                        "40235:5:22"
-                      ],
+                      "nameLocations": ["40235:5:22"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 25495,
                       "src": "40235:5:22"
@@ -38436,9 +37973,7 @@
                     "src": "40953:366:22",
                     "statements": [
                       {
-                        "assignments": [
-                          28177
-                        ],
+                        "assignments": [28177],
                         "declarations": [
                           {
                             "constant": false,
@@ -38500,9 +38035,7 @@
                         "src": "40967:29:22"
                       },
                       {
-                        "assignments": [
-                          28182
-                        ],
+                        "assignments": [28182],
                         "declarations": [
                           {
                             "constant": false,
@@ -38737,9 +38270,7 @@
             "baseName": {
               "id": 25418,
               "name": "IArbitrable",
-              "nameLocations": [
-                "393:11:22"
-              ],
+              "nameLocations": ["393:11:22"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 23218,
               "src": "393:11:22"
@@ -38752,9 +38283,7 @@
             "baseName": {
               "id": 25420,
               "name": "IEvidence",
-              "nameLocations": [
-                "406:9:22"
-              ],
+              "nameLocations": ["406:9:22"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 23350,
               "src": "406:9:22"
@@ -38768,11 +38297,7 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "linearizedBaseContracts": [
-          28198,
-          23350,
-          23218
-        ],
+        "linearizedBaseContracts": [28198, 23350, 23218],
         "name": "Unipeer",
         "nameLocation": "382:7:22",
         "scope": 28199,

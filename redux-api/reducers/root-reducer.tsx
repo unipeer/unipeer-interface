@@ -5,6 +5,7 @@ import activeBuyOrderReducer from "./active-buy-order-reducer";
 import inactiveBuyOrderReducer from "./inactive-buy-order-reducer";
 import inactiveSellOrderReducer from "./inactive-sell-order-reducer";
 import activeSellOrderReducer from "./active-sell-order-reducer";
+import myLiquidityList from "./my-liquidity-reducer";
 
 export interface GenericState {
   loading: Boolean;
@@ -19,6 +20,7 @@ export interface AppState {
   activeSellOrderReducer: ReturnType<typeof activeSellOrderReducer>;
   inactiveBuyOrderReducer: ReturnType<typeof inactiveBuyOrderReducer>;
   inactiveSellOrderReducer: ReturnType<typeof inactiveSellOrderReducer>;
+  myLiquidityList: ReturnType<typeof myLiquidityList>;
 }
 
 export default combineReducers({
@@ -27,4 +29,5 @@ export default combineReducers({
   activeSellOrderReducer: activeSellOrderReducer,
   inactiveBuyOrderReducer: inactiveBuyOrderReducer,
   inactiveSellOrderReducer: inactiveSellOrderReducer,
+  myLiquidityList: myLiquidityList,
 });

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatUnits, parseEther } from "@ethersproject/units";
 import MyLiquidityBreadcrumbs from "./MyLiquidityBreadcrumbs";
 import WithdrawTokensModal from "./WithdrawTokensModal";
 
@@ -19,6 +20,10 @@ const MyLiquidityPagination: React.FC<MyLiquidityPaginationProps> = ({
   const currentItems = cardData.slice(startIndex, endIndex);
 
   const [openWithdrawTokensModal, setOpenWithdrawTokensModal] = useState("");
+
+  useEffect(() => {
+    console.log(cardData);
+  }, [cardData]);
 
   function handlePageChange(page: number) {
     setCurrentPage(page);
@@ -86,12 +91,13 @@ const MyLiquidityPagination: React.FC<MyLiquidityPaginationProps> = ({
                   </div>
                   <div className="flex flex-row gap-2 items-center">
                     <div className="text-14 font-paragraphs text-dark-500 leading-[21px] tracking-[-0.5px]">
-                      Balance : {card.balance.toLocaleString("en-US")}{" "}
+                      Balance :{" "}
+                      {Number(formatUnits(card.balance._hex, 18)).toFixed(3)}{" "}
                       {card.from}
                     </div>
                     <div className="h-1.5 w-1.5 bg-dark-200 rounded-[100%]"></div>
                     <div className="text-14 font-paragraphs text-dark-500 leading-[21px] tracking-[-0.5px]">
-                      paypal.me/unipeer
+                      {card.paymentAddress}
                     </div>
                   </div>
                 </div>
