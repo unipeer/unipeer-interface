@@ -5,7 +5,7 @@ export enum OrderStatus {
   CANCELLED,
   DISPUTED,
   RESOLVED,
-  UNDEFINED
+  UNDEFINED,
 }
 
 export function getOrderStatus(status: number): OrderStatus {
@@ -24,4 +24,25 @@ export function getOrderStatus(status: number): OrderStatus {
       return OrderStatus.RESOLVED;
   }
   return OrderStatus.UNDEFINED;
+}
+
+export function getOrderStatusText(
+  status: OrderStatus,
+  isBuyOrder: boolean,
+): String {
+  switch (status) {
+    case 0:
+      return isBuyOrder ? "Pay & Confirm" : "Awaiting payment from buyer";
+    case 1:
+      return isBuyOrder ? "Awaiting seller response" : "Payment done by buyer";
+    case 2:
+      return "Completed";
+    case 3:
+      return "Cancelled";
+    case 4:
+      return !isBuyOrder ? "Order disputed by you" : "Order disputed";
+    case 5:
+      return "Dispute resolved";
+  }
+  return "None";
 }

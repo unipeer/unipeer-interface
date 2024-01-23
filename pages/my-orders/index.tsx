@@ -374,7 +374,7 @@ const Demo = () => {
                           ) : (
                             <InActiveSellOrders />
                           )
-                        ) : activeOption === "All orders" ? (
+                        ) : activeOption === "All Orders" ? (
                           selectedTab === "Active" ? (
                             <div>
                               <ActiveBuyOrders />

@@ -1,13 +1,18 @@
 import { Popover, Transition } from "@headlessui/react";
 import CryptoIcon from "components/shared/crypto_icons";
-import { Fragment } from "react";
+import { Fragment, MouseEventHandler } from "react";
 
 type CancelOrderModalProps = {
   tokenName: string;
   tokenAmount: string;
+  cancelOrderCallback: MouseEventHandler<any>;
 };
 
-export function CancelOrderModal({ tokenName, tokenAmount }): JSX.Element {
+export function CancelOrderModal({
+  tokenName,
+  tokenAmount,
+  cancelOrderCallback,
+}): JSX.Element {
   return (
     <div className="flex flex-col text-20 text-dark-dark-800">
       The payment was not done by the buyer on time. You can cancel this order &
@@ -79,7 +84,7 @@ export function CancelOrderModal({ tokenName, tokenAmount }): JSX.Element {
         <button
           type="submit"
           className="flex flex-row mt-8 items-center justify-center w-full max-h-[56px] rounded-lg bg-accent-1 py-4 gap-0"
-          onClick={() => {}}
+          onClick={cancelOrderCallback}
         >
           <div className="text-16 font-semibold font-paragraphs leading-6 text-white">
             Cancel order and unlock tokens
