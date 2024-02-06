@@ -82,6 +82,54 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
     args: [order.orderID],
     enabled: isTimedOut,
   });
+  const {
+    data: dataTO,
+    isError: isErrorTO,
+    write: writeTO,
+  } = useContractWrite(timeoutConfig);
+
+  const { isLoading: isLoadingTO } = useWaitForTransaction({
+    hash: dataTO?.hash,
+  });
+
+  const { config: disputeConfig } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "disputeOrder",
+    args: [order.orderID],
+    enabled: order.status == 1,
+    overrides: {
+      value: arbCost!,
+    },
+  });
+  const {
+    data: dataDispute,
+    isError: isErrorDispute,
+    write: writeDispute,
+  } = useContractWrite(disputeConfig);
+  const { isLoading: isLoadingDispute } = useWaitForTransaction({
+    hash: dataDispute?.hash,
+  });
+  const [disputeId, setDisputeId] = useState("");
+
+  // complete order
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "completeOrder",
+    args: [order.orderID],
+    enabled: true,
+  });
+  const { data, isError, write } = useContractWrite(config);
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">

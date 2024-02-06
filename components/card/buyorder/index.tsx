@@ -10,10 +10,19 @@ import {
   OrderStatus,
   getOrderStatusText,
 } from "components/shared/order_status";
-import { useNetwork } from "wagmi";
+import {
+  useContract,
+  useContractRead,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useProvider,
+  useWaitForTransaction,
+} from "wagmi";
 import { BuyOrder } from "components/shared/types";
 import React, { Fragment, useState } from "react";
-import { constants, formatEtherscanLink } from "../../../util";
+import { addresses, constants, formatEtherscanLink } from "../../../util";
+import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import moment from "moment";
 
 /*
@@ -226,6 +235,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                         <CancelOrderModal
                           tokenName={order.token}
                           tokenAmount={order.amount}
+                          cancelOrderCallback={undefined}
                         />
                       }
                     />
@@ -259,7 +269,9 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                         isCancellable={true}
                         dialogChild={
                           <ConfirmPaymentModal
-                            paymentAmount={String(formatEther(BigNumber.from(order.amount)) + "USD")}
+                            paymentAmount={String(
+                              formatEther(BigNumber.from(order.amount)) + "USD",
+                            )}
                             receivedAmount={String(
                               formatEther(
                                 BigNumber.from(
@@ -267,11 +279,31 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                                     .sub(order.feeAmount)
                                     .sub(order.sellerFeeAmount),
                                 ),
-                              ) + "XDAI")}
+                              ) + "XDAI",
+                            )}
                             sellerAddress={`${order.seller}`}
                             confirmPaymentCallback={() => {
-                              
-                              setShowConfirmPaymentDialog(false);
+                              const {
+                                config,
+                                error: prepareError,
+                                isError: isPrepareError,
+                              } = usePrepareContractWrite({
+                                addressOrName: addresses.UNIPEER[chainId],
+                                contractInterface: UNIPEER_ABI.abi,
+                                functionName: "confirmPaid",
+                                args: [order.orderID],
+                                enabled: true,
+                              });
+                              const { data, isError, write } =
+                                useContractWrite(config);
+
+                              const { isLoading, isSuccess } =
+                                useWaitForTransaction({
+                                  hash: data?.hash,
+                                });
+                              if (!isLoading) {
+                                setShowConfirmPaymentDialog(false);
+                              }
                             }}
                           />
                         }
@@ -299,7 +331,30 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                   type="submit"
                   className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
                 >
-                  <div className="text-14 font-semibold font-paragraphs text-white">
+                  <div
+                    className="text-14 font-semibold font-paragraphs text-white"
+                    onClick={() => {
+                      const {
+                        config,
+                        error: prepareError,
+                        isError: isPrepareError,
+                      } = usePrepareContractWrite({
+                        addressOrName: addresses.UNIPEER[chainId],
+                        contractInterface: UNIPEER_ABI.abi,
+                        functionName: "completeOrder",
+                        args: [order.orderID],
+                        enabled: true,
+                      });
+                      const { data, isError, write } = useContractWrite(config);
+
+                      const { isLoading, isSuccess } = useWaitForTransaction({
+                        hash: data?.hash,
+                      });
+                      if (!isLoading) {
+                        // setShowCompletePaymentDialog(false);
+                      }
+                    }}
+                  >
                     Get tokens
                   </div>
                   <div className="h-4 w-4">
