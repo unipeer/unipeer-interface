@@ -15,7 +15,6 @@ import {
   useProvider,
 } from "wagmi";
 import { useDispatch } from "react-redux";
-import { getAvailablePaymentMethords } from "redux-api/actions/active-buy-order-actions";
 
 const paymentMethods = [
   {
@@ -97,9 +96,6 @@ export default function PaymentMethodModal<PaymentMethodModalProps>({
   };
   fetchPaymentMethods();
   const dispatch = useDispatch<any>();
-  useEffect(() => {
-    dispatch(getAvailablePaymentMethords(address, chainId, Unipeer));
-  }, [dispatch]);
   return (
     <RadioGroup value={selected} onChange={setSelected}>
       <RadioGroup.Label className="sr-only"> Payment Method </RadioGroup.Label>
