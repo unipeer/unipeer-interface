@@ -13,22 +13,16 @@ import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
 import { useDispatch, useSelector } from "react-redux";
-import { activeSellRequest } from "redux-api/actions/active-sell-order-actions";
+import { activeSellRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 
 const ActiveSellOrders = () => {
   const [sellOrders, setSellOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector(
-    (state: AppState) => state.activeSellOrderReducer.loading,
-  );
-  const success = useSelector(
-    (state: AppState) => state.activeSellOrderReducer.success,
-  );
-  const error = useSelector(
-    (state: AppState) => state.activeSellOrderReducer.error,
-  );
+  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
+  const success = useSelector((state: AppState) => state.ordersReducer.success);
+  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
-    (state: AppState) => state.activeSellOrderReducer.responseData,
+    (state: AppState) => state.ordersReducer.responseData,
   );
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -41,10 +35,10 @@ const ActiveSellOrders = () => {
     signerOrProvider: provider,
   });
 
-  const { data: buyerTimeout } = useContractRead({
+  const { data: sellerTimeout } = useContractRead({
     addressOrName: Unipeer.address,
     contractInterface: UNIPEER_ABI.abi,
-    functionName: "buyerTimeout",
+    functionName: "sellerTimeout",
   });
 
   const dispatch = useDispatch<any>();
@@ -59,7 +53,7 @@ const ActiveSellOrders = () => {
           return (
             <SellOrderCard
               id={order.orderID}
-              timeLeft={Number(buyerTimeout)}
+              timeLeft={Number(sellerTimeout)}
               order={order}
             />
           );

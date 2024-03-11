@@ -1,12 +1,29 @@
+import { BigNumber } from "@ethersproject/bignumber";
+import { formatEther } from "@ethersproject/units";
 import { Popover, Transition } from "@headlessui/react";
 import { ArrowDownTrayIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import BasicDialog from "components/BasicDialog";
 import { ConfirmPaymentModal } from "components/buy/modals/confim_payment";
 import { CancelOrderModal } from "components/my_orders/modals/cancel_order";
 import CryptoIcon from "components/shared/crypto_icons";
-import { OrderStatus } from "components/shared/order_status";
+import {
+  OrderStatus,
+  getOrderStatusText,
+} from "components/shared/order_status";
+import {
+  useContract,
+  useContractRead,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useProvider,
+  useWaitForTransaction,
+} from "wagmi";
 import { BuyOrder } from "components/shared/types";
 import React, { Fragment, useState } from "react";
+import { addresses, constants, formatEtherscanLink } from "../../../util";
+import UNIPEER_ABI from "../../../contracts/Unipeer.json";
+import moment from "moment";
 
 /*
 id: 4,
@@ -28,9 +45,15 @@ type BuyOrderCardType = {
 };
 
 const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
+  const { chain } = useNetwork();
+  const chainId = chain?.id || constants.defaultChainId;
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showConfirmPaymentDialog, setShowConfirmPaymentDialog] =
     useState(false);
+
+  const nextState = moment.unix(order.lastInteraction.toNumber() + timeLeft);
+  const isTimedOut =
+    order.status == OrderStatus.CREATED && moment().isAfter(nextState);
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">
@@ -61,7 +84,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  <Popover.Panel className="absolute -top-[160px] left-0 z-9  w-64">
+                  <Popover.Panel className="absolute -top-[160px] left-0 z-9 min-w-64">
                     <div className="absolute h-3 w-3 bottom-0 left-2 origin-bottom-left rotate-45 transform border-[1px] border-l-0 border-t-0 border-b-dark-200 border-r-dark-200 bg-dark-100"></div>
                     <div className="px-4 py-6 bg-dark-100 border-[1px] border-dark-200 rounded-8 flex flex-col gap-4">
                       <div className="flex flex-col justify-center gap-1">
@@ -122,7 +145,8 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
-                {String(order.amount)} {order.token}
+                {String(formatEther(BigNumber.from(order.amount)) + "USD")}{" "}
+                {/* {order.token} */}
               </div>
               <div className="w-6 h-6">
                 <CryptoIcon symbol={order.token} />
@@ -138,7 +162,16 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
             </div>
             <div className="flex flex-row items-center gap-1">
               <div className="font-paragraphs font-semibold text-16 text-dark-500">
-                {order.amount.toString()} {order.token}
+                {String(
+                  formatEther(
+                    BigNumber.from(
+                      order.amount
+                        .sub(order.feeAmount)
+                        .sub(order.sellerFeeAmount),
+                    ),
+                  ) + "XDAI",
+                )}{" "}
+                {/* {order.token} */}
               </div>
               <div className="w-6 h-6">
                 <CryptoIcon symbol={order.token} />
@@ -149,7 +182,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="font-paragraphs font-semibold text-dark-600 text-14">
-          Status - {status}
+          Status - {getOrderStatusText(order.status, true)}
         </div>
         <div
           className={`flex flex-col items-center justify-center px-2 py-1 border-[1px] rounded-full w-fit ${
@@ -157,10 +190,10 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
               ? "bg-success-bg border-success"
               : order.status === OrderStatus.CANCELLED
               ? "bg-warning-bg border-warning"
-              : "hidden"
+              : "bg-warning-bg border-warning"
           }`}
         >
-          Time left - {timeLeft}
+          Time left - {nextState.fromNow()}
         </div>
       </div>
       <div className="flex flex-row items-center justify-end gap-2">
@@ -180,7 +213,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
           </div>
         )}
         {/* Buy order is pending, either you can cancel or confirm */}
-        {order.status === OrderStatus.CREATED && timeLeft !== 0 && (
+        {order.status === OrderStatus.CREATED && (
           <>
             <div className="flex flex-col justify-center items-center">
               <button
@@ -202,6 +235,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                         <CancelOrderModal
                           tokenName={order.token}
                           tokenAmount={order.amount}
+                          cancelOrderCallback={undefined}
                         />
                       }
                     />
@@ -216,76 +250,133 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                 </div>
               </button>
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <button
-                type="submit"
-                className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
-                onClick={() => {
-                  setShowConfirmPaymentDialog(true);
-                }}
-              >
-                <div className="text-14 font-semibold font-paragraphs text-white">
-                  Confirm payment
-                </div>
-                {showConfirmPaymentDialog && (
-                  <div>
-                    <BasicDialog
-                      dialogTitle="Confirm payment"
-                      isCancellable={true}
-                      dialogChild={
-                        <ConfirmPaymentModal
-                          paymentAmount={`${order.amount} ${order.token}`}
-                          receivedAmount={`${order.amount} ${order.token}`}
-                          sellerAddress={`${order.seller}`}
-                          confirmPaymentCallback={() => {
-                            setShowConfirmPaymentDialog(false);
-                          }}
-                        />
-                      }
+            {!isTimedOut && (
+              <div className="flex flex-col justify-center items-center">
+                <button
+                  type="submit"
+                  className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                  onClick={() => {
+                    setShowConfirmPaymentDialog(true);
+                  }}
+                >
+                  <div className="text-14 font-semibold font-paragraphs text-white">
+                    Confirm payment
+                  </div>
+                  {showConfirmPaymentDialog && (
+                    <div>
+                      <BasicDialog
+                        dialogTitle="Confirm payment"
+                        isCancellable={true}
+                        dialogChild={
+                          <ConfirmPaymentModal
+                            paymentAmount={String(
+                              formatEther(BigNumber.from(order.amount)) + "USD",
+                            )}
+                            receivedAmount={String(
+                              formatEther(
+                                BigNumber.from(
+                                  order.amount
+                                    .sub(order.feeAmount)
+                                    .sub(order.sellerFeeAmount),
+                                ),
+                              ) + "XDAI",
+                            )}
+                            sellerAddress={`${order.seller}`}
+                            confirmPaymentCallback={() => {
+                              const {
+                                config,
+                                error: prepareError,
+                                isError: isPrepareError,
+                              } = usePrepareContractWrite({
+                                addressOrName: addresses.UNIPEER[chainId],
+                                contractInterface: UNIPEER_ABI.abi,
+                                functionName: "confirmPaid",
+                                args: [order.orderID],
+                                enabled: true,
+                              });
+                              const { data, isError, write } =
+                                useContractWrite(config);
+
+                              const { isLoading, isSuccess } =
+                                useWaitForTransaction({
+                                  hash: data?.hash,
+                                });
+                              if (!isLoading) {
+                                setShowConfirmPaymentDialog(false);
+                              }
+                            }}
+                          />
+                        }
+                      />
+                    </div>
+                  )}
+                  <div className="h-4 w-4">
+                    <img
+                      src="check-white.svg"
+                      alt="Check icon"
+                      className="object-cover"
                     />
                   </div>
-                )}
-                <div className="h-4 w-4">
+                </button>
+              </div>
+            )}
+          </>
+        )}
+        {/* Buy order is finished, you can get tokens */}
+        {order.status === OrderStatus.COMPLETED && (
+          <>
+            {isTimedOut ? (
+              <div className="flex flex-col justify-center items-center">
+                <button
+                  type="submit"
+                  className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
+                >
+                  <div
+                    className="text-14 font-semibold font-paragraphs text-white"
+                    onClick={() => {
+                      const {
+                        config,
+                        error: prepareError,
+                        isError: isPrepareError,
+                      } = usePrepareContractWrite({
+                        addressOrName: addresses.UNIPEER[chainId],
+                        contractInterface: UNIPEER_ABI.abi,
+                        functionName: "completeOrder",
+                        args: [order.orderID],
+                        enabled: true,
+                      });
+                      const { data, isError, write } = useContractWrite(config);
+
+                      const { isLoading, isSuccess } = useWaitForTransaction({
+                        hash: data?.hash,
+                      });
+                      if (!isLoading) {
+                        // setShowCompletePaymentDialog(false);
+                      }
+                    }}
+                  >
+                    Get tokens
+                  </div>
+                  <div className="h-4 w-4">
+                    <ArrowDownTrayIcon color="#fff" />
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-row items-center justify-normal gap-1">
+                <div className="h-5 w-5">
                   <img
-                    src="check-white.svg"
+                    src="confetti-icon.svg"
                     alt="Check icon"
                     className="object-cover"
                   />
                 </div>
-              </button>
-            </div>
+                <div className="font-paragraphs font-normal text-dark-600 text-16">
+                  Order completed successfully
+                </div>
+              </div>
+            )}
           </>
-        )}
-        {/* Buy order is finished, you can get tokens */}
-        {order.status === OrderStatus.COMPLETED && timeLeft === 0 && (
-          <div className="flex flex-col justify-center items-center">
-            <button
-              type="submit"
-              className="flex flex-row items-center justify-center w-full max-h-[37px] rounded-lg bg-accent-1 py-2 px-4 gap-1"
-            >
-              <div className="text-14 font-semibold font-paragraphs text-white">
-                Get tokens
-              </div>
-              <div className="h-4 w-4">
-                <ArrowDownTrayIcon color="#fff" />
-              </div>
-            </button>
-          </div>
-        )}
-        {/* Buy order is finished, you can get tokens */}
-        {order.status === OrderStatus.COMPLETED && (
-          <div className="flex flex-row items-center justify-normal gap-1">
-            <div className="h-5 w-5">
-              <img
-                src="confetti-icon.svg"
-                alt="Check icon"
-                className="object-cover"
-              />
-            </div>
-            <div className="font-paragraphs font-normal text-dark-600 text-16">
-              Order completed successfully
-            </div>
-          </div>
         )}
         {order.status === OrderStatus.CANCELLED && (
           <div className="flex flex-row items-center justify-normal gap-1">

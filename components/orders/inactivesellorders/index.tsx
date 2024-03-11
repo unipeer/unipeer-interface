@@ -13,7 +13,7 @@ import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
 import { useDispatch, useSelector } from "react-redux";
-import { inactiveSellRequest } from "redux-api/actions/inactive-sell-order-actions";
+import { inactiveSellRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 import SellOrderCard from "components/card/sellorder";
 
@@ -50,17 +50,11 @@ const inactiveSellOrdersData = [
 
 const InActiveSellOrders = () => {
   const [sellOrders, setSellOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.loading,
-  );
-  const success = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.success,
-  );
-  const error = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.error,
-  );
+  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
+  const success = useSelector((state: AppState) => state.ordersReducer.success);
+  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.responseData,
+    (state: AppState) => state.ordersReducer.responseData,
   );
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -73,10 +67,10 @@ const InActiveSellOrders = () => {
     signerOrProvider: provider,
   });
 
-  const { data: buyerTimeout } = useContractRead({
+  const { data: sellerTimeout } = useContractRead({
     addressOrName: Unipeer.address,
     contractInterface: UNIPEER_ABI.abi,
-    functionName: "buyerTimeout",
+    functionName: "sellerTimeout",
   });
 
   const dispatch = useDispatch<any>();
@@ -87,11 +81,11 @@ const InActiveSellOrders = () => {
     console.log("inactive sell orders: " + responseData);
     return (
       <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-        {responseData.map((order) => {
+        {responseData?.map((order) => {
           return (
             <SellOrderCard
               id={order.orderID}
-              timeLeft={Number(buyerTimeout)}
+              timeLeft={Number(sellerTimeout)}
               order={order}
             />
           );

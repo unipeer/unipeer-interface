@@ -12,7 +12,7 @@ import { type Unipeer } from "../../../contracts/types";
 import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
-import { inactiveBuyRequest } from "redux-api/actions/inactive-buy-order-actions";
+import { inactiveBuyRequest } from "redux-api/actions/orders-actions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "redux-api/reducers/root-reducer";
 
@@ -56,17 +56,11 @@ type Props = {
 
 const InActiveBuyOrders = () => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector(
-    (state: AppState) => state.inactiveBuyOrderReducer.loading,
-  );
-  const success = useSelector(
-    (state: AppState) => state.inactiveBuyOrderReducer.success,
-  );
-  const error = useSelector(
-    (state: AppState) => state.inactiveBuyOrderReducer.error,
-  );
+  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
+  const success = useSelector((state: AppState) => state.ordersReducer.success);
+  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
-    (state: AppState) => state.inactiveBuyOrderReducer.responseData,
+    (state: AppState) => state.ordersReducer.responseData,
   );
   const dispatch = useDispatch<any>();
   const { address, isConnected } = useAccount();
@@ -93,7 +87,7 @@ const InActiveBuyOrders = () => {
     console.log("inactive buy orders: " + responseData);
     return (
       <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-        {responseData.map((order) => {
+        {responseData?.map((order) => {
           return (
             <BuyOrderCard
               id={order.orderID}

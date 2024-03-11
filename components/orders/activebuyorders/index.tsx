@@ -13,7 +13,7 @@ import UNIPEER_ABI from "../../../contracts/Unipeer.json";
 import { addresses } from "../../../util";
 import { constants } from "../../../util";
 import { useDispatch, useSelector } from "react-redux";
-import { activeBuyRequest } from "redux-api/actions/active-buy-order-actions";
+import { activeBuyRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 
 const activeBuyOrdersData = [
@@ -84,17 +84,11 @@ type Props = {
 
 const ActiveBuyOrders = () => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.loading,
-  );
-  const success = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.success,
-  );
-  const error = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.error,
-  );
+  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
+  const success = useSelector((state: AppState) => state.ordersReducer.success);
+  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
-    (state: AppState) => state.activeBuyOrderReducer.responseData,
+    (state: AppState) => state.ordersReducer.responseData,
   );
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
