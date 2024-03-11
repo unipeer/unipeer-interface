@@ -21,6 +21,7 @@ import useDebounce from "../hooks/useDebounce";
 
 import WithdrawTokens from "./WithdrawTokens";
 import DepositTokens from "./DepositTokens";
+import { CustomConnectKitButton } from "./CustomConnectKitButton";
 
 const defaultFormData = {
   paymentId: "",
@@ -330,7 +331,7 @@ export default function Sell() {
             </button>
           ) : (
             <div className="m-auto">
-              <ConnectKitButton />
+              <CustomConnectKitButton isNav={false} />
             </div>
           )}
         </div>
