@@ -21,6 +21,7 @@ import useDebounce from "../hooks/useDebounce";
 
 import WithdrawTokens from "./WithdrawTokens";
 import DepositTokens from "./DepositTokens";
+import { CustomConnectKitButton } from "./CustomConnectKitButton";
 
 const defaultFormData = {
   paymentId: "",
@@ -93,7 +94,9 @@ export default function Sell() {
     const result = await Unipeer.queryFilter(filter, constants.block[chainId]);
 
     const event = new Map();
+    console.log(result);
     result.forEach((log) => {
+    console.log(log);
       // TODO: remove hard coded token value and fetch from event
       event.set(log.args[0], { tokens: [Dai], paymentName: log.args[1] });
     });
@@ -330,7 +333,7 @@ export default function Sell() {
             </button>
           ) : (
             <div className="m-auto">
-              <ConnectKitButton />
+              <CustomConnectKitButton isNav={false} />
             </div>
           )}
         </div>

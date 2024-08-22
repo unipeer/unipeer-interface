@@ -20,6 +20,7 @@ import { type Unipeer } from "../contracts/types";
 import UNIPEER_ABI from "../contracts/Unipeer.json";
 import IARBITRATOR_ABI from "../contracts/IArbitrator.json";
 import useDebounce from "../hooks/useDebounce";
+import { CustomConnectKitButton } from "./CustomConnectKitButton";
 
 const defaultFormData = {
   paymentid: "",
@@ -63,6 +64,19 @@ export default function Buy() {
       setExtraData(await Unipeer.arbitratorExtraData());
     };
     fetch();
+  });
+
+  // const dispatch = useDispatch<any>();
+
+  // const { loading, responseData } = useSelector(
+  //   (state: any) => state.buyReducer,
+  // );
+
+  // console.log("loading123", loading, responseData);
+  const filter = Unipeer.filters.SellerPaymentMethod();
+  const result = Unipeer.queryFilter(filter, constants.block[chainId]);
+  result.then((result) => {
+    console.log("result4", result);
   });
 
   const { data: arbCost } = useContractRead({
@@ -179,7 +193,7 @@ export default function Buy() {
       )}
 
       <div className="w-full flex pt-4">
-        {isConnected ? (
+        {/* {isConnected ? (
           <button
             type="submit"
             disabled={!write || isLoading || isError}
@@ -188,10 +202,9 @@ export default function Buy() {
             {isLoading ? "Sending Tx..." : "Place Buy Order"}
           </button>
         ) : (
-          <div className="m-auto">
-            <ConnectKitButton />
-          </div>
-        )}
+          <CustomConnectKitButton isNav={false} />
+        )} */}
+        <CustomConnectKitButton isNav={false} />
       </div>
       {isSuccess && (
         <div>
