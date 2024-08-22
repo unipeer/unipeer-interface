@@ -1,6 +1,5 @@
 import SellOrderCard from "components/card/sellorder";
-import { BuyOrder, getOrderFromRawData } from "components/shared/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   useAccount,
   useContract,
@@ -17,10 +16,7 @@ import { activeSellRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 
 const ActiveSellOrders = () => {
-  const [sellOrders, setSellOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
   const success = useSelector((state: AppState) => state.ordersReducer.success);
-  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
     (state: AppState) => state.ordersReducer.responseData,
   );
@@ -49,9 +45,10 @@ const ActiveSellOrders = () => {
     console.log("active sell orders: " + responseData);
     return (
       <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-        {responseData.map((order) => {
+        {responseData.map((order, index) => {
           return (
             <SellOrderCard
+              key={index}
               id={order.orderID}
               timeLeft={Number(sellerTimeout)}
               order={order}

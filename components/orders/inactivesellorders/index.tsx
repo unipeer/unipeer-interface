@@ -1,5 +1,3 @@
-import BuyOrderCard from "components/card/buyorder";
-import { BuyOrder, getOrderFromRawData } from "components/shared/types";
 import React, { useEffect, useState } from "react";
 import {
   useAccount,
@@ -17,42 +15,8 @@ import { inactiveSellRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 import SellOrderCard from "components/card/sellorder";
 
-const inactiveSellOrdersData = [
-  {
-    id: 1,
-    sentAmount: 1000,
-    sentCurrency: "USD",
-    sentProvider: "Paypal",
-    sentProviderLogo: "ic_paypal.svg",
-    receiveAmount: 990,
-    receiveCurrency: "xDAI",
-    receiveProvider: "xDAI",
-    receiveProviderLogo: "xdai-logo.png",
-    status: "Cancelled",
-    statusCode: "CANCEL",
-    timeLeft: "00:26:23",
-  },
-  {
-    id: 2,
-    sentAmount: 50,
-    sentCurrency: "USD",
-    sentProvider: "Venmo",
-    sentProviderLogo: "ic_venmo.svg",
-    receiveAmount: 48,
-    receiveCurrency: "USDC",
-    receiveProvider: "USDC",
-    receiveProviderLogo: "usdc-logo.svg",
-    status: "Cancelled",
-    statusCode: "CANCEL",
-    timeLeft: "00:23:23",
-  },
-];
-
 const InActiveSellOrders = () => {
-  const [sellOrders, setSellOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
   const success = useSelector((state: AppState) => state.ordersReducer.success);
-  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
     (state: AppState) => state.ordersReducer.responseData,
   );
@@ -81,9 +45,10 @@ const InActiveSellOrders = () => {
     console.log("inactive sell orders: " + responseData);
     return (
       <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-        {responseData?.map((order) => {
+        {responseData?.map((order, index) => {
           return (
             <SellOrderCard
+              key={index}
               id={order.orderID}
               timeLeft={Number(sellerTimeout)}
               order={order}

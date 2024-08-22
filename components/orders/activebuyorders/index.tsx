@@ -1,6 +1,5 @@
 import BuyOrderCard from "components/card/buyorder";
-import { BuyOrder, getOrderFromRawData } from "components/shared/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   useAccount,
   useContract,
@@ -16,77 +15,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { activeBuyRequest } from "redux-api/actions/orders-actions";
 import { AppState } from "redux-api/reducers/root-reducer";
 
-const activeBuyOrdersData = [
-  {
-    id: 1,
-    sentAmount: 1000,
-    sentCurrency: "USD",
-    sentProvider: "Paypal",
-    sentProviderLogo: "ic_paypal.svg",
-    receiveAmount: 990,
-    receiveCurrency: "xDAI",
-    receiveProvider: "xDAI",
-    receiveProviderLogo: "xdai-logo.png",
-    status: "Pay & Confirm",
-    statusCode: "PC",
-    timeLeft: "00:26:23",
-  },
-  {
-    id: 2,
-    sentAmount: 10000,
-    sentCurrency: "USD",
-    sentProvider: "Paypal",
-    sentProviderLogo: "ic_paypal.svg",
-    receiveAmount: 9995,
-    receiveCurrency: "xDAI",
-    receiveProvider: "xDAI",
-    receiveProviderLogo: "xdai-logo.png",
-    status: "Awaiting seller response",
-    statusCode: "ASR",
-    timeLeft: "00:23:23",
-  },
-  {
-    id: 3,
-    sentAmount: 25,
-    sentCurrency: "USD",
-    sentProvider: "Paypal",
-    sentProviderLogo: "ic_paypal.svg",
-    receiveAmount: 24.5,
-    receiveCurrency: "USDT",
-    receiveProvider: "USDT",
-    receiveProviderLogo: "usdt-logo.svg",
-    status: "Awaiting seller response",
-    statusCode: "ASR",
-    timeLeft: "00:00:00",
-  },
-  {
-    id: 4,
-    sentAmount: 50,
-    sentCurrency: "USD",
-    sentProvider: "Venmo",
-    sentProviderLogo: "ic_venmo.svg",
-    receiveAmount: 48,
-    receiveCurrency: "USDC",
-    receiveProvider: "USDC",
-    receiveProviderLogo: "usdc-logo.svg",
-    status: "Completed",
-    statusCode: "C",
-    timeLeft: "00:00:00",
-  },
-];
-
-type Props = {
-  order: BuyOrder;
-  buyerTimeout: number;
-  sellerTimeout: number;
-  isSeller: boolean;
-};
 
 const ActiveBuyOrders = () => {
-  const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-  const loading = useSelector((state: AppState) => state.ordersReducer.loading);
   const success = useSelector((state: AppState) => state.ordersReducer.success);
-  const error = useSelector((state: AppState) => state.ordersReducer.error);
   const responseData = useSelector(
     (state: AppState) => state.ordersReducer.responseData,
   );
@@ -114,9 +45,10 @@ const ActiveBuyOrders = () => {
     console.log("active buy orders: " + responseData);
     return (
       <div className="mt-10 flex flex-col justify-center gap-4 mb-16">
-        {responseData?.map((order) => {
+        {responseData?.map((order, index) => {
           return (
             <BuyOrderCard
+              key={index}
               id={order.orderID}
               timeLeft={Number(buyerTimeout)}
               order={order}
