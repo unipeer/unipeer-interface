@@ -66,7 +66,7 @@ const gnosis: Chain = {
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.goerli, chiado, gnosis],
+  [chiado, gnosis],
   [
     alchemyProvider({
       apiKey: "NS_hpSkXxGXkrl5Paz4KPlZWHZGAPCxC",

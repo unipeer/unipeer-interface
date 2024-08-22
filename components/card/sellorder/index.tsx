@@ -176,7 +176,7 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                       {order.status !== OrderStatus.CREATED ? (
                         <div className="flex flex-col justify-center gap-1">
                           <div className="font-paragraphs font-semibold text-12 text-dark-600">
-                            Seller's address
+                            Seller&apos;s address
                           </div>
                           <a className="font-paragraphs font-normal text-14 text-dark-500 underline underline-offset-2">
                             {order.paymentAddress}
@@ -292,6 +292,7 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                       <div>
                         <BasicDialog
                           dialogTitle="Raise a dispute"
+                          onCloseCallback={false}
                           isCancellable={true}
                           dialogChild={
                             <RaiseDisputeModal
@@ -310,30 +311,30 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                               raiseDisputeCallback={() => {
                                 // dispute logic
                                 {
-                                  const { config: disputeConfig } =
-                                    usePrepareContractWrite({
-                                      addressOrName: addresses.UNIPEER[chainId],
-                                      contractInterface: UNIPEER_ABI.abi,
-                                      functionName: "disputeOrder",
-                                      args: [order.orderID],
-                                      enabled: true,
-                                      overrides: {
-                                        value: arbCost!,
-                                      },
-                                    });
-                                  const {
-                                    data: dataDispute,
-                                    isError: isErrorDispute,
-                                    write: writeDispute,
-                                  } = useContractWrite(disputeConfig);
-
-                                  const { isLoading: isLoadingDispute } =
-                                    useWaitForTransaction({
-                                      hash: dataDispute?.hash,
-                                    });
-                                  if (!isLoadingDispute) {
-                                    setDisputeActiveModalComponent("success");
-                                  }
+                                  // const { config: disputeConfig } =
+                                  //   usePrepareContractWrite({
+                                  //     addressOrName: addresses.UNIPEER[chainId],
+                                  //     contractInterface: UNIPEER_ABI.abi,
+                                  //     functionName: "disputeOrder",
+                                  //     args: [order.orderID],
+                                  //     enabled: true,
+                                  //     overrides: {
+                                  //       value: arbCost!,
+                                  //     },
+                                  //   });
+                                  // const {
+                                  //   data: dataDispute,
+                                  //   isError: isErrorDispute,
+                                  //   write: writeDispute,
+                                  // } = useContractWrite(disputeConfig);
+                                  //
+                                  // const { isLoading: isLoadingDispute } =
+                                  //   useWaitForTransaction({
+                                  //     hash: dataDispute?.hash,
+                                  //   });
+                                  // if (!isLoadingDispute) {
+                                  //   setDisputeActiveModalComponent("success");
+                                  // }
                                 }
                               }}
                             />
@@ -345,6 +346,7 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                       <div>
                         <BasicDialog
                           dialogTitle="Raise a dispute"
+                          onCloseCallback={false}
                           isCancellable={true}
                           dialogChild={
                             <DisputeRaisedModal
@@ -384,6 +386,7 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                     <div>
                       <BasicDialog
                         dialogTitle="Complete order"
+                        onCloseCallback={false}
                         isCancellable={true}
                         dialogChild={
                           <CompleteOrderModal
@@ -394,27 +397,27 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                             sellerAddress={order.seller}
                             confirmPaymentCallback={() => {
                               // complete order logic
-                              const {
-                                config,
-                                error: prepareError,
-                                isError: isPrepareError,
-                              } = usePrepareContractWrite({
-                                addressOrName: addresses.UNIPEER[chainId],
-                                contractInterface: UNIPEER_ABI.abi,
-                                functionName: "completeOrder",
-                                args: [order.orderID],
-                                enabled: true,
-                              });
-                              const { data, isError, write } =
-                                useContractWrite(config);
-
-                              const { isLoading, isSuccess } =
-                                useWaitForTransaction({
-                                  hash: data?.hash,
-                                });
-                              if (!isLoading) {
-                                setShowCompletePaymentDialog(false);
-                              }
+                              // const {
+                              //   config,
+                              //   error: prepareError,
+                              //   isError: isPrepareError,
+                              // } = usePrepareContractWrite({
+                              //   addressOrName: addresses.UNIPEER[chainId],
+                              //   contractInterface: UNIPEER_ABI.abi,
+                              //   functionName: "completeOrder",
+                              //   args: [order.orderID],
+                              //   enabled: true,
+                              // });
+                              // const { data, isError, write } =
+                              //   useContractWrite(config);
+                              //
+                              // const { isLoading, isSuccess } =
+                              //   useWaitForTransaction({
+                              //     hash: data?.hash,
+                              //   });
+                              // if (!isLoading) {
+                              //   setShowCompletePaymentDialog(false);
+                              // }
                             }}
                           />
                         }
@@ -455,6 +458,7 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                     <div>
                       <BasicDialog
                         dialogTitle="Cancel order"
+                        onCloseCallback={false}
                         isCancellable={true}
                         dialogChild={
                           <CancelOrderModal
@@ -462,27 +466,27 @@ const SellOrderCard = ({ id, timeLeft, order }: SellOrderCardType) => {
                             tokenAmount={order.amount}
                             cancelOrderCallback={() => {
                               // cancel order logic
-                              const {
-                                config,
-                                error: prepareError,
-                                isError: isPrepareError,
-                              } = usePrepareContractWrite({
-                                addressOrName: addresses.UNIPEER[chainId],
-                                contractInterface: UNIPEER_ABI.abi,
-                                functionName: "timeoutByBuyer",
-                                args: [order.orderID],
-                                enabled: true,
-                              });
-                              const { data, isError, write } =
-                                useContractWrite(config);
-
-                              const { isLoading, isSuccess } =
-                                useWaitForTransaction({
-                                  hash: data?.hash,
-                                });
-                              if (!isLoading) {
-                                setShowCancelDialog(false);
-                              }
+                              // const {
+                              //   config,
+                              //   error: prepareError,
+                              //   isError: isPrepareError,
+                              // } = usePrepareContractWrite({
+                              //   addressOrName: addresses.UNIPEER[chainId],
+                              //   contractInterface: UNIPEER_ABI.abi,
+                              //   functionName: "timeoutByBuyer",
+                              //   args: [order.orderID],
+                              //   enabled: true,
+                              // });
+                              // const { data, isError, write } =
+                              //   useContractWrite(config);
+                              //
+                              // const { isLoading, isSuccess } =
+                              //   useWaitForTransaction({
+                              //     hash: data?.hash,
+                              //   });
+                              // if (!isLoading) {
+                              //   setShowCancelDialog(false);
+                              // }
                             }}
                           />
                         }

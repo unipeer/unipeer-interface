@@ -40,7 +40,7 @@ export default function SellerList() {
         const bal = await Unipeer.tokenBalance(log.args[0], Dai);
         return {
           sender: log.args[0],
-          paymentId: log.args[1],
+          paymentId: log.args[1].toNumber(),
           paymentAddress: log.args[2],
           feeRate: log.args[3],
           amount: bal,

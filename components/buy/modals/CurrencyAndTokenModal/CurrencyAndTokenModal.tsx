@@ -35,26 +35,26 @@ const CurrencyAndTokenModal: React.FC<CurrencyAndTokenModalProps> = ({
   );
   const [query, setQuery] = useState("");
 
-  const baseCurrencyOrTokenList = isTokenModal
+  const baseCurrencyOrTokenList: any = isTokenModal
     ? defaultTokenList
     : CurrencyList;
 
-  const filteredCurrencyOrTokenList =
-    query === ""
-      ? baseCurrencyOrTokenList
-      : baseCurrencyOrTokenList.filter((baseList) => {
-          if (isTokenModal) {
-            console.log('baseList', baseList);
-            baseList.name
-              .toLowerCase()
-              .includes(query.toLowerCase().replace(/\s+/g, ""));
-          } else {
-            baseList.currencies[0].name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""));
-          }
-        });
+  const filteredCurrencyOrTokenList = baseCurrencyOrTokenList;
+    // query === ""
+    //   ? baseCurrencyOrTokenList
+    //   : baseCurrencyOrTokenList.filter((baseList) => {
+    //       if (isTokenModal) {
+    //         console.log('baseList', baseList);
+    //         baseList.name
+    //           .toLowerCase()
+    //           .includes(query.toLowerCase().replace(/\s+/g, ""));
+    //       } else {
+    //         baseList.currencies[0].name
+    //           .toLowerCase()
+    //           .replace(/\s+/g, "")
+    //           .includes(query.toLowerCase().replace(/\s+/g, ""));
+    //       }
+    //     });
 
         console.log('query', query);
         console.log('baseCurrencyOrTokenList', baseCurrencyOrTokenList);

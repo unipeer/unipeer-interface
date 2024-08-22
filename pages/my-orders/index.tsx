@@ -3,37 +3,11 @@ import React from "react";
 import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import {
-  ArrowLongLeftIcon,
-  CheckIcon,
-  DocumentDuplicateIcon,
-  HandThumbUpIcon,
-  HomeIcon,
-  InformationCircleIcon,
-  MagnifyingGlassIcon,
-  PaperClipIcon,
-  QuestionMarkCircleIcon,
-  UserIcon,
-} from "@heroicons/react/20/solid";
-import {
-  ArrowDownTrayIcon,
-  Bars3Icon,
-  BellIcon,
   ChevronDownIcon,
-  ClipboardIcon,
-  PlusIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { Listbox } from "@headlessui/react";
-import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { Switch } from "@headlessui/react";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import CustomNavBar from "components/CustomNavBar";
-import Buy from "components/buy";
-import SellerInfo from "components/tables/sellerinfo";
-import BuySellTab from "components/tabs/buysell";
-import Sell from "components/sell";
 import ActiveInactiveTab from "components/tabs/activeinactiveorders";
 import ActiveBuyOrders from "components/orders/activebuyorders";
 import InActiveBuyOrders from "components/orders/inactivebuyorders";

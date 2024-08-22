@@ -11,12 +11,9 @@ import {
   getOrderStatusText,
 } from "components/shared/order_status";
 import {
-  useContract,
-  useContractRead,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
-  useProvider,
   useWaitForTransaction,
 } from "wagmi";
 import { BuyOrder } from "components/shared/types";
@@ -50,10 +47,27 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showConfirmPaymentDialog, setShowConfirmPaymentDialog] =
     useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const nextState = moment.unix(order.lastInteraction.toNumber() + timeLeft);
   const isTimedOut =
     order.status == OrderStatus.CREATED && moment().isAfter(nextState);
+
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
+    addressOrName: addresses.UNIPEER[chainId],
+    contractInterface: UNIPEER_ABI.abi,
+    functionName: "confirmPaid",
+    args: [order.orderID],
+    enabled: true,
+  });
+  const { data, isError, write } = useContractWrite(config);
+
+  setLoading(useWaitForTransaction({ hash: data?.hash, }).isLoading);
+
   return (
     <div className="grid grid-cols-3 p-6 rounded-16 bg-white">
       <div className="flex flex-col justify-center gap-4">
@@ -185,13 +199,12 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
           Status - {getOrderStatusText(order.status, true)}
         </div>
         <div
-          className={`flex flex-col items-center justify-center px-2 py-1 border-[1px] rounded-full w-fit ${
-            order.status === OrderStatus.COMPLETED
+          className={`flex flex-col items-center justify-center px-2 py-1 border-[1px] rounded-full w-fit ${order.status === OrderStatus.COMPLETED
               ? "bg-success-bg border-success"
               : order.status === OrderStatus.CANCELLED
-              ? "bg-warning-bg border-warning"
-              : "bg-warning-bg border-warning"
-          }`}
+                ? "bg-warning-bg border-warning"
+                : "bg-warning-bg border-warning"
+            }`}
         >
           Time left - {nextState.fromNow()}
         </div>
@@ -231,6 +244,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                     <BasicDialog
                       dialogTitle="Cancel order"
                       isCancellable={true}
+                      onCloseCallback={false}
                       dialogChild={
                         <CancelOrderModal
                           tokenName={order.token}
@@ -266,6 +280,7 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                     <div>
                       <BasicDialog
                         dialogTitle="Confirm payment"
+                        onCloseCallback={false}
                         isCancellable={true}
                         dialogChild={
                           <ConfirmPaymentModal
@@ -283,24 +298,6 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                             )}
                             sellerAddress={`${order.seller}`}
                             confirmPaymentCallback={() => {
-                              const {
-                                config,
-                                error: prepareError,
-                                isError: isPrepareError,
-                              } = usePrepareContractWrite({
-                                addressOrName: addresses.UNIPEER[chainId],
-                                contractInterface: UNIPEER_ABI.abi,
-                                functionName: "confirmPaid",
-                                args: [order.orderID],
-                                enabled: true,
-                              });
-                              const { data, isError, write } =
-                                useContractWrite(config);
-
-                              const { isLoading, isSuccess } =
-                                useWaitForTransaction({
-                                  hash: data?.hash,
-                                });
                               if (!isLoading) {
                                 setShowConfirmPaymentDialog(false);
                               }
@@ -334,25 +331,25 @@ const BuyOrderCard = ({ id, timeLeft, order }: BuyOrderCardType) => {
                   <div
                     className="text-14 font-semibold font-paragraphs text-white"
                     onClick={() => {
-                      const {
-                        config,
-                        error: prepareError,
-                        isError: isPrepareError,
-                      } = usePrepareContractWrite({
-                        addressOrName: addresses.UNIPEER[chainId],
-                        contractInterface: UNIPEER_ABI.abi,
-                        functionName: "completeOrder",
-                        args: [order.orderID],
-                        enabled: true,
-                      });
-                      const { data, isError, write } = useContractWrite(config);
-
-                      const { isLoading, isSuccess } = useWaitForTransaction({
-                        hash: data?.hash,
-                      });
-                      if (!isLoading) {
-                        // setShowCompletePaymentDialog(false);
-                      }
+                      // const {
+                      //   config,
+                      //   error: prepareError,
+                      //   isError: isPrepareError,
+                      // } = usePrepareContractWrite({
+                      //   addressOrName: addresses.UNIPEER[chainId],
+                      //   contractInterface: UNIPEER_ABI.abi,
+                      //   functionName: "completeOrder",
+                      //   args: [order.orderID],
+                      //   enabled: true,
+                      // });
+                      // const { data, isError, write } = useContractWrite(config);
+                      //
+                      // const { isLoading, isSuccess } = useWaitForTransaction({
+                      //   hash: data?.hash,
+                      // });
+                      // if (!isLoading) {
+                      //   // setShowCompletePaymentDialog(false);
+                      // }
                     }}
                   >
                     Get tokens

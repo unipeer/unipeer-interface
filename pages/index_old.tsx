@@ -9,14 +9,8 @@ import SellerList from "components/SellerList";
 import OrdersList from "components/OrdersWidget";
 
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
-import PaymentModeModal from "components/modals/payment";
 import WrongNetworkDetected from "components/buy/modals/WrongNetworkDetected/WrongNetworkDetected";
 import BasicDialog from "components/BasicDialog";
-import { PayArbitrationFeeModal } from "components/buy/modals/PayArbitrationFeeModal/PayArbitrationFeeModal";
-import { ConfirmPaymentModal } from "components/buy/modals/ConfirmPaymentModal/ConfirmPaymentModal";
-import { CancelOrderModal } from "components/buy/modals/CancelOrderModal/CancelOrderModal";
-import WithdrawTokens from "components/WithdrawTokens";
-import { WithdrawTokensModal } from "components/my_orders/modals/withdraw_tokens";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -45,6 +39,7 @@ export default function Home() {
         {isConnected && chain?.id !== 100 && chain?.id !== 10200 ? (
           <BasicDialog
             dialogTitle="Wrong network detected!"
+            onCloseCallback={false}
             isCancellable={false}
             dialogChild={
               <WrongNetworkDetected
