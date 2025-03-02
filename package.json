@@ -8,9 +8,10 @@
     "format": "prettier --write '**/*.{ts,tsx,js,css,json,md}'",
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'",
-    "postinstall": "yarn compile-contract-types"
+    "postinstall": "pnpm compile-contract-types"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.8.0",
     "@ethersproject/bignumber": "^5.5.0",
     "@ethersproject/contracts": "^5.5.0",
     "@ethersproject/providers": "^5.5.2",
@@ -21,6 +22,7 @@
     "@heroicons/react": "^2.0.18",
     "@tailwindcss/forms": "^0.5.3",
     "@uniswap/default-token-list": "^11.6.0",
+    "axios": "^1.8.1",
     "bootstrap": "^5.2.3",
     "connectkit": "^0.0.2",
     "cors": "^2.8.5",
