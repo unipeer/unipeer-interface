@@ -38,3 +38,4 @@ out_functions
 
 # typescript
 tsconfig.buildinfo
+.fleek
