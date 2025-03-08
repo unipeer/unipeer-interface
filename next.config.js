@@ -1,11 +1,14 @@
 // @ts-check
 
-/**
- * @type {import('next').NextConfig}
- **/
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  trailingSlash: true,
   env: {
     IPFS: process.env.IPFS === "true" ? "true" : "false",
     COMMIT_SHA:
@@ -14,3 +17,5 @@ module.exports = {
       "master",
   },
 };
+
+module.exports = nextConfig;
